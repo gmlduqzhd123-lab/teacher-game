@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>선생님은 건물주가 하고 싶어서 v3.1 (캐주얼 폰트 & 레이아웃 픽스)</title>
+    <title>선생님은 건물주가 하고 싶어서 v3.2 (난이도 하락 & 초고속 수익)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* 예쁘고 둥글둥글한 캐주얼 게임용 서체 (쿠키런) 적용 */
         @font-face {
             font-family: 'CookieRun';
             src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/CookieRun-Regular.woff') format('woff');
@@ -60,7 +59,6 @@
 </head>
 <body class="flex flex-col text-gray-800 relative">
 
-    <!-- 시작 화면 -->
     <div id="startScreen" class="absolute inset-0 bg-white z-50 flex flex-col items-center justify-center">
         <h1 class="text-4xl font-bold text-center text-blue-600 drop-shadow-md leading-tight mb-2">👨‍🏫선생님은 건물주가<br>하고 싶어서</h1>
         <p class="text-gray-500 text-sm mb-8">무한 터치 방치형 시뮬레이션</p>
@@ -75,11 +73,9 @@
         <button onclick="clearData()" class="mt-10 text-xs text-red-400 underline p-2">데이터 초기화 (버그 발생 시)</button>
     </div>
 
-    <!-- 메인 화면 -->
     <div id="gameScreen" class="hidden flex-col h-full w-full max-w-md mx-auto bg-white shadow-2xl relative">
         <button onclick="toggleAudio()" id="audioBtn" class="absolute top-2 right-2 z-50 bg-gray-800 text-white p-1 px-3 rounded-full opacity-70 text-xs shadow">🔊 ON</button>
         
-        <!-- 상단 스탯창 -->
         <div id="headerArea" class="bg-blue-600 text-white p-3 pb-2 shadow-md transition-colors duration-500 rounded-b-lg z-20">
             <div class="flex justify-between items-end mb-1">
                 <div>
@@ -94,7 +90,6 @@
                 </div>
             </div>
             
-            <!-- 경험치 바 -->
             <div class="flex items-center space-x-2 text-[11px] font-bold">
                 <span class="w-8">EXP</span>
                 <div class="flex-1 bg-blue-900 rounded-full h-2.5 relative overflow-hidden shadow-inner">
@@ -102,7 +97,6 @@
                 </div>
                 <span id="expText" class="w-16 text-right">0/100</span>
             </div>
-            <!-- 카페인 게이지 (스윗스팟 80~100%) -->
             <div class="flex items-center space-x-2 text-[11px] font-bold mt-1.5">
                 <span class="w-8">☕텐션</span>
                 <div class="flex-1 bg-gray-700 rounded-full h-2.5 relative overflow-hidden shadow-inner">
@@ -113,7 +107,6 @@
             </div>
         </div>
 
-        <!-- 클릭 영역 (교실) -->
         <div id="clickArea" class="flex-1 relative flex flex-col items-center justify-center overflow-hidden bg-green-50" onpointerdown="handleMainClick(event)">
             <div id="trophyShelf" class="absolute top-2 left-2 text-xl flex space-x-1 opacity-50"></div>
 
@@ -134,13 +127,11 @@
                 </div>
             </div>
             
-            <!-- 수정된 안내 텍스트 영역 (가려짐 방지 및 말풍선 스타일 적용) -->
             <div class="mt-6 text-gray-600 text-[11px] font-bold text-center pointer-events-none z-10 bg-white bg-opacity-70 px-4 py-1.5 rounded-full shadow-sm backdrop-blur-sm" id="buffStatus">
-                광클 환영! 텐션을 80% 이상 유지하면 수익 3배!
+                광클 환영! 텐션을 80% 이상 유지하면 수익 5배 폭발!
             </div>
         </div>
 
-        <!-- 이벤트 오버레이 -->
         <div id="eventOverlay" class="absolute inset-0 bg-black bg-opacity-85 z-40 hidden flex-col items-center justify-center text-white p-6 text-center">
             <h2 id="eventTitle" class="text-3xl font-bold mb-3 drop-shadow">이벤트</h2>
             <p id="eventDesc" class="mb-5 text-base w-[90%] break-keep leading-relaxed">설명</p>
@@ -148,7 +139,6 @@
             <div id="eventActionArea" class="flex flex-col space-y-3 w-full max-w-[260px]"></div>
         </div>
 
-        <!-- 하단 탭 버튼 -->
         <div class="flex bg-gray-100 border-t-2 border-gray-200 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
             <button onclick="changeTab('tab-up', this)" class="tab-btn flex-1 py-3.5 text-xs font-bold bg-white text-blue-600 border-t-2 border-blue-600 rounded-tl-lg">업무/성장</button>
             <button onclick="changeTab('tab-asset', this)" class="tab-btn flex-1 py-3.5 text-xs font-bold text-gray-500 border-t-2 border-transparent">자산/투자</button>
@@ -156,15 +146,12 @@
             <button onclick="changeTab('tab-sp', this)" class="tab-btn flex-1 py-3.5 text-xs font-bold text-gray-500 border-t-2 border-transparent rounded-tr-lg">특수/도감</button>
         </div>
 
-        <!-- 탭 컨텐츠 -->
         <div class="scrollable-tab bg-white pb-6 relative px-1">
-            <!-- 1. 업무/성장 -->
             <div id="tab-up" class="tab-content p-3 space-y-4">
                 <div><h3 class="font-bold text-gray-700 text-sm mb-2 px-1">👆 클릭 강화</h3><div id="clickUpgrades" class="space-y-1.5"></div></div>
                 <div><h3 class="font-bold text-gray-700 text-sm mb-2 px-1">⏳ 자동 수익</h3><div id="autoUpgrades" class="space-y-1.5"></div></div>
             </div>
             
-            <!-- 2. 자산/투자 -->
             <div id="tab-asset" class="tab-content p-3 space-y-4 hidden">
                 <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 shadow-sm">
                     <h3 class="font-bold text-sm mb-2 text-gray-800">📈 K-에듀테크 주식 시세</h3>
@@ -181,7 +168,6 @@
                 <div><h3 class="font-bold text-gray-700 text-sm mb-2 px-1 mt-2">🏢 시세 변동 부동산</h3><div id="realEstateList" class="space-y-1.5"></div></div>
             </div>
 
-            <!-- 3. 부가활동 -->
             <div id="tab-act" class="tab-content p-3 space-y-3 hidden">
                 <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 shadow-sm">
                     <h3 class="font-bold text-blue-800 text-sm mb-1">📱 익명 커뮤니티 (블라인드)</h3>
@@ -200,7 +186,6 @@
                 </div>
             </div>
 
-            <!-- 4. 특수/도감 -->
             <div id="tab-sp" class="tab-content p-3 space-y-4 hidden">
                 <div class="bg-gray-50 p-3 rounded-xl border border-gray-200">
                     <h3 class="font-bold text-sm mb-2 text-gray-800">👕 OOTD (출근룩 장착)</h3>
@@ -248,15 +233,16 @@
     let loopInterval = null; 
     let eventTimerObj = null; 
     let globalAuditListener = null;
-    let currentClickProfit = 10, currentAutoProfit = 0, currentExpPerClick = 1, currentExpPerSec = 0;
+    let currentClickProfit = 100, currentAutoProfit = 0, currentExpPerClick = 1, currentExpPerSec = 0;
     let buffs = { isSilence: false, isFever: false, papsMult: 1, cafMult: 1 };
     
     const seasons = ['봄', '여름', '가을', '겨울']; 
     let currentSeasonIdx = 0;
     
+    // 기본 효율 대폭 증가 (이익 10배 증가, 기본가 소폭 인하)
     const DB = {
-        clicks: [ { id: 'c1', name: '믹스커피', baseCost: 100, profit: 5, icon: '☕' }, { id: 'c2', name: '기계식 키보드', baseCost: 1500, profit: 50, icon: '⌨️' }, { id: 'c3', name: '전동 책상', baseCost: 50000, profit: 1000, icon: '🪑' } ],
-        autos: [ { id: 'a1', name: '알림장 앱', baseCost: 500, profit: 10, icon: '📱' }, { id: 'a2', name: '1인 1태블릿', baseCost: 20000, profit: 250, icon: '📲' }, { id: 'a3', name: 'AI 챗봇', baseCost: 200000, profit: 3000, icon: '🤖' } ],
+        clicks: [ { id: 'c1', name: '믹스커피', baseCost: 100, profit: 50, icon: '☕' }, { id: 'c2', name: '기계식 키보드', baseCost: 1000, profit: 500, icon: '⌨️' }, { id: 'c3', name: '전동 책상', baseCost: 10000, profit: 5000, icon: '🪑' } ],
+        autos: [ { id: 'a1', name: '알림장 앱', baseCost: 500, profit: 100, icon: '📱' }, { id: 'a2', name: '1인 1태블릿', baseCost: 10000, profit: 2500, icon: '📲' }, { id: 'a3', name: 'AI 챗봇', baseCost: 100000, profit: 30000, icon: '🤖' } ],
         cols: [ { id: 'col1', name: '액괴', icon: '🟢' }, { id: 'col2', name: '띠부씰', icon: '🐢' }, { id: 'col3', name: '스피너', icon: '🌀' }, { id: 'col4', name: '유희왕', icon: '🃏' } ]
     };
 
@@ -274,7 +260,7 @@
     }
     
     function loadGame() {
-        const saved = localStorage.getItem('v3_cute_nocaf_fix_save');
+        const saved = localStorage.getItem('v3_easy_mode_save');
         if(saved) {
             try { 
                 const p = JSON.parse(saved); s = Object.assign({}, defaultState, p);
@@ -288,12 +274,12 @@
     
     function saveGame() { 
         s.lastSaveTime = Date.now(); 
-        localStorage.setItem('v3_cute_nocaf_fix_save', JSON.stringify(s)); 
+        localStorage.setItem('v3_easy_mode_save', JSON.stringify(s)); 
     }
     
     function clearData() { 
         if(confirm("모든 데이터를 지울까요?")) { 
-            localStorage.removeItem('v3_cute_nocaf_fix_save'); location.reload(); 
+            localStorage.removeItem('v3_easy_mode_save'); location.reload(); 
         } 
     }
 
@@ -314,9 +300,10 @@
         }
         document.getElementById('succulentPct').innerText = Math.floor((s.succulentGrowth/300)*100)+'%';
         
-        // 텐션 자연 감소 처리
         s.caffeine = Math.max(0, Math.min(100, s.caffeine - ((s.ootd === '츄리닝') ? 4 : 2)));
-        buffs.cafMult = (s.caffeine >= 80) ? 3 : 1;
+        
+        // 텐션 버프 3배 -> 5배 증가
+        buffs.cafMult = (s.caffeine >= 80) ? 5 : 1;
 
         calculateMultipliers();
         if(currentAutoProfit > 0) { s.money += currentAutoProfit; s.exp += currentExpPerSec; checkLevelUp(); }
@@ -330,7 +317,7 @@
     }
 
     function calculateMultipliers() {
-        let cv = 10, av = (s.emoticonIncome||0), ec = 1, ea = 0;
+        let cv = 100, av = (s.emoticonIncome||0), ec = 1, ea = 0; // 기본 수익 100부터 시작
         const sum = list => list.reduce((a, b) => a + (b.profit * (s.inventory[b.id]||0)), 0);
         cv += sum(DB.clicks); av += sum(DB.autos);
         
@@ -352,7 +339,9 @@
     function handleMainClick(e) {
         if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
         
-        s.caffeine = Math.min(100, s.caffeine + 5);
+        // 텐션 차오르는 속도 2배 (5 -> 10)
+        s.caffeine = Math.min(100, s.caffeine + 10);
+        
         s.money += currentClickProfit; s.exp += currentExpPerClick; s.stats.totalClicks++;
         
         playAudio('coin'); showFloat(e.clientX, e.clientY, `+${formatMoney(currentClickProfit)}`);
