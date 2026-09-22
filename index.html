@@ -3,20 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>선생님은 건물주가 하고 싶어서 v3.2 (난이도 하락 & 초고속 수익)</title>
+    <title>선생님은 건물주가 하고 싶어서 v4.0 (Ultimate Edition)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @font-face {
             font-family: 'CookieRun';
             src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/CookieRun-Regular.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
+            font-weight: normal; font-style: normal;
         }
         @font-face {
             font-family: 'CookieRun';
             src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/CookieRun-Bold.woff') format('woff');
-            font-weight: bold;
-            font-style: normal;
+            font-weight: bold; font-style: normal;
         }
         
         :root { --bg-color: #f3f4f6; }
@@ -26,30 +24,19 @@
             font-family: 'CookieRun', sans-serif; 
             background-color: var(--bg-color);
             margin: 0; padding: 0; 
-            height: 100dvh; 
-            overflow: hidden;
-            touch-action: none; 
-            user-select: none; -webkit-user-select: none; 
-            overscroll-behavior-y: contain; 
-            letter-spacing: -0.5px;
+            height: 100dvh; overflow: hidden;
+            touch-action: none; user-select: none; -webkit-user-select: none; 
+            overscroll-behavior-y: contain; letter-spacing: -0.5px;
         }
 
         @keyframes floatUp { 0% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-50px) scale(1.2); } }
         .floating-text { position: absolute; color: #fbbf24; font-weight: bold; font-size: 1.5rem; pointer-events: none; text-shadow: 2px 2px 0 #000; z-index: 50; animation: floatUp 0.8s ease-out forwards; }
         @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(0.9); } 100% { transform: scale(1); } }
         .character-pop { animation: pop 0.1s ease-in-out; }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
-        .shake-danger { animation: shake 0.3s infinite; background-color: #fee2e2 !important; }
         @keyframes runAcross { 0% { left: -10%; transform: scaleX(1); } 100% { left: 110%; transform: scaleX(1); } }
         .runner { position: absolute; font-size: 2.5rem; bottom: 20%; animation: runAcross 3s linear forwards; cursor: pointer; z-index: 45; }
 
-        .scrollable-tab { 
-            height: calc(100dvh - 45vh - 60px); 
-            overflow-y: auto; 
-            touch-action: pan-y; 
-            overscroll-behavior-y: contain;
-        }
-        
+        .scrollable-tab { height: calc(100dvh - 45vh - 60px); overflow-y: auto; touch-action: pan-y; overscroll-behavior-y: contain; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         
@@ -61,14 +48,10 @@
 
     <div id="startScreen" class="absolute inset-0 bg-white z-50 flex flex-col items-center justify-center">
         <h1 class="text-4xl font-bold text-center text-blue-600 drop-shadow-md leading-tight mb-2">👨‍🏫선생님은 건물주가<br>하고 싶어서</h1>
-        <p class="text-gray-500 text-sm mb-8">무한 터치 방치형 시뮬레이션</p>
+        <p class="text-gray-500 text-sm mb-8">Ultimate Teacher Simulator v4.0</p>
         <div class="flex space-x-4">
-            <button onclick="startGame('남교사', '👨‍🏫')" class="p-6 bg-blue-100 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition">
-                <div class="text-5xl mb-2">👨‍🏫</div><div class="font-bold">남교사</div>
-            </button>
-            <button onclick="startGame('여교사', '👩‍🏫')" class="p-6 bg-pink-100 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition">
-                <div class="text-5xl mb-2">👩‍🏫</div><div class="font-bold">여교사</div>
-            </button>
+            <button onclick="startGame('남교사', '👨‍🏫')" class="p-6 bg-blue-100 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition"><div class="text-5xl mb-2">👨‍🏫</div><div class="font-bold">남교사</div></button>
+            <button onclick="startGame('여교사', '👩‍🏫')" class="p-6 bg-pink-100 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition"><div class="text-5xl mb-2">👩‍🏫</div><div class="font-bold">여교사</div></button>
         </div>
         <button onclick="clearData()" class="mt-10 text-xs text-red-400 underline p-2">데이터 초기화 (버그 발생 시)</button>
     </div>
@@ -79,7 +62,7 @@
         <div id="headerArea" class="bg-blue-600 text-white p-3 pb-2 shadow-md transition-colors duration-500 rounded-b-lg z-20">
             <div class="flex justify-between items-end mb-1">
                 <div>
-                    <div class="text-[11px] text-yellow-300 font-bold tracking-tight" id="seasonDisplay">[봄학기] 🏆트로피: <span id="trophyDisplay">0</span></div>
+                    <div class="text-[11px] text-yellow-300 font-bold tracking-tight" id="seasonDisplay">[봄학기] 🏆트로피: <span id="trophyDisplay">0</span> | 명예: <span id="honorDisplay">0</span></div>
                     <div class="text-lg font-bold">
                         <span id="titleDisplay" class="text-blue-200 text-xs mr-1"></span><span id="levelDisplay"></span> 
                         <span id="gradeDisplay" class="text-[10px] ml-1 bg-white text-blue-800 px-1.5 py-0.5 rounded-full align-middle shadow-sm"></span>
@@ -139,19 +122,23 @@
             <div id="eventActionArea" class="flex flex-col space-y-3 w-full max-w-[260px]"></div>
         </div>
 
+        <!-- 하단 탭 (5개로 확장) -->
         <div class="flex bg-gray-100 border-t-2 border-gray-200 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
-            <button onclick="changeTab('tab-up', this)" class="tab-btn flex-1 py-3.5 text-xs font-bold bg-white text-blue-600 border-t-2 border-blue-600 rounded-tl-lg">업무/성장</button>
-            <button onclick="changeTab('tab-asset', this)" class="tab-btn flex-1 py-3.5 text-xs font-bold text-gray-500 border-t-2 border-transparent">자산/투자</button>
-            <button onclick="changeTab('tab-act', this)" class="tab-btn flex-1 py-3.5 text-xs font-bold text-gray-500 border-t-2 border-transparent">부가활동</button>
-            <button onclick="changeTab('tab-sp', this)" class="tab-btn flex-1 py-3.5 text-xs font-bold text-gray-500 border-t-2 border-transparent rounded-tr-lg">특수/도감</button>
+            <button onclick="changeTab('tab-up', this)" class="tab-btn flex-1 py-3 text-[11px] font-bold bg-white text-blue-600 border-t-2 border-blue-600 rounded-tl-lg">업무</button>
+            <button onclick="changeTab('tab-asset', this)" class="tab-btn flex-1 py-3 text-[11px] font-bold text-gray-500 border-t-2 border-transparent">자산</button>
+            <button onclick="changeTab('tab-act', this)" class="tab-btn flex-1 py-3 text-[11px] font-bold text-gray-500 border-t-2 border-transparent">활동</button>
+            <button onclick="changeTab('tab-club', this)" class="tab-btn flex-1 py-3 text-[11px] font-bold text-gray-500 border-t-2 border-transparent">동아리</button>
+            <button onclick="changeTab('tab-sp', this)" class="tab-btn flex-1 py-3 text-[11px] font-bold text-gray-500 border-t-2 border-transparent rounded-tr-lg">특수</button>
         </div>
 
         <div class="scrollable-tab bg-white pb-6 relative px-1">
+            <!-- 1. 업무/성장 -->
             <div id="tab-up" class="tab-content p-3 space-y-4">
                 <div><h3 class="font-bold text-gray-700 text-sm mb-2 px-1">👆 클릭 강화</h3><div id="clickUpgrades" class="space-y-1.5"></div></div>
                 <div><h3 class="font-bold text-gray-700 text-sm mb-2 px-1">⏳ 자동 수익</h3><div id="autoUpgrades" class="space-y-1.5"></div></div>
             </div>
             
+            <!-- 2. 자산/투자 -->
             <div id="tab-asset" class="tab-content p-3 space-y-4 hidden">
                 <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 shadow-sm">
                     <h3 class="font-bold text-sm mb-2 text-gray-800">📈 K-에듀테크 주식 시세</h3>
@@ -168,6 +155,7 @@
                 <div><h3 class="font-bold text-gray-700 text-sm mb-2 px-1 mt-2">🏢 시세 변동 부동산</h3><div id="realEstateList" class="space-y-1.5"></div></div>
             </div>
 
+            <!-- 3. 부가활동 -->
             <div id="tab-act" class="tab-content p-3 space-y-3 hidden">
                 <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 shadow-sm">
                     <h3 class="font-bold text-blue-800 text-sm mb-1">📱 익명 커뮤니티 (블라인드)</h3>
@@ -186,13 +174,26 @@
                 </div>
             </div>
 
+            <!-- 4. 동아리/연수/소모임/여행 -->
+            <div id="tab-club" class="tab-content p-3 space-y-4 hidden">
+                <div><h3 class="font-bold text-gray-700 text-sm mb-2 px-1">🎒 방과후 동아리 육성</h3><div id="clubList" class="space-y-1.5"></div></div>
+                <div><h3 class="font-bold text-gray-700 text-sm mb-2 px-1">⚽ 교직원 소모임</h3><div id="somoimList" class="space-y-1.5"></div></div>
+                <div><h3 class="font-bold text-gray-700 text-sm mb-2 px-1">📜 직무 연수 & 자격증</h3><div id="certList" class="space-y-1.5"></div></div>
+                <div class="bg-teal-50 p-4 rounded-xl border border-teal-200 text-center shadow-sm">
+                    <h3 class="font-bold text-teal-800 text-sm mb-1">✈️ 방학 시즌 힐링 여행</h3>
+                    <p class="text-[11px] text-gray-600 mb-3">제주도/하와이 여행으로 영구 클릭 효율 버프 획득!</p>
+                    <button onclick="buyTravel()" class="bg-teal-600 text-white text-xs px-4 py-3 rounded-lg shadow font-bold active:scale-95 transition w-full">하와이 힐링 여행 떠나기 (5억 원)</button>
+                </div>
+            </div>
+
+            <!-- 5. 특수/도감 -->
             <div id="tab-sp" class="tab-content p-3 space-y-4 hidden">
                 <div class="bg-gray-50 p-3 rounded-xl border border-gray-200">
                     <h3 class="font-bold text-sm mb-2 text-gray-800">👕 OOTD (출근룩 장착)</h3>
                     <div class="flex space-x-2 text-xs font-bold">
                         <button onclick="setOOTD('none')" class="flex-1 py-2.5 bg-white border-2 border-gray-200 rounded-lg active:bg-gray-100">기본</button>
-                        <button onclick="setOOTD('츄리닝')" class="flex-1 py-2.5 bg-white border-2 border-gray-200 rounded-lg active:bg-gray-100" title="카페인 감소 2배">츄리닝🎽</button>
-                        <button onclick="setOOTD('정장')" class="flex-1 py-2.5 bg-white border-2 border-gray-200 rounded-lg active:bg-gray-100" title="이벤트 성공확률 증가">정장👔</button>
+                        <button onclick="setOOTD('츄리닝')" class="flex-1 py-2.5 bg-white border-2 border-gray-200 rounded-lg active:bg-gray-100">츄리닝🎽</button>
+                        <button onclick="setOOTD('정장')" class="flex-1 py-2.5 bg-white border-2 border-gray-200 rounded-lg active:bg-gray-100">정장👔</button>
                     </div>
                 </div>
                 <div class="space-y-2">
@@ -220,89 +221,69 @@
 <script>
     const defaultState = { 
         character: '👨‍🏫', money: 0, exp: 0, level: 1, hobong: 1, grade: '전담교사', motto: '무사히 퇴근하자', 
-        caffeine: 0, succulentGrowth: 0, succulentBuff: 0, favor: 0, 
+        caffeine: 0, succulentGrowth: 0, succulentBuff: 0, honor: 0, travelBuff: 1,
         inventory: {}, collections: {}, spareItems: 0, stockPrice: 10000, stockCount: 0, emoticonIncome: 0, 
+        clubs: { coding: 0, band: 0 }, somoims: { soccer: 0, food: 0 }, certs: { counsel: 0, codingCert: 0 },
         reals: { r1: {own:0, price: 500000000}, r2: {own:0, price: 2000000000}, r3: {own:0, price: 10000000000}, r4: {own:0, price: 50000000000} }, 
         skills: { vacation: 0, silence: 0, blind: 0, emo: 0 }, ootd: 'none', stats: { totalClicks: 0 }, endings: 0, lastSaveTime: Date.now() 
     };
     
     let s = {}; 
-    let audioCtx = null; 
-    let isBgmPlaying = false; 
-    let bgmOscillator = null; 
-    let loopInterval = null; 
-    let eventTimerObj = null; 
-    let globalAuditListener = null;
+    let audioCtx = null; let isBgmPlaying = false; let bgmOscillator = null; 
+    let loopInterval = null; let eventTimerObj = null; let globalAuditListener = null;
     let currentClickProfit = 100, currentAutoProfit = 0, currentExpPerClick = 1, currentExpPerSec = 0;
-    let buffs = { isSilence: false, isFever: false, papsMult: 1, cafMult: 1 };
+    let buffs = { isSilence: false, isFever: false, papsMult: 1, cafMult: 1, menuBuff: 1 };
     
-    const seasons = ['봄', '여름', '가을', '겨울']; 
-    let currentSeasonIdx = 0;
+    const seasons = ['봄', '여름', '가을', '겨울']; let currentSeasonIdx = 0;
     
-    // 기본 효율 대폭 증가 (이익 10배 증가, 기본가 소폭 인하)
     const DB = {
         clicks: [ { id: 'c1', name: '믹스커피', baseCost: 100, profit: 50, icon: '☕' }, { id: 'c2', name: '기계식 키보드', baseCost: 1000, profit: 500, icon: '⌨️' }, { id: 'c3', name: '전동 책상', baseCost: 10000, profit: 5000, icon: '🪑' } ],
         autos: [ { id: 'a1', name: '알림장 앱', baseCost: 500, profit: 100, icon: '📱' }, { id: 'a2', name: '1인 1태블릿', baseCost: 10000, profit: 2500, icon: '📲' }, { id: 'a3', name: 'AI 챗봇', baseCost: 100000, profit: 30000, icon: '🤖' } ],
+        clubs: [ { id: 'coding', name: '코딩부 육성', baseCost: 5000, profit: 1000, icon: '💻' }, { id: 'band', name: '밴드부 육성', baseCost: 30000, profit: 8000, icon: '🎸' } ],
+        somoims: [ { id: 'soccer', name: '축구 동호회', baseCost: 20000, profit: 1500, icon: '⚽' }, { id: 'food', name: '맛집 탐방 동호회', baseCost: 100000, profit: 10000, icon: '🍜' } ],
+        certs: [ { id: 'counsel', name: '상담심리사 연수', baseCost: 50000, profit: 3000, icon: '📜' }, { id: 'counsel2', name: '코딩교육 자격증', baseCost: 300000, profit: 20000, icon: '🏅' } ],
         cols: [ { id: 'col1', name: '액괴', icon: '🟢' }, { id: 'col2', name: '띠부씰', icon: '🐢' }, { id: 'col3', name: '스피너', icon: '🌀' }, { id: 'col4', name: '유희왕', icon: '🃏' } ]
     };
 
     function startGame(charName, emoji) {
         document.getElementById('startScreen').classList.add('hidden');
         document.getElementById('gameScreen').classList.remove('hidden'); document.getElementById('gameScreen').classList.add('flex');
-        initAudio(); loadGame(); 
-        s.character = emoji; 
-        document.getElementById('characterEmoji').innerText = emoji;
+        initAudio(); loadGame(); s.character = emoji; document.getElementById('characterEmoji').innerText = emoji;
         calculateOfflineProgress(); applyOOTDVisual(); renderAll(); changeSeason();
-        if(loopInterval) clearInterval(loopInterval); 
-        loopInterval = setInterval(gameLoop, 1000);
-        setInterval(() => { changeSeason(); triggerRandomEvent(); }, 40000); 
+        if(loopInterval) clearInterval(loopInterval); loopInterval = setInterval(gameLoop, 1000);
+        setInterval(() => { changeSeason(); triggerRandomEvent(); }, 35000); 
         setInterval(spawnRunner, 90000);
     }
     
     function loadGame() {
-        const saved = localStorage.getItem('v3_easy_mode_save');
+        const saved = localStorage.getItem('v4_ultimate_save');
         if(saved) {
             try { 
                 const p = JSON.parse(saved); s = Object.assign({}, defaultState, p);
                 s.reals = p.reals?.r4 ? p.reals : JSON.parse(JSON.stringify(defaultState.reals));
-                s.skills = p.skills || defaultState.skills; 
-                s.inventory = p.inventory || {}; s.collections = p.collections || {};
-                s.spareItems = p.spareItems || 0; s.caffeine = p.caffeine || 0;
+                s.skills = p.skills || defaultState.skills; s.inventory = p.inventory || {}; s.collections = p.collections || {};
+                s.spareItems = p.spareItems || 0; s.caffeine = p.caffeine || 0; s.honor = s.honor || 0; s.travelBuff = s.travelBuff || 1;
             } catch(e) { s = JSON.parse(JSON.stringify(defaultState)); }
         } else { s = JSON.parse(JSON.stringify(defaultState)); }
     }
     
-    function saveGame() { 
-        s.lastSaveTime = Date.now(); 
-        localStorage.setItem('v3_easy_mode_save', JSON.stringify(s)); 
-    }
-    
-    function clearData() { 
-        if(confirm("모든 데이터를 지울까요?")) { 
-            localStorage.removeItem('v3_easy_mode_save'); location.reload(); 
-        } 
-    }
+    function saveGame() { s.lastSaveTime = Date.now(); localStorage.setItem('v4_ultimate_save', JSON.stringify(s)); }
+    function clearData() { if(confirm("모든 데이터를 지울까요?")) { localStorage.removeItem('v4_ultimate_save'); location.reload(); } }
 
     function calculateOfflineProgress() {
         const diff = Math.floor((Date.now() - s.lastSaveTime)/1000);
         if(diff > 60 && currentAutoProfit > 0) {
-            const gain = Math.min(diff, 86400) * currentAutoProfit * 0.5; 
-            s.money += gain;
+            const gain = Math.min(diff, 86400) * currentAutoProfit * 0.5; s.money += gain;
             setTimeout(()=>alert(`오프라인 보상: +${formatMoney(gain)}`), 500);
         }
     }
 
     function gameLoop() {
         s.succulentGrowth += 1;
-        if(s.succulentGrowth >= 300) { 
-            s.succulentGrowth = 0; s.succulentBuff += 0.05; 
-            playAudio('buy'); showTitleNotification("다육이가 자라 마음의 평화 획득!"); 
-        }
+        if(s.succulentGrowth >= 300) { s.succulentGrowth = 0; s.succulentBuff += 0.05; playAudio('buy'); showTitleNotification("다육이가 자라 마음의 평화 획득!"); }
         document.getElementById('succulentPct').innerText = Math.floor((s.succulentGrowth/300)*100)+'%';
         
         s.caffeine = Math.max(0, Math.min(100, s.caffeine - ((s.ootd === '츄리닝') ? 4 : 2)));
-        
-        // 텐션 버프 3배 -> 5배 증가
         buffs.cafMult = (s.caffeine >= 80) ? 5 : 1;
 
         calculateMultipliers();
@@ -317,33 +298,26 @@
     }
 
     function calculateMultipliers() {
-        let cv = 100, av = (s.emoticonIncome||0), ec = 1, ea = 0; // 기본 수익 100부터 시작
-        const sum = list => list.reduce((a, b) => a + (b.profit * (s.inventory[b.id]||0)), 0);
-        cv += sum(DB.clicks); av += sum(DB.autos);
+        let cv = 100, av = (s.emoticonIncome||0), ec = 1, ea = 0;
+        const sum = (list, obj) => list.reduce((acc, b) => acc + (b.profit * (obj[b.id]||0)), 0);
+        cv += sum(DB.clicks, s.inventory); av += sum(DB.autos, s.inventory);
+        av += sum(DB.clubs, s.clubs); av += sum(DB.somoims, s.somoims); av += sum(DB.certs, s.certs);
         
-        let gradeM = 1; 
-        if(s.grade === '1학년') cv *= 1.5; else if(s.grade === '6학년') av *= 1.5; else if(s.grade === '전담교사') gradeM = 0.8;
+        let gradeM = 1; if(s.grade === '1학년') cv *= 1.5; else if(s.grade === '6학년') av *= 1.5; else if(s.grade === '전담교사') gradeM = 0.8;
+        let mottoM = 1; if(s.motto === '부자가 되자') { cv *= 1.2; av *= 1.2; } if(s.motto === '배움이 먼저다') { ec *= 1.5; ea *= 1.5; }
         
-        let mottoM = 1; 
-        if(s.motto === '부자가 되자') { cv *= 1.2; av *= 1.2; } 
-        if(s.motto === '배움이 먼저다') { ec *= 1.5; ea *= 1.5; }
-        
-        const hM = 1 + ((s.hobong-1)*0.1) + s.succulentBuff;
+        const hM = (1 + ((s.hobong-1)*0.1) + s.succulentBuff) * s.travelBuff;
         av += (s.reals.r1.own * 1e6) + (s.reals.r2.own * 5e6) + (s.reals.r3.own * 3e7) + (s.reals.r4.own * 2e8);
         
-        currentClickProfit = cv * hM * buffs.cafMult * gradeM * mottoM * (buffs.isFever?5:1);
-        currentAutoProfit = av * hM * buffs.papsMult * gradeM * mottoM;
+        currentClickProfit = cv * hM * buffs.cafMult * gradeM * mottoM * buffs.menuBuff * (buffs.isFever?5:1);
+        currentAutoProfit = av * hM * buffs.papsMult * gradeM * mottoM * buffs.menuBuff;
         currentExpPerClick = ec * hM; currentExpPerSec = (av>0?1:0) * ea * hM;
     }
 
     function handleMainClick(e) {
         if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-        
-        // 텐션 차오르는 속도 2배 (5 -> 10)
         s.caffeine = Math.min(100, s.caffeine + 10);
-        
         s.money += currentClickProfit; s.exp += currentExpPerClick; s.stats.totalClicks++;
-        
         playAudio('coin'); showFloat(e.clientX, e.clientY, `+${formatMoney(currentClickProfit)}`);
         
         const char = document.getElementById('characterEmoji'); 
@@ -400,6 +374,7 @@
         document.getElementById('levelDisplay').innerText = `Lv.${s.level}`; 
         document.getElementById('gradeDisplay').innerText = s.grade;
         document.getElementById('moneyDisplay').innerText = formatMoney(s.money) + '원';
+        document.getElementById('honorDisplay').innerText = s.honor;
         document.getElementById('expBar').style.width = `${Math.min((s.exp/(s.level*100))*100,100)}%`; 
         document.getElementById('expText').innerText = `${Math.floor(s.exp)}/${s.level*100}`;
         document.getElementById('autoMoneyText').innerText = formatMoney(currentAutoProfit);
@@ -436,14 +411,20 @@
     }
 
     function renderAll() {
-        const html = (item, type) => {
-            const cnt = s.inventory[item.id] || 0; const cost = Math.floor(item.baseCost * Math.pow(1.15, cnt));
-            return `<div class="flex justify-between items-center p-3 bg-gray-50 rounded-xl border border-gray-200 shadow-sm text-xs font-bold">
-                <div class="flex items-center space-x-3"><div class="text-2xl drop-shadow-sm">${item.icon}</div><div><div class="text-gray-800">${item.name} <span class="text-blue-600">Lv.${cnt}</span></div><div class="text-gray-500 font-normal">+${formatMoney(item.profit)}</div></div></div>
-                <button class="buy-btn bg-blue-500 text-white px-3.5 py-2.5 rounded-lg active:bg-blue-600 shadow-sm active:scale-95 transition" data-cost="${cost}" onclick="buyItem('${item.id}','${type}')">${formatMoney(cost)}원</button></div>`;
+        const renderList = (dbList, targetId, stateObj, type) => {
+            document.getElementById(targetId).innerHTML = dbList.map(item => {
+                const cnt = stateObj[item.id] || 0; const cost = Math.floor(item.baseCost * Math.pow(1.15, cnt));
+                return `<div class="flex justify-between items-center p-3 bg-gray-50 rounded-xl border border-gray-200 shadow-sm text-xs font-bold">
+                    <div class="flex items-center space-x-3"><div class="text-2xl drop-shadow-sm">${item.icon}</div><div><div class="text-gray-800">${item.name} <span class="text-blue-600">Lv.${cnt}</span></div><div class="text-gray-500 font-normal">+${formatMoney(item.profit)}</div></div></div>
+                    <button class="buy-btn bg-blue-500 text-white px-3.5 py-2.5 rounded-lg active:bg-blue-600 shadow-sm active:scale-95 transition" data-cost="${cost}" onclick="buySpecialItem('${item.id}','${type}')">${formatMoney(cost)}원</button></div>`;
+            }).join('');
         };
-        document.getElementById('clickUpgrades').innerHTML = DB.clicks.map(i=>html(i,'clicks')).join(''); 
-        document.getElementById('autoUpgrades').innerHTML = DB.autos.map(i=>html(i,'autos')).join('');
+        
+        renderList(DB.clicks, 'clickUpgrades', s.inventory, 'clicks');
+        renderList(DB.autos, 'autoUpgrades', s.inventory, 'autos');
+        renderList(DB.clubs, 'clubList', s.clubs, 'clubs');
+        renderList(DB.somoims, 'somoimList', s.somoims, 'somoims');
+        renderList(DB.certs, 'certList', s.certs, 'certs');
         
         const rNames = ['동네 상가', '지식산업센터', '한강뷰 아파트', '강남 랜드마크'];
         document.getElementById('realEstateList').innerHTML = ['r1','r2','r3','r4'].map((k,i) => `
@@ -459,10 +440,33 @@
             </div>`).join('');
     }
 
-    function buyItem(id, type) { 
-        const item = DB[type].find(i=>i.id===id); const cnt = s.inventory[id]||0; const cost = Math.floor(item.baseCost * Math.pow(1.15, cnt)); 
-        if(s.money >= cost) { s.money -= cost; s.inventory[id] = cnt+1; playAudio('buy'); renderAll(); calculateMultipliers(); updateUI(); } else playAudio('error'); 
+    function buySpecialItem(id, type) {
+        let item, targetObj;
+        if(type === 'clicks' || type === 'autos') {
+            item = DB[type].find(i => i.id === id); targetObj = s.inventory;
+        } else if(type === 'clubs') {
+            item = DB.clubs.find(i => i.id === id); targetObj = s.clubs;
+        } else if(type === 'somoims') {
+            item = DB.somoims.find(i => i.id === id); targetObj = s.somoims;
+        } else if(type === 'certs') {
+            item = DB.certs.find(i => i.id === id); targetObj = s.certs;
+        }
+        
+        const cnt = targetObj[id] || 0; const cost = Math.floor(item.baseCost * Math.pow(1.15, cnt));
+        if(s.money >= cost) {
+            s.money -= cost; targetObj[id] = cnt + 1; playAudio('buy'); renderAll(); calculateMultipliers(); updateUI();
+        } else playAudio('error');
     }
+
+    function buyTravel() {
+        const cost = 500000000; // 5억
+        if(s.money >= cost) {
+            s.money -= cost; s.travelBuff += 0.2; playAudio('buy');
+            showTitleNotification("하와이 여행으로 힐링 완료! (영구 수익 효율 +20%)");
+            updateUI();
+        } else playAudio('error');
+    }
+
     function tradeStock(act) { 
         if(act==='buy' && s.money >= s.stockPrice) { const a = Math.floor(s.money/s.stockPrice); s.money -= a*s.stockPrice; s.stockCount += a; playAudio('buy'); } 
         else if(act==='sell' && s.stockCount > 0) { s.money += s.stockCount*s.stockPrice; s.stockCount = 0; playAudio('coin'); } else playAudio('error'); updateUI(); 
@@ -506,10 +510,17 @@
         s.hobong++; s.money = 0; s.exp = 0; s.level = 1; s.inventory = {}; s.reals = JSON.parse(JSON.stringify(defaultState.reals)); 
         const grades = ['1학년', '6학년', '전담교사']; s.grade = grades[Math.floor(Math.random()*grades.length)]; saveGame(); location.reload(); 
     }
-    function triggerEnding() { clearInterval(loopInterval); s.endings++; saveGame(); if(s.endings >= 3) alert("🏆 [히든 엔딩] 건물주를 넘어 교육부 장관으로 임명되었습니다! (이제 처음부터 다시..)"); else alert("🎉 [엔딩] 갓물주 등극! 사직서를 던집니다."); rebirth(); }
+    
+    function triggerEnding() { 
+        clearInterval(loopInterval); s.endings++; s.honor += 50; saveGame(); 
+        if(s.endings >= 5 || s.honor >= 200) alert("🏆 [히든 엔딩] 교육감 당선! 대한민국 교육의 수장이 되었습니다!");
+        else if(s.endings >= 3) alert("🏆 [히든 엔딩] 전설의 교장선생님으로 명예롭게 정년퇴직하셨습니다!");
+        else alert("🎉 [엔딩] 갓물주 등극! 사직서를 던집니다."); 
+        rebirth(); 
+    }
     
     function changeSeason() { 
-        currentSeasonIdx = (currentSeasonIdx + 1) % 4; document.getElementById('seasonDisplay').innerText = `[${seasons[currentSeasonIdx]}학기] 🏆트로피: ${s.endings}`; 
+        currentSeasonIdx = (currentSeasonIdx + 1) % 4; document.getElementById('seasonDisplay').innerText = `[${seasons[currentSeasonIdx]}학기] 🏆트로피: ${s.endings} | 명예: ${s.honor}`; 
         const header = document.getElementById('headerArea'); header.className = 'text-white p-3 pb-2 shadow-md transition-colors duration-500 rounded-b-lg z-20 '; 
         if(currentSeasonIdx === 0) header.classList.add('bg-green-600'); else if(currentSeasonIdx === 1) header.classList.add('bg-blue-600'); else if(currentSeasonIdx === 2) header.classList.add('bg-orange-600'); else header.classList.add('bg-gray-700'); 
     }
@@ -517,7 +528,13 @@
     function triggerRandomEvent() {
         if(buffs.isSilence || document.getElementById('eventOverlay').classList.contains('flex')) return;
         const r = Math.random(); const badMult = s.ootd === '정장' ? 0.5 : (s.grade === '6학년' ? 1.5 : 1); 
-        if(r < 0.1 * badMult) startMinigame('fight'); else if(r < 0.2 * badMult) startMinigame('audit'); else if(r < 0.3 * badMult) startMinigame('zoom'); else if(r < 0.4) startMinigame('lunch'); else if(r < 0.5) { buffs.isFever = true; showTitleNotification("🔥방학식 피버! 클릭 5배"); setTimeout(()=>buffs.isFever=false, 10000); }
+        if(r < 0.1 * badMult) startMinigame('fight'); 
+        else if(r < 0.2 * badMult) startMinigame('audit'); 
+        else if(r < 0.3 * badMult) startMinigame('zoom'); 
+        else if(r < 0.35) startMinigame('counsel');
+        else if(r < 0.4) startMinigame('festival');
+        else if(r < 0.45) startMinigame('animal');
+        else if(r < 0.5) { buffs.isFever = true; showTitleNotification("🔥방학식 피버! 클릭 5배"); setTimeout(()=>buffs.isFever=false, 10000); }
     }
 
     function startMinigame(type) {
@@ -525,39 +542,47 @@
         overlay.classList.remove('hidden'); overlay.classList.add('flex'); let timeLeft = 0; if(eventTimerObj) clearInterval(eventTimerObj); act.innerHTML = '';
         if(globalAuditListener) { document.removeEventListener('pointerdown', globalAuditListener); globalAuditListener = null; }
 
-        const closeEvent = (succ, msg) => { 
+        const closeEvent = (succ, msg, honorGain=0) => { 
             clearInterval(eventTimerObj); overlay.classList.add('hidden'); overlay.classList.remove('flex'); 
             if(globalAuditListener) { document.removeEventListener('pointerdown', globalAuditListener); globalAuditListener = null; } 
-            if(succ) { playAudio('buy'); showTitleNotification(msg); } else { playAudio('error'); showTitleNotification(msg); s.money = Math.max(0, s.money - currentAutoProfit*20); } updateUI(); 
+            if(succ) { playAudio('buy'); showTitleNotification(msg); s.honor += honorGain; } else { playAudio('error'); showTitleNotification(msg); s.money = Math.max(0, s.money - currentAutoProfit*10); } updateUI(); 
         };
-        const createBtn = (txt, color, onClick) => { const b = document.createElement('button'); b.className = `bg-${color}-500 py-4 mb-2.5 rounded-xl w-full text-white font-bold shadow-md active:scale-95 transition text-base`; b.innerText = txt; b.onclick = onClick; act.appendChild(b); };
+        const createBtn = (txt, color, onClick) => { const b = document.createElement('button'); b.className = `bg-${color}-500 py-3 mb-2 rounded-xl w-full text-white font-bold shadow-md active:scale-95 transition text-sm`; b.innerText = txt; b.onclick = onClick; act.appendChild(b); };
 
         if(type === 'fight') {
             document.getElementById('eventTitle').innerText = "⚔️ 학생 다툼 발생!"; document.getElementById('eventDesc').innerText = "누구 편을 드시겠습니까?"; document.getElementById('eventTimer').innerText = "";
-            createBtn('A 학생 편들기', 'blue', () => { s.exp += 500; closeEvent(true, "솔로몬의 지혜! 평화가 찾아왔습니다."); });
-            createBtn('B 학생 편들기', 'red', () => { s.exp += 500; closeEvent(true, "솔로몬의 지혜! 평화가 찾아왔습니다."); });
-            createBtn('둘 다 혼내기', 'purple', () => { if(Math.random()<0.3) closeEvent(false, "쌍방 민원! (수익 감소)"); else { s.exp += 1000; closeEvent(true, "교실에 평화가 찾아왔습니다."); } });
+            createBtn('A 학생 공감하기', 'blue', () => { s.exp += 500; closeEvent(true, "원만한 해결! 명예 +2", 2); });
+            createBtn('원칙대로 규정 적용', 'red', () => { s.exp += 500; closeEvent(true, "깔끔한 처리! 명예 +3", 3); });
+        }
+        else if(type === 'counsel') {
+            document.getElementById('eventTitle').innerText = "📞 학부모 상담 주간"; document.getElementById('eventDesc').innerText = "학부모의 까다로운 질문: '우리 아이 학교생활 어때요?'"; document.getElementById('eventTimer').innerText = "";
+            createBtn('폭풍 칭찬과 공감', 'green', () => { s.money += currentAutoProfit*20; closeEvent(true, "학부모 대만족! 후원금 획득", 5); });
+            createBtn('객관적인 사실 전달', 'blue', () => { s.exp += 800; closeEvent(true, "신뢰도 상승! 명예 +3", 3); });
+        }
+        else if(type === 'festival') {
+            document.getElementById('eventTitle').innerText = "🎵 학교 축제(학예회)"; document.getElementById('eventDesc').innerText = "아이들의 장기자랑을 성공적으로 지도하세요!";
+            timeLeft = 5; document.getElementById('eventTimer').innerText = timeLeft;
+            let taps = 0;
+            createBtn('박자에 맞춰 광클!! (0/15)', 'yellow', () => {
+                taps++; eventActionArea.children[0].innerText = `박자에 맞춰 광클!! (${taps}/15)`;
+                if(taps >= 15) { clearInterval(eventTimerObj); s.money += currentAutoProfit*50; closeEvent(true, "학예회 대성공! 학부모 환호 + 상금", 10); }
+            });
+            eventTimerObj = setInterval(() => { timeLeft--; document.getElementById('eventTimer').innerText = timeLeft; if(timeLeft<=0) closeEvent(false, "박자 놓쳐서 아쉬운 축제..."); }, 1000);
+        }
+        else if(type === 'animal') {
+            document.getElementById('eventTitle').innerText = "🐱 교정에 길고양이 출몰!"; document.getElementById('eventDesc').innerText = "아이들과 함께 안전하게 구조하세요!"; document.getElementById('eventTimer').innerText = "";
+            createBtn('간식으로 유인해 구조하기', 'teal', () => { s.honor += 5; closeEvent(true, "모두가 행복한 동물 보호 성공! 명예 +5", 5); });
         }
         else if(type === 'lunch') {
-            document.getElementById('eventTitle').innerText = "🍱 오늘의 급식 가챠!"; document.getElementById('eventDesc').innerText = "식판 뚜껑을 열어보세요."; document.getElementById('eventTimer').innerText = "";
-            createBtn('식판 열기', 'yellow', () => { if(Math.random()<0.3) { buffs.papsMult = 2; closeEvent(true, "특식 랍스터! 30초간 자동수익 2배"); setTimeout(()=>buffs.papsMult=1, 30000); } else { buffs.papsMult = 0.5; closeEvent(false, "가지무침... 30초간 자동수익 반토막"); setTimeout(()=>buffs.papsMult=1, 30000); } });
-        }
-        else if(type === 'zoom') {
-            document.getElementById('eventTitle').innerText = "💻 원격수업 수면 방어"; document.getElementById('eventDesc').innerText = "자는 학생들을 눌러 깨우세요!";
-            let sleepers = 5; timeLeft = 10; const grid = document.createElement('div'); grid.className = 'w-full h-48 relative'; act.appendChild(grid);
-            for(let i=0; i<5; i++) {
-                const sEl = document.createElement('div'); sEl.className = 'bg-gray-700 text-4xl flex items-center justify-center rounded-xl absolute cursor-pointer p-2 shadow-md';
-                sEl.innerText = '😴'; sEl.style.left = Math.random()*75+'%'; sEl.style.top = Math.random()*60+'%';
-                sEl.onpointerdown = function(e) { e.stopPropagation(); this.innerText = '😲'; this.style.pointerEvents = 'none'; sleepers--; playAudio('click'); if(sleepers<=0) closeEvent(true, "전원 기상 완료!"); }
-                grid.appendChild(sEl);
-            }
-            eventTimerObj = setInterval(() => { timeLeft--; document.getElementById('eventTimer').innerText = timeLeft; if(timeLeft <= 0) closeEvent(false, "학생들이 꿈나라로... 수업 망함"); }, 1000);
+            document.getElementById('eventTitle').innerText = "🍱 급식실 메뉴 청원"; document.getElementById('eventDesc').innerText = "'수요일은 돈가스' 투표 성사!"; document.getElementById('eventTimer').innerText = "";
+            createBtn('청원 수락하기', 'yellow', () => { buffs.menuBuff = 2; closeEvent(true, "급식 대만족! 1시간 동안 수익 2배!", 2); setTimeout(()=>buffs.menuBuff=1, 60000); });
         }
         else if(type === 'audit') {
             document.getElementById('eventTitle').innerText = "🕵️ 교육청 감사!"; document.getElementById('eventDesc').innerText = "10초간 절대 아무것도 만지지 마세요!";
-            timeLeft = 10; act.innerHTML = `<div class="text-sm text-red-300 font-bold mt-4 animate-pulse">화면 터치 시 즉시 적발 실패</div>`;
+            timeLeft = 10; document.getElementById('eventTimer').innerText = timeLeft;
+            act.innerHTML = `<div class="text-sm text-red-300 font-bold mb-4 animate-pulse">화면 터치 시 즉시 적발 실패</div>`;
             globalAuditListener = () => { closeEvent(false, "감사 적발! 시말서 작성..."); }; setTimeout(() => document.addEventListener('pointerdown', globalAuditListener), 500); 
-            eventTimerObj = setInterval(() => { timeLeft--; document.getElementById('eventTimer').innerText = timeLeft; if(timeLeft <= 0) { const rew = currentAutoProfit * 100; s.money += rew; closeEvent(true, `감사 통과! 격려금 +${formatMoney(rew)}`); } }, 1000);
+            eventTimerObj = setInterval(() => { timeLeft--; document.getElementById('eventTimer').innerText = timeLeft; if(timeLeft <= 0) { const rew = currentAutoProfit * 100; s.money += rew; closeEvent(true, `감사 통과! 격려금 +${formatMoney(rew)}`, 5); } }, 1000);
         }
     }
 
