@@ -41,7 +41,7 @@
         <div></div>
         <div class="flex flex-col items-center justify-center">
             <h1 class="text-3xl font-bold text-center text-blue-600 drop-shadow-md leading-tight mb-2">👨‍🏫 건물주가 되고 싶은<br>선생님</h1>
-            <p class="text-gray-500 text-sm mb-6 text-center">Ultimate Teacher Simulator v5.5</p>
+            <p class="text-gray-500 text-sm mb-6 text-center">Ultimate Teacher Simulator v6.2 (Safe Fix)</p>
             <div class="flex space-x-4 mb-6">
                 <button onclick="startGame('남교사', '👨‍🏫')" class="p-5 bg-blue-100 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition"><div class="text-4xl mb-1">👨‍🏫</div><div class="font-bold text-sm">남교사</div></button>
                 <button onclick="startGame('여교사', '👩‍🏫')" class="p-5 bg-pink-100 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition"><div class="text-4xl mb-1">👩‍🏫</div><div class="font-bold text-sm">여교사</div></button>
@@ -152,7 +152,7 @@
             
             <div id="tab-asset" class="tab-content p-2 space-y-3 hidden">
                 <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200 shadow-sm">
-                    <h3 class="font-bold text-xs mb-1.5 text-gray-800">📈 K-에듀테크 주식 시세</h3>
+                    <h3 class="font-bold text-xs mb-1.5 text-gray-800">📈 K-에듀테크 테마주</h3>
                     <div class="flex justify-between text-[11px] mb-2 px-1"><span>현재가: <span id="stockPrice" class="font-bold text-blue-600"></span>원</span><span>보유: <span id="stockCount" class="font-bold"></span>주</span></div>
                     <div class="flex space-x-1.5">
                         <button onclick="tradeStock('buy')" class="flex-1 bg-red-500 text-white py-2 rounded-md text-[11px] font-bold active:bg-red-600 shadow-sm">매수</button>
@@ -185,7 +185,7 @@
             </div>
 
             <div id="tab-club" class="tab-content p-2 space-y-3 hidden">
-                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">🎒 방과후 동아리</h3><div id="clubList" class="space-y-1"></div></div>
+                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">🎒 방과후 동아리 및 늘봄학교</h3><div id="clubList" class="space-y-1"></div></div>
                 <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">⚽ 교직원 소모임</h3><div id="somoimList" class="space-y-1"></div></div>
                 <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">📜 직무 연수</h3><div id="certList" class="space-y-1"></div></div>
                 <div class="bg-teal-50 p-3 rounded-lg border border-teal-200 text-center">
@@ -253,56 +253,87 @@
     
     const DB = {
         clicks: [ 
-            { id: 'c1', name: '믹스커피 수혈', baseCost: 100, profit: 5, icon: '☕' }, 
-            { id: 'c2', name: '기계식 키보드', baseCost: 800, profit: 35, icon: '⌨️' }, 
-            { id: 'c3', name: '전동 높낮이 책상', baseCost: 6000, profit: 200, icon: '🪑' },
-            { id: 'c4', name: '듀얼 울트라와이드 모니터', baseCost: 50000, profit: 1200, icon: '🖥️' },
-            { id: 'c5', name: '원격 레이저 포인터', baseCost: 350000, profit: 7000, icon: '🔦' }
+            { id: 'c1', name: '맞춤형복지 믹스커피', baseCost: 100, profit: 5, icon: '☕' }, 
+            { id: 'c2', name: '공문기안 무소음 키보드', baseCost: 800, profit: 35, icon: '⌨️' }, 
+            { id: 'c3', name: '교원연구비 스탠딩 책상', baseCost: 6000, profit: 200, icon: '🪑' },
+            { id: 'c4', name: 'NEIS 결재용 듀얼모니터', baseCost: 50000, profit: 1200, icon: '🖥️' },
+            { id: 'c5', name: '스마트 레이저 포인터', baseCost: 350000, profit: 7000, icon: '🔦' }
         ],
         autos: [ 
-            { id: 'a1', name: '알림장 앱 도입', baseCost: 300, profit: 15, icon: '📱' }, 
-            { id: 'a2', name: '1인 1태블릿 배부', baseCost: 3500, profit: 180, icon: '📲' }, 
-            { id: 'a3', name: 'AI 자동 채점 시스템', baseCost: 30000, profit: 1200, icon: '🤖' },
-            { id: 'a4', name: '스마트 자율주행 스쿨버스', baseCost: 250000, profit: 8000, icon: '🚌' },
-            { id: 'a5', name: '메타버스 원격 교실 구축', baseCost: 2000000, profit: 45000, icon: '🌐' }
+            { id: 'a1', name: 'K-에듀파인 연동 알림장', baseCost: 300, profit: 15, icon: '📱' }, 
+            { id: 'a2', name: '디지털 교과서 태블릿 보급', baseCost: 3500, profit: 180, icon: '📲' }, 
+            { id: 'a3', name: 'AI 코스웨어 자동채점', baseCost: 30000, profit: 1200, icon: '🤖' },
+            { id: 'a4', name: '늘봄학교 돌봄교실 운영', baseCost: 250000, profit: 8000, icon: '🚌' },
+            { id: 'a5', name: '2022 개정 교육과정 허브', baseCost: 2000000, profit: 45000, icon: '🌐' }
         ],
         enforce: [
-            { id: 'laptop', name: '교실용 게이밍 노트북', baseCost: 1000, mult: 0.1, icon: '💻' },
-            { id: 'coffee', name: '무한 얼음 텀블러', baseCost: 5000, mult: 0.15, icon: '🧊' },
-            { id: 'mic', name: '메가폰 마이크', baseCost: 30000, mult: 0.2, icon: '📢' },
-            { id: 'stamp', name: '치트키 결재 도장', baseCost: 200000, mult: 0.3, icon: '💮' }
+            { id: 'laptop', name: '에듀테크 교실 노트북', baseCost: 1000, mult: 0.1, icon: '💻' },
+            { id: 'coffee', name: '맞춤형복지 텀블러', baseCost: 5000, mult: 0.15, icon: '🧊' },
+            { id: 'mic', name: 'Wee클래스 무선 마이크', baseCost: 30000, mult: 0.2, icon: '📢' },
+            { id: 'stamp', name: '나이스 전결 결재도장', baseCost: 200000, mult: 0.3, icon: '💮' }
         ],
-        clubs: [ { id: 'coding', name: '코딩부 육성', baseCost: 5000, profit: 250, icon: '💻' }, { id: 'band', name: '밴드부 육성', baseCost: 30000, profit: 1500, icon: '🎸' } ],
-        somoims: [ { id: 'soccer', name: '축구 동호회', baseCost: 20000, profit: 800, icon: '⚽' }, { id: 'food', name: '맛집 탐방 동호회', baseCost: 100000, profit: 5000, icon: '🍜' } ],
-        certs: [ { id: 'counsel', name: '상담심리사 연수', baseCost: 50000, profit: 2000, icon: '📜' }, { id: 'counsel2', name: '코딩교육 자격증', baseCost: 300000, profit: 12000, icon: '🏅' } ],
-        cols: [ { id: 'col1', name: '액괴', icon: '🟢' }, { id: 'col2', name: '띠부씰', icon: '🐢' }, { id: 'col3', name: '스피너', icon: '🌀' }, { id: 'col4', name: '유희왕', icon: '🃏' } ]
+        clubs: [ { id: 'coding', name: 'AI·코딩 동아리 육성', baseCost: 5000, profit: 250, icon: '💻' }, { id: 'band', name: '창체 오케스트라부', baseCost: 30000, profit: 1500, icon: '🎸' } ],
+        somoims: [ { id: 'soccer', name: '교사 축구 동호회', baseCost: 20000, profit: 800, icon: '⚽' }, { id: 'food', name: '학교 맛집탐방 소모임', baseCost: 100000, profit: 5000, icon: '🍜' } ],
+        certs: [ { id: 'counsel', name: '상담심리사 직무연수', baseCost: 50000, profit: 2000, icon: '📜' }, { id: 'counsel2', name: '디지털 리터러시 자격연수', baseCost: 300000, profit: 12000, icon: '🏅' } ],
+        cols: [ { id: 'col1', name: '액체괴물', icon: '🟢' }, { id: 'col2', name: '포켓몬 띠부씰', icon: '🐢' }, { id: 'col3', name: '피젯스피너', icon: '🌀' }, { id: 'col4', name: '유희왕 카드', icon: '🃏' } ]
     };
 
     function startGame(charName, emoji) {
         document.getElementById('startScreen').classList.add('hidden');
-        document.getElementById('gameScreen').classList.remove('hidden'); document.getElementById('gameScreen').classList.add('flex');
-        initAudio(); loadGame(); s.character = emoji; document.getElementById('characterEmoji').innerText = emoji;
-        calculateOfflineProgress(); applyOOTDVisual(); renderAll(); changeSeason();
-        if(loopInterval) clearInterval(loopInterval); loopInterval = setInterval(gameLoop, 1000);
+        document.getElementById('gameScreen').classList.remove('hidden'); 
+        document.getElementById('gameScreen').classList.add('flex');
+        initAudio(); 
+        loadGame(); 
+        s.character = emoji; 
+        const charEl = document.getElementById('characterEmoji');
+        if (charEl) charEl.innerText = emoji;
+        calculateOfflineProgress(); 
+        applyOOTDVisual(); 
+        renderAll(); 
+        changeSeason();
+        if(loopInterval) clearInterval(loopInterval); 
+        loopInterval = setInterval(gameLoop, 1000);
         setInterval(() => { changeSeason(); triggerRandomEvent(); }, 35000); 
         setInterval(spawnRunner, 90000);
     }
     
     function loadGame() {
-        const saved = localStorage.getItem('v5_5_ultimate_save');
+        const saved = localStorage.getItem('v6_2_ultimate_save');
         if(saved) {
             try { 
-                const p = JSON.parse(saved); s = Object.assign({}, defaultState, p);
+                const p = JSON.parse(saved); 
+                s = Object.assign({}, defaultState, p);
                 s.reals = p.reals?.r4 ? p.reals : JSON.parse(JSON.stringify(defaultState.reals));
-                s.skills = p.skills || defaultState.skills; s.inventory = p.inventory || {}; s.collections = p.collections || {};
+                s.skills = p.skills || defaultState.skills; 
+                s.inventory = p.inventory || {}; 
+                s.collections = p.collections || {};
+                s.clubs = p.clubs || { coding: 0, band: 0 };
+                s.somoims = p.somoims || { soccer: 0, food: 0 };
+                s.certs = p.certs || { counsel: 0, codingCert: 0 };
                 s.enforce = p.enforce || { laptop: 0, coffee: 0, mic: 0, stamp: 0 };
-                s.spareItems = p.spareItems || 0; s.caffeine = s.caffeine || 0; s.honor = s.honor || 0; s.travelBuff = s.travelBuff || 1;
-            } catch(e) { s = JSON.parse(JSON.stringify(defaultState)); }
-        } else { s = JSON.parse(JSON.stringify(defaultState)); }
+                s.spareItems = p.spareItems || 0; 
+                s.caffeine = s.caffeine || 0; 
+                s.honor = s.honor || 0; 
+                s.travelBuff = s.travelBuff || 1;
+            } catch(e) { 
+                s = JSON.parse(JSON.stringify(defaultState)); 
+            }
+        } else { 
+            s = JSON.parse(JSON.stringify(defaultState)); 
+        }
     }
     
-    function saveGame() { s.lastSaveTime = Date.now(); localStorage.setItem('v5_5_ultimate_save', JSON.stringify(s)); }
-    function clearData() { if(confirm("모든 데이터를 지울까요?")) { localStorage.removeItem('v5_5_ultimate_save'); location.reload(); } }
+    function saveGame() { 
+        s.lastSaveTime = Date.now(); 
+        localStorage.setItem('v6_2_ultimate_save', JSON.stringify(s)); 
+    }
+    
+    function clearData() { 
+        if(confirm("모든 데이터를 지울까요?")) { 
+            localStorage.removeItem('v6_2_ultimate_save'); 
+            location.reload(); 
+        } 
+    }
 
     function goHome() {
         if(confirm("메인 타이틀 화면으로 돌아가시겠습니까? (현재 진행 상황은 자동 저장됩니다)")) {
@@ -316,76 +347,109 @@
     function calculateOfflineProgress() {
         const diff = Math.floor((Date.now() - s.lastSaveTime)/1000);
         if(diff > 60 && currentAutoProfit > 0) {
-            const gain = Math.min(diff, 86400) * currentAutoProfit * 0.5; s.money += gain;
+            const gain = Math.min(diff, 86400) * currentAutoProfit * 0.5; 
+            s.money += gain;
             setTimeout(()=>alert(`오프라인 보상: +${formatMoney(gain)}`), 500);
         }
     }
 
     function gameLoop() {
         s.succulentGrowth += 1;
-        if(s.succulentGrowth >= 300) { s.succulentGrowth = 0; s.succulentBuff += 0.05; playAudio('buy'); showTitleNotification("다육이가 자라 마음의 평화 획득!"); }
-        document.getElementById('succulentPct').innerText = Math.floor((s.succulentGrowth/300)*100)+'%';
+        if(s.succulentGrowth >= 300) { 
+            s.succulentGrowth = 0; 
+            s.succulentBuff += 0.05; 
+            playAudio('buy'); 
+            showTitleNotification("다육이가 자라 마음의 평화 획득!"); 
+        }
+        const succPctEl = document.getElementById('succulentPct');
+        if (succPctEl) succPctEl.innerText = Math.floor((s.succulentGrowth/300)*100)+'%';
         
         s.caffeine = Math.max(0, Math.min(100, s.caffeine - ((s.ootd === '츄리닝') ? 4 : 2)));
         buffs.cafMult = (s.caffeine >= 80) ? 3 : 1;
 
         calculateMultipliers();
-        if(currentAutoProfit > 0) { s.money += currentAutoProfit; s.exp += currentExpPerSec; checkLevelUp(); }
+        if(currentAutoProfit > 0) { 
+            s.money += currentAutoProfit; 
+            s.exp += currentExpPerSec; 
+            checkLevelUp(); 
+        }
         
         s.stockPrice = Math.max(1000, s.stockPrice * (1 + (Math.random()*0.1 - 0.05)));
         ['r1','r2','r3','r4'].forEach(k => {
             const base = [5e8, 2e9, 1e10, 5e10][parseInt(k.replace('r',''))-1] * s.hobong;
             s.reals[k].price = Math.max(base*0.5, s.reals[k].price * (1 + (Math.random()*0.06 - 0.03)));
         });
-        updateUI(); saveGame();
+        updateUI(); 
+        saveGame();
     }
 
     function calculateMultipliers() {
         let cv = 10, av = (s.emoticonIncome||0), ec = 1, ea = 0;
-        const sum = (list, obj) => list.reduce((acc, b) => acc + (b.profit * (obj[b.id]||0)), 0);
-        cv += sum(DB.clicks, s.inventory); av += sum(DB.autos, s.inventory);
-        av += sum(DB.clubs, s.clubs); av += sum(DB.somoims, s.somoims); av += sum(DB.certs, s.certs);
+        const sum = (list, obj) => list.reduce((acc, b) => acc + (b.profit * ((obj && obj[b.id]) || 0)), 0);
+        
+        if (s.inventory) cv += sum(DB.clicks, s.inventory);
+        if (s.inventory) av += sum(DB.autos, s.inventory);
+        if (s.clubs) av += sum(DB.clubs, s.clubs);
+        if (s.somoims) av += sum(DB.somoims, s.somoims);
+        if (s.certs) av += sum(DB.certs, s.certs);
         
         let enforceMult = 1;
         DB.enforce.forEach(e => {
-            const lvl = s.enforce[e.id] || 0;
+            const lvl = (s.enforce && s.enforce[e.id]) || 0;
             enforceMult += lvl * e.mult;
         });
         
-        let gradeM = 1; if(s.grade === '1학년') cv *= 1.5; else if(s.grade === '6학년') av *= 1.5; else if(s.grade === '전담교사') gradeM = 0.8;
-        let mottoM = 1; if(s.motto === '부자가 되자') { cv *= 1.2; av *= 1.2; } if(s.motto === '배움이 먼저다') { ec *= 1.5; ea *= 1.5; }
+        let gradeM = 1; 
+        if(s.grade === '1학년') cv *= 1.5; 
+        else if(s.grade === '6학년') av *= 1.5; 
+        else if(s.grade === '전담교사') gradeM = 0.8;
+        
+        let mottoM = 1; 
+        if(s.motto === '부자가 되자') { cv *= 1.2; av *= 1.2; } 
+        if(s.motto === '배움이 먼저다') { ec *= 1.5; ea *= 1.5; }
         
         const hM = (1 + ((s.hobong-1)*0.1) + s.succulentBuff) * s.travelBuff * enforceMult;
         av += (s.reals.r1.own * 1e6) + (s.reals.r2.own * 5e6) + (s.reals.r3.own * 3e7) + (s.reals.r4.own * 2e8);
         
         currentClickProfit = cv * hM * buffs.cafMult * gradeM * mottoM * buffs.menuBuff * (buffs.isFever?3:1);
         currentAutoProfit = av * hM * buffs.papsMult * gradeM * mottoM * buffs.menuBuff;
-        currentExpPerClick = ec * hM; currentExpPerSec = (av>0?1:0) * ea * hM;
+        currentExpPerClick = ec * hM; 
+        currentExpPerSec = (av>0?1:0) * ea * hM;
     }
 
     function handleMainClick(e) {
         if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-        
-        // 텐션 증가량 확실하게 반영
         s.caffeine = Math.min(100, s.caffeine + 8);
+        s.money += currentClickProfit; 
+        s.exp += currentExpPerClick; 
+        s.stats.totalClicks++;
         
-        s.money += currentClickProfit; s.exp += currentExpPerClick; s.stats.totalClicks++;
-        playAudio('coin'); showFloat(e.clientX, e.clientY, `+${formatMoney(currentClickProfit)}`);
+        playAudio('coin'); 
+        showFloat(e.clientX, e.clientY, `+${formatMoney(currentClickProfit)}`);
         
         const char = document.getElementById('characterEmoji'); 
-        char.classList.remove('character-pop'); void char.offsetWidth; char.classList.add('character-pop');
+        if (char) {
+            char.classList.remove('character-pop'); 
+            void char.offsetWidth; 
+            char.classList.add('character-pop');
+        }
         
         if(Math.random() < 0.01) dropItem(); 
-        checkLevelUp(); updateUI();
+        checkLevelUp(); 
+        updateUI();
     }
 
     function checkLevelUp() {
         if(s.exp >= s.level * 100) {
-            s.level++; s.exp = 0; playAudio('buy'); showTitleNotification(`레벨업! 평교사 Lv.${s.level}`);
+            s.level++; 
+            s.exp = 0; 
+            playAudio('buy'); 
+            showTitleNotification(`레벨업! 평교사 Lv.${s.level}`);
             if(s.level % 5 === 0) { 
                 const mottos = ['무사히 퇴근하자', '부자가 되자', '배움이 먼저다']; 
                 s.motto = mottos[Math.floor(Math.random()*mottos.length)]; 
-                document.getElementById('boardText').innerText = s.motto; 
+                const boardTextEl = document.getElementById('boardText');
+                if (boardTextEl) boardTextEl.innerText = s.motto; 
             }
         }
     }
@@ -400,12 +464,19 @@
     function showFloat(x, y, txt) {
         const el = document.createElement('div'); el.className = 'floating-text'; el.innerText = txt;
         el.style.left = `${x-20 + (Math.random()*40-20)}px`; el.style.top = `${y-30}px`; 
-        document.body.appendChild(el); el.addEventListener('animationend', ()=>el.remove());
+        document.body.appendChild(el); 
+        el.addEventListener('animationend', ()=>el.remove());
     }
     
     function showTitleNotification(msg) {
-        const b = document.getElementById('boardText'); b.innerText = msg; b.classList.add('text-yellow-300');
-        setTimeout(() => { b.innerText = s.motto; b.classList.remove('text-yellow-300'); }, 3000);
+        const b = document.getElementById('boardText'); 
+        if (!b) return;
+        b.innerText = msg; 
+        b.classList.add('text-yellow-300');
+        setTimeout(() => { 
+            b.innerText = s.motto; 
+            b.classList.remove('text-yellow-300'); 
+        }, 3000);
     }
     
     function changeTab(id, btnEl) {
@@ -414,7 +485,8 @@
             b.classList.remove('border-blue-600', 'text-blue-600', 'bg-white'); 
             b.classList.add('border-transparent', 'text-gray-500'); 
         });
-        document.getElementById(id).classList.remove('hidden'); 
+        const targetTab = document.getElementById(id);
+        if (targetTab) targetTab.classList.remove('hidden'); 
         if(btnEl) { 
             btnEl.classList.remove('border-transparent','text-gray-500'); 
             btnEl.classList.add('border-blue-600','text-blue-600', 'bg-white'); 
@@ -423,53 +495,72 @@
     }
 
     function updateUI() {
-        document.getElementById('levelDisplay').innerText = `Lv.${s.level}`; 
-        document.getElementById('gradeDisplay').innerText = s.grade;
-        document.getElementById('moneyDisplay').innerText = formatMoney(s.money) + '원';
-        document.getElementById('honorDisplay').innerText = s.honor;
-        document.getElementById('expBar').style.width = `${Math.min((s.exp/(s.level*100))*100,100)}%`; 
-        document.getElementById('expText').innerText = `${Math.floor(s.exp)}/${s.level*100}`;
-        document.getElementById('autoMoneyText').innerText = formatMoney(currentAutoProfit);
+        const setElText = (id, val) => { const el = document.getElementById(id); if(el) el.innerText = val; };
         
-        // 텐션 게이지 바 너비 명시적 반영
+        setElText('levelDisplay', `Lv.${s.level}`);
+        setElText('gradeDisplay', s.grade);
+        setElText('moneyDisplay', formatMoney(s.money) + '원');
+        setElText('honorDisplay', s.honor);
+        
+        const expBar = document.getElementById('expBar');
+        if(expBar) expBar.style.width = `${Math.min((s.exp/(s.level*100))*100,100)}%`;
+        setElText('expText', `${Math.floor(s.exp)}/${s.level*100}`);
+        setElText('autoMoneyText', formatMoney(currentAutoProfit));
+        
         const cb = document.getElementById('caffeineBar'); 
-        const cafPct = Math.min(Math.max(0, s.caffeine), 100);
-        cb.style.width = cafPct + '%';
-        cb.className = s.caffeine >= 80 ? 'bg-yellow-400 h-2 sweet-spot' : 'bg-blue-400 h-2';
+        if(cb) {
+            const cafPct = Math.min(Math.max(0, s.caffeine), 100);
+            cb.style.width = cafPct + '%';
+            cb.className = s.caffeine >= 80 ? 'bg-yellow-400 h-2 sweet-spot' : 'bg-blue-400 h-2';
+        }
         
-        document.getElementById('stockPrice').innerText = formatMoney(s.stockPrice); 
-        document.getElementById('stockCount').innerText = s.stockCount;
+        setElText('stockPrice', formatMoney(s.stockPrice));
+        setElText('stockCount', s.stockCount);
         
         ['r1','r2','r3','r4'].forEach(k => { 
-            const el = document.getElementById(`price-${k}`); if(el) el.innerText = formatMoney(s.reals[k].price); 
+            setElText(`price-${k}`, formatMoney(s.reals[k].price));
         });
         
-        document.getElementById('carrotCount').innerText = s.spareItems; 
-        document.getElementById('trophyDisplay').innerText = s.endings;
+        setElText('carrotCount', s.spareItems);
+        setElText('trophyDisplay', s.endings);
         
         const now = Date.now();
         ['vacation','silence','blind','emo'].forEach(k => {
-            const el = document.getElementById(`cd-${k}`); const btn = document.getElementById(`btn-${k}`);
+            const el = document.getElementById(`cd-${k}`); 
+            const btn = document.getElementById(`btn-${k}`);
             if(el && btn) { 
                 if(s.skills[k] > now) { 
-                    el.innerText = Math.ceil((s.skills[k]-now)/1000)+'s'; el.classList.add('text-red-500'); btn.classList.add('opacity-50'); 
+                    el.innerText = Math.ceil((s.skills[k]-now)/1000)+'s'; 
+                    el.classList.add('text-red-500'); 
+                    btn.classList.add('opacity-50'); 
                 } else { 
-                    el.innerText = k==='emo'?'100만원':'준비됨'; el.classList.remove('text-red-500'); btn.classList.remove('opacity-50'); 
+                    el.innerText = k==='emo'?'100만원':'준비됨'; 
+                    el.classList.remove('text-red-500'); 
+                    btn.classList.remove('opacity-50'); 
                 } 
             }
         });
         
         document.querySelectorAll('.buy-btn').forEach(btn => { 
-            if(s.money >= parseFloat(btn.dataset.cost)) btn.classList.replace('opacity-50', 'hover:bg-blue-600'); 
-            else btn.classList.replace('hover:bg-blue-600', 'opacity-50'); 
+            const cost = parseFloat(btn.dataset.cost || 0);
+            if(s.money >= cost) {
+                btn.classList.remove('opacity-50');
+                btn.classList.add('hover:bg-blue-600');
+            } else {
+                btn.classList.add('opacity-50');
+                btn.classList.remove('hover:bg-blue-600');
+            }
         });
     }
 
     function renderAll() {
         const renderList = (dbList, targetId, stateObj, type) => {
-            document.getElementById(targetId).innerHTML = dbList.map(item => {
-                const cnt = stateObj[item.id] || 0; const cost = Math.floor(item.baseCost * Math.pow(1.18, cnt));
-                const profitText = item.profit ? `+${formatMoney(item.profit)}` : `전체 수익 +${item.mult*100}%`;
+            const container = document.getElementById(targetId);
+            if (!container) return;
+            container.innerHTML = dbList.map(item => {
+                const cnt = (stateObj && stateObj[item.id]) || 0; 
+                const cost = Math.floor(item.baseCost * Math.pow(1.18, cnt));
+                const profitText = item.profit ? `+${formatMoney(item.profit)}` : `전체 수익 +${(item.mult||0)*100}%`;
                 return `<div class="flex justify-between items-center p-2.5 bg-gray-50 rounded-lg border border-gray-200 shadow-sm text-xs font-bold">
                     <div class="flex items-center space-x-2.5"><div class="text-xl drop-shadow-sm">${item.icon}</div><div><div class="text-gray-800">${item.name} <span class="text-blue-600">Lv.${cnt}</span></div><div class="text-gray-500 font-normal text-[11px]">${profitText}</div></div></div>
                     <button class="buy-btn bg-blue-500 text-white px-3 py-2 rounded-md active:bg-blue-600 shadow-sm active:scale-95 transition" data-cost="${cost}" onclick="buySpecialItem('${item.id}','${type}')">${formatMoney(cost)}원</button></div>`;
@@ -483,91 +574,217 @@
         renderList(DB.somoims, 'somoimList', s.somoims, 'somoims');
         renderList(DB.certs, 'certList', s.certs, 'certs');
         
-        const rNames = ['동네 상가', '지식산업센터', '한강뷰 아파트', '강남 랜드마크'];
-        document.getElementById('realEstateList').innerHTML = ['r1','r2','r3','r4'].map((k,i) => `
-            <div class="flex justify-between items-center p-2.5 bg-gray-50 rounded-lg border border-gray-200 shadow-sm text-xs font-bold">
-            <div><div class="text-gray-800">${rNames[i]} <span class="text-blue-600">${s.reals[k].own}채</span></div><div class="text-gray-500 font-normal text-[11px]">시세: <span id="price-${k}">${formatMoney(s.reals[k].price)}</span></div></div>
-            <div class="space-x-1"><button class="bg-red-500 text-white px-2.5 py-1.5 rounded-md active:bg-red-600 shadow-sm" onclick="buyReal('${k}')">매수</button><button class="bg-blue-500 text-white px-2.5 py-1.5 rounded-md active:bg-blue-600 shadow-sm" onclick="sellReal('${k}')">매도</button></div>
-            </div>`).join('');
+        const rEl = document.getElementById('realEstateList');
+        if (rEl) {
+            const rNames = ['동네 상가', '지식산업센터', '한강뷰 아파트', '강남 랜드마크'];
+            rEl.innerHTML = ['r1','r2','r3','r4'].map((k,i) => `
+                <div class="flex justify-between items-center p-2.5 bg-gray-50 rounded-lg border border-gray-200 shadow-sm text-xs font-bold">
+                <div><div class="text-gray-800">${rNames[i]} <span class="text-blue-600">${s.reals[k].own}채</span></div><div class="text-gray-500 font-normal text-[11px]">시세: <span id="price-${k}">${formatMoney(s.reals[k].price)}</span></div></div>
+                <div class="space-x-1"><button class="bg-red-500 text-white px-2.5 py-1.5 rounded-md active:bg-red-600 shadow-sm" onclick="buyReal('${k}')">매수</button><button class="bg-blue-500 text-white px-2.5 py-1.5 rounded-md active:bg-blue-600 shadow-sm" onclick="sellReal('${k}')">매도</button></div>
+                </div>`).join('');
+        }
             
-        document.getElementById('trophyShelf').innerHTML = '🏆'.repeat(Math.min(s.endings, 5));
-        document.getElementById('collectionList').innerHTML = DB.cols.map(c => `
-            <div class="flex flex-col items-center p-1.5 rounded-lg border border-gray-200 shadow-sm ${s.collections[c.id]?'bg-yellow-50':'bg-gray-100 grayscale'}">
-            <div class="text-xl mb-0.5">${c.icon}</div><div class="text-[9px] font-bold text-gray-700">${s.collections[c.id]?c.name:'???'}</div>
-            </div>`).join('');
+        const tShelf = document.getElementById('trophyShelf');
+        if (tShelf) tShelf.innerHTML = '🏆'.repeat(Math.min(s.endings, 5));
+
+        const cList = document.getElementById('collectionList');
+        if (cList) {
+            cList.innerHTML = DB.cols.map(c => `
+                <div class="flex flex-col items-center p-1.5 rounded-lg border border-gray-200 shadow-sm ${s.collections[c.id]?'bg-yellow-50':'bg-gray-100 grayscale'}">
+                <div class="text-xl mb-0.5">${c.icon}</div><div class="text-[9px] font-bold text-gray-700">${s.collections[c.id]?c.name:'???'}</div>
+                </div>`).join('');
+        }
     }
 
     function buySpecialItem(id, type) {
         let item, targetObj;
         if(type === 'clicks' || type === 'autos') {
-            item = DB[type].find(i => i.id === id); targetObj = s.inventory;
+            item = DB[type].find(i => i.id === id); 
+            targetObj = s.inventory;
         } else if(type === 'enforce') {
-            item = DB.enforce.find(i => i.id === id); targetObj = s.enforce;
+            item = DB.enforce.find(i => i.id === id); 
+            targetObj = s.enforce;
         } else if(type === 'clubs') {
-            item = DB.clubs.find(i => i.id === id); targetObj = s.clubs;
+            item = DB.clubs.find(i => i.id === id); 
+            targetObj = s.clubs;
         } else if(type === 'somoims') {
-            item = DB.somoims.find(i => i.id === id); targetObj = s.somoims;
+            item = DB.somoims.find(i => i.id === id); 
+            targetObj = s.somoims;
         } else if(type === 'certs') {
-            item = DB.certs.find(i => i.id === id); targetObj = s.certs;
+            item = DB.certs.find(i => i.id === id); 
+            targetObj = s.certs;
         }
         
-        const cnt = targetObj[id] || 0; const cost = Math.floor(item.baseCost * Math.pow(1.18, cnt));
+        if (!item || !targetObj) return;
+        const cnt = targetObj[id] || 0; 
+        const cost = Math.floor(item.baseCost * Math.pow(1.18, cnt));
         if(s.money >= cost) {
-            s.money -= cost; targetObj[id] = cnt + 1; playAudio('buy'); renderAll(); calculateMultipliers(); updateUI();
-        } else playAudio('error');
+            s.money -= cost; 
+            targetObj[id] = cnt + 1; 
+            playAudio('buy'); 
+            renderAll(); 
+            calculateMultipliers(); 
+            updateUI();
+        } else {
+            playAudio('error');
+        }
     }
 
     function buyTravel() {
         const cost = 50000000;
         if(s.money >= cost) {
-            s.money -= cost; s.travelBuff += 0.2; playAudio('buy');
+            s.money -= cost; 
+            s.travelBuff += 0.2; 
+            playAudio('buy');
             showTitleNotification("하와이 여행으로 힐링 완료! (영구 수익 효율 +20%)");
             updateUI();
         } else playAudio('error');
     }
 
     function tradeStock(act) { 
-        if(act==='buy' && s.money >= s.stockPrice) { const a = Math.floor(s.money/s.stockPrice); s.money -= a*s.stockPrice; s.stockCount += a; playAudio('buy'); } 
-        else if(act==='sell' && s.stockCount > 0) { s.money += s.stockCount*s.stockPrice; s.stockCount = 0; playAudio('coin'); } else playAudio('error'); updateUI(); 
+        if(act==='buy' && s.money >= s.stockPrice) { 
+            const a = Math.floor(s.money/s.stockPrice); 
+            s.money -= a*s.stockPrice; 
+            s.stockCount += a; 
+            playAudio('buy'); 
+        } else if(act==='sell' && s.stockCount > 0) { 
+            s.money += s.stockCount*s.stockPrice; 
+            s.stockCount = 0; 
+            playAudio('coin'); 
+        } else {
+            playAudio('error');
+        } 
+        updateUI(); 
     }
-    function buyReal(k) { if(s.money >= s.reals[k].price) { s.money -= s.reals[k].price; s.reals[k].own++; playAudio('buy'); if(k==='r4') triggerEnding(); renderAll(); } else playAudio('error'); }
-    function sellReal(k) { if(s.reals[k].own > 0) { s.money += s.reals[k].price; s.reals[k].own--; playAudio('coin'); renderAll(); } else playAudio('error'); }
+
+    function buyReal(k) { 
+        if(s.money >= s.reals[k].price) { 
+            s.money -= s.reals[k].price; 
+            s.reals[k].own++; 
+            playAudio('buy'); 
+            if(k==='r4') triggerEnding(); 
+            renderAll(); 
+        } else playAudio('error'); 
+    }
+
+    function sellReal(k) { 
+        if(s.reals[k].own > 0) { 
+            s.money += s.reals[k].price; 
+            s.reals[k].own--; 
+            playAudio('coin'); 
+            renderAll(); 
+        } else playAudio('error'); 
+    }
 
     function useSkill(k) { 
         if(s.skills[k] > Date.now()) { playAudio('error'); return; } 
-        if(k === 'vacation') { const earn = currentAutoProfit * 3600; s.money += earn; playAudio('buy'); showTitleNotification(`연가 1시간분! +${formatMoney(earn)}`); s.skills.vacation = Date.now() + 300000; } 
-        else if(k === 'silence') { buffs.isSilence = true; playAudio('buy'); showTitleNotification("침묵 발동! 30초 평화"); setTimeout(()=>buffs.isSilence=false, 30000); s.skills.silence = Date.now() + 120000; } updateUI(); 
+        if(k === 'vacation') { 
+            const earn = currentAutoProfit * 3600; 
+            s.money += earn; 
+            playAudio('buy'); 
+            showTitleNotification(`연가 1시간분! +${formatMoney(earn)}`); 
+            s.skills.vacation = Date.now() + 300000; 
+        } else if(k === 'silence') { 
+            buffs.isSilence = true; 
+            playAudio('buy'); 
+            showTitleNotification("침묵 발동! 30초 평화"); 
+            setTimeout(()=>buffs.isSilence=false, 30000); 
+            s.skills.silence = Date.now() + 120000; 
+        } 
+        updateUI(); 
     }
+
     function postBlind() { 
         if(s.skills.blind > Date.now()) { playAudio('error'); return; } 
         s.skills.blind = Date.now() + 60000; 
-        if(Math.random() < 0.2) { const earn = currentAutoProfit * 300; s.money += earn; showTitleNotification(`🔥블라인드 베스트! +${formatMoney(earn)}`); playAudio('buy'); } 
-        else { showTitleNotification("블라인드 묻힘..."); playAudio('error'); } updateUI(); 
+        if(Math.random() < 0.2) { 
+            const earn = currentAutoProfit * 300; 
+            s.money += earn; 
+            showTitleNotification(`🔥블라인드 베스트! +${formatMoney(earn)}`); 
+            playAudio('buy'); 
+        } else { 
+            showTitleNotification("블라인드 묻힘..."); 
+            playAudio('error'); 
+        } 
+        updateUI(); 
     }
+
     function makeEmoticon() { 
         if(s.skills.emo > Date.now() || s.money < 1000000) { playAudio('error'); return; } 
-        s.money -= 1000000; s.skills.emo = Date.now() + 60000; playAudio('buy'); showTitleNotification("이모티콘 심사 제출 (1분)"); 
-        setTimeout(() => { if(Math.random() < 0.3) { s.emoticonIncome += 5000; showTitleNotification("🎉 이모티콘 승인! 영구수익+5000"); } else { showTitleNotification("❌ 이모티콘 미승인 (대중성 부족)"); playAudio('error');} calculateMultipliers(); }, 60000); updateUI(); 
+        s.money -= 1000000; 
+        s.skills.emo = Date.now() + 60000; 
+        playAudio('buy'); 
+        showTitleNotification("이모티콘 심사 제출 (1분)"); 
+        setTimeout(() => { 
+            if(Math.random() < 0.3) { 
+                s.emoticonIncome += 5000; 
+                showTitleNotification("🎉 이모티콘 승인! 영구수익+5000"); 
+            } else { 
+                showTitleNotification("❌ 이모티콘 미승인 (대중성 부족)"); 
+                playAudio('error');
+            } 
+            calculateMultipliers(); 
+        }, 60000); 
+        updateUI(); 
     }
+
     function dropItem() { 
-        const item = DB.cols[Math.floor(Math.random()*DB.cols.length)]; if(s.collections[item.id]) s.spareItems++; else s.collections[item.id] = true; playAudio('buy'); showTitleNotification(`${item.name} 획득!`); renderAll(); updateUI(); 
+        const item = DB.cols[Math.floor(Math.random()*DB.cols.length)]; 
+        if(s.collections[item.id]) s.spareItems++; 
+        else s.collections[item.id] = true; 
+        playAudio('buy'); 
+        showTitleNotification(`${item.name} 획득!`); 
+        renderAll(); 
+        updateUI(); 
     }
+
     function sellCarrot() { 
         if(s.spareItems <= 0) { playAudio('error'); return; } 
-        if(s.ootd !== '정장' && Math.random() < 0.5) { if(confirm("학생: '선생님 반값만 깎아주세요 ㅠㅠ'\n수락하시겠습니까?")) { s.money += 5000; s.spareItems--; playAudio('coin'); } else playAudio('error'); } 
-        else { s.money += 10000; s.spareItems--; playAudio('buy'); showTitleNotification("쿨거래 완료!"); } updateUI(); 
+        if(s.ootd !== '정장' && Math.random() < 0.5) { 
+            if(confirm("학생: '선생님 반값만 깎아주세요 ㅠㅠ'\n수락하시겠습니까?")) { 
+                s.money += 5000; 
+                s.spareItems--; 
+                playAudio('coin'); 
+            } else playAudio('error'); 
+        } else { 
+            s.money += 10000; 
+            s.spareItems--; 
+            playAudio('buy'); 
+            showTitleNotification("쿨거래 완료!"); 
+        } 
+        updateUI(); 
     }
+
     function buyLottery() { 
         if(s.money < 100000) { playAudio('error'); return; } 
-        s.money -= 100000; if(Math.random() < 0.005) { s.money += 1000000000; alert("🎉 1등 당첨! 10억 획득!"); playAudio('buy'); } else { showTitleNotification("복권 낙첨..."); playAudio('click'); } updateUI(); 
+        s.money -= 100000; 
+        if(Math.random() < 0.005) { 
+            s.money += 1000000000; 
+            alert("🎉 1등 당첨! 10억 획득!"); 
+            playAudio('buy'); 
+        } else { 
+            showTitleNotification("복권 낙첨..."); 
+            playAudio('click'); 
+        } 
+        updateUI(); 
     }
-    function setOOTD(style) { s.ootd = style; const e = document.getElementById('ootdEmoji'); if(style === '츄리닝') e.innerText = '🎽'; else if(style === '정장') e.innerText = '👔'; else e.innerText = ''; playAudio('click'); }
+
+    function setOOTD(style) { 
+        s.ootd = style; 
+        const e = document.getElementById('ootdEmoji'); 
+        if(e) {
+            if(style === '츄리닝') e.innerText = '🎽'; 
+            else if(style === '정장') e.innerText = '👔'; 
+            else e.innerText = ''; 
+        }
+        playAudio('click'); 
+    }
+
     function applyOOTDVisual() { setOOTD(s.ootd); }
 
     function rebirth(force = false) { 
         if(!force && !confirm("자산을 포기하고 전근하시겠습니까?\n호봉 및 수익 배율이 증가합니다.")) return; 
         
-        // 전근 시 영구 데이터 보존 및 버그 수정
         const preservedHobong = (s.hobong || 1) + 1;
         const preservedEndings = s.endings || 0;
         const preservedHonor = s.honor || 0;
@@ -590,7 +807,10 @@
     }
     
     function triggerEnding() { 
-        clearInterval(loopInterval); s.endings++; s.honor += 50; saveGame(); 
+        clearInterval(loopInterval); 
+        s.endings++; 
+        s.honor += 50; 
+        saveGame(); 
         if(s.endings >= 5 || s.honor >= 200) alert("🏆 [히든 엔딩] 교육감 당선! 대한민국 교육의 수장이 되었습니다!");
         else if(s.endings >= 3) alert("🏆 [히든 엔딩] 전설의 교장선생님으로 명예롭게 정년퇴직하셨습니다!");
         else alert("🎉 [엔딩] 갓물주 등극! 사직서를 던집니다."); 
@@ -598,77 +818,255 @@
     }
     
     function changeSeason() { 
-        currentSeasonIdx = (currentSeasonIdx + 1) % 4; document.getElementById('seasonDisplay').innerText = `[${seasons[currentSeasonIdx]}학기] 🏆트로피: ${s.endings} | 명예: ${s.honor}`; 
-        const header = document.getElementById('headerArea'); header.className = 'text-white p-3 pb-2 shadow-md transition-colors duration-500 rounded-b-lg z-20 '; 
-        if(currentSeasonIdx === 0) header.classList.add('bg-green-600'); else if(currentSeasonIdx === 1) header.classList.add('bg-blue-600'); else if(currentSeasonIdx === 2) header.classList.add('bg-orange-600'); else header.classList.add('bg-gray-700'); 
+        currentSeasonIdx = (currentSeasonIdx + 1) % 4; 
+        const seasonEl = document.getElementById('seasonDisplay');
+        if (seasonEl) seasonEl.innerText = `[${seasons[currentSeasonIdx]}학기] 🏆트로피: ${s.endings} | 명예: ${s.honor}`; 
+        
+        const header = document.getElementById('headerArea'); 
+        if (header) {
+            header.className = 'text-white p-3 pb-2 shadow-md transition-colors duration-500 rounded-b-lg z-20 '; 
+            if(currentSeasonIdx === 0) header.classList.add('bg-green-600'); 
+            else if(currentSeasonIdx === 1) header.classList.add('bg-blue-600'); 
+            else if(currentSeasonIdx === 2) header.classList.add('bg-orange-600'); 
+            else header.classList.add('bg-gray-700'); 
+        }
     }
 
     function triggerRandomEvent() {
         if(buffs.isSilence || document.getElementById('eventOverlay').classList.contains('flex')) return;
-        const r = Math.random(); const badMult = s.ootd === '정장' ? 0.5 : (s.grade === '6학년' ? 1.5 : 1); 
+        const r = Math.random(); 
+        const badMult = s.ootd === '정장' ? 0.5 : (s.grade === '6학년' ? 1.5 : 1); 
         if(r < 0.1 * badMult) startMinigame('fight'); 
         else if(r < 0.2 * badMult) startMinigame('audit'); 
         else if(r < 0.3 * badMult) startMinigame('zoom'); 
         else if(r < 0.35) startMinigame('counsel');
         else if(r < 0.4) startMinigame('festival');
         else if(r < 0.45) startMinigame('animal');
-        else if(r < 0.5) { buffs.isFever = true; showTitleNotification("🔥방학식 피버! 클릭 5배"); setTimeout(()=>buffs.isFever=false, 10000); }
+        else if(r < 0.5) { 
+            buffs.isFever = true; 
+            showTitleNotification("🔥방학식 피버! 클릭 5배"); 
+            setTimeout(()=>buffs.isFever=false, 10000); 
+        }
     }
 
     function startMinigame(type) {
-        const overlay = document.getElementById('eventOverlay'); const act = document.getElementById('eventActionArea');
-        overlay.classList.remove('hidden'); overlay.classList.add('flex'); let timeLeft = 0; if(eventTimerObj) clearInterval(eventTimerObj); act.innerHTML = '';
-        if(globalAuditListener) { document.removeEventListener('pointerdown', globalAuditListener); globalAuditListener = null; }
+        const overlay = document.getElementById('eventOverlay'); 
+        const act = document.getElementById('eventActionArea');
+        if (!overlay || !act) return;
+        
+        overlay.classList.remove('hidden'); 
+        overlay.classList.add('flex'); 
+        let timeLeft = 0; 
+        if(eventTimerObj) clearInterval(eventTimerObj); 
+        act.innerHTML = '';
+        if(globalAuditListener) { 
+            document.removeEventListener('pointerdown', globalAuditListener); 
+            globalAuditListener = null; 
+        }
 
         const closeEvent = (succ, msg, honorGain=0) => { 
-            clearInterval(eventTimerObj); overlay.classList.add('hidden'); overlay.classList.remove('flex'); 
-            if(globalAuditListener) { document.removeEventListener('pointerdown', globalAuditListener); globalAuditListener = null; } 
-            if(succ) { playAudio('buy'); showTitleNotification(msg); s.honor += honorGain; } else { playAudio('error'); showTitleNotification(msg); s.money = Math.max(0, s.money - currentAutoProfit*10); } updateUI(); 
+            clearInterval(eventTimerObj); 
+            overlay.classList.add('hidden'); 
+            overlay.classList.remove('flex'); 
+            if(globalAuditListener) { 
+                document.removeEventListener('pointerdown', globalAuditListener); 
+                globalAuditListener = null; 
+            } 
+            if(succ) { 
+                playAudio('buy'); 
+                showTitleNotification(msg); 
+                s.honor += honorGain; 
+            } else { 
+                playAudio('error'); 
+                showTitleNotification(msg); 
+                s.money = Math.max(0, s.money - currentAutoProfit*10); 
+            } 
+            updateUI(); 
         };
-        const createBtn = (txt, color, onClick) => { const b = document.createElement('button'); b.className = `bg-${color}-500 py-3 mb-2 rounded-xl w-full text-white font-bold shadow-md active:scale-95 transition text-sm`; b.innerText = txt; b.onclick = onClick; act.appendChild(b); };
+        const createBtn = (txt, color, onClick) => { 
+            const b = document.createElement('button'); 
+            b.className = `bg-${color}-500 py-3 mb-2 rounded-xl w-full text-white font-bold shadow-md active:scale-95 transition text-sm`; 
+            b.innerText = txt; 
+            b.onclick = onClick; 
+            act.appendChild(b); 
+        };
 
         if(type === 'fight') {
-            document.getElementById('eventTitle').innerText = "⚔️ 학생 다툼 발생!"; document.getElementById('eventDesc').innerText = "누구 편을 드시겠습니까?"; document.getElementById('eventTimer').innerText = "";
+            const titleEl = document.getElementById('eventTitle');
+            const descEl = document.getElementById('eventDesc');
+            if(titleEl) titleEl.innerText = "⚔️ 학생 다툼 발생!"; 
+            if(descEl) descEl.innerText = "누구 편을 드시겠습니까?"; 
+            const timerEl = document.getElementById('eventTimer');
+            if(timerEl) timerEl.innerText = "";
             createBtn('A 학생 공감하기', 'blue', () => { s.exp += 500; closeEvent(true, "원만한 해결! 명예 +2", 2); });
             createBtn('원칙대로 규정 적용', 'red', () => { s.exp += 500; closeEvent(true, "깔끔한 처리! 명예 +3", 3); });
         }
         else if(type === 'counsel') {
-            document.getElementById('eventTitle').innerText = "📞 학부모 상담 주간"; document.getElementById('eventDesc').innerText = "학부모의 까다로운 질문: '우리 아이 학교생활 어때요?'"; document.getElementById('eventTimer').innerText = "";
+            const titleEl = document.getElementById('eventTitle');
+            const descEl = document.getElementById('eventDesc');
+            if(titleEl) titleEl.innerText = "📞 학부모 상담 주간"; 
+            if(descEl) descEl.innerText = "학부모의 까다로운 질문: '우리 아이 학교생활 어때요?'"; 
+            const timerEl = document.getElementById('eventTimer');
+            if(timerEl) timerEl.innerText = "";
             createBtn('폭풍 칭찬과 공감', 'green', () => { s.money += currentAutoProfit*20; closeEvent(true, "학부모 대만족! 후원금 획득", 5); });
             createBtn('객관적인 사실 전달', 'blue', () => { s.exp += 800; closeEvent(true, "신뢰도 상승! 명예 +3", 3); });
         }
         else if(type === 'festival') {
-            document.getElementById('eventTitle').innerText = "🎵 학교 축제(학예회)"; document.getElementById('eventDesc').innerText = "아이들의 장기자랑을 성공적으로 지도하세요!";
-            timeLeft = 5; document.getElementById('eventTimer').innerText = timeLeft;
+            const titleEl = document.getElementById('eventTitle');
+            const descEl = document.getElementById('eventDesc');
+            if(titleEl) titleEl.innerText = "🎵 학교 축제(학예회)"; 
+            if(descEl) descEl.innerText = "아이들의 장기자랑을 성공적으로 지도하세요!";
+            timeLeft = 5; 
+            const timerEl = document.getElementById('eventTimer');
+            if(timerEl) timerEl.innerText = timeLeft;
             let taps = 0;
             createBtn('박자에 맞춰 광클!! (0/15)', 'yellow', () => {
-                taps++; eventActionArea.children[0].innerText = `박자에 맞춰 광클!! (${taps}/15)`;
-                if(taps >= 15) { clearInterval(eventTimerObj); s.money += currentAutoProfit*50; closeEvent(true, "학예회 대성공! 학부모 환호 + 상금", 10); }
+                taps++; 
+                if(act.children[0]) act.children[0].innerText = `박자에 맞춰 광클!! (${taps}/15)`;
+                if(taps >= 15) { 
+                    clearInterval(eventTimerObj); 
+                    s.money += currentAutoProfit*50; 
+                    closeEvent(true, "학예회 대성공! 학부모 환호 + 상금", 10); 
+                }
             });
-            eventTimerObj = setInterval(() => { timeLeft--; document.getElementById('eventTimer').innerText = timeLeft; if(timeLeft<=0) closeEvent(false, "박자 놓쳐서 아쉬운 축제..."); }, 1000);
+            eventTimerObj = setInterval(() => { 
+                timeLeft--; 
+                if(timerEl) timerEl.innerText = timeLeft; 
+                if(timeLeft<=0) closeEvent(false, "박자 놓쳐서 아쉬운 축제..."); 
+            }, 1000);
         }
         else if(type === 'animal') {
-            document.getElementById('eventTitle').innerText = "🐱 교정에 길고양이 출몰!"; document.getElementById('eventDesc').innerText = "아이들과 함께 안전하게 구조하세요!"; document.getElementById('eventTimer').innerText = "";
+            const titleEl = document.getElementById('eventTitle');
+            const descEl = document.getElementById('eventDesc');
+            if(titleEl) titleEl.innerText = "🐱 교정에 길고양이 출몰!"; 
+            if(descEl) descEl.innerText = "아이들과 함께 안전하게 구조하세요!"; 
+            const timerEl = document.getElementById('eventTimer');
+            if(timerEl) timerEl.innerText = "";
             createBtn('간식으로 유인해 구조하기', 'teal', () => { s.honor += 5; closeEvent(true, "모두가 행복한 동물 보호 성공! 명예 +5", 5); });
         }
         else if(type === 'lunch') {
-            document.getElementById('eventTitle').innerText = "🍱 급식실 메뉴 청원"; document.getElementById('eventDesc').innerText = "'수요일은 돈가스' 투표 성사!"; document.getElementById('eventTimer').innerText = "";
-            createBtn('청원 수락하기', 'yellow', () => { buffs.menuBuff = 2; closeEvent(true, "급식 대만족! 1시간 동안 수익 2배!", 2); setTimeout(()=>buffs.menuBuff=1, 60000); });
+            const titleEl = document.getElementById('eventTitle');
+            const descEl = document.getElementById('eventDesc');
+            if(titleEl) titleEl.innerText = "🍱 급식실 메뉴 청원"; 
+            if(descEl) descEl.innerText = "'수요일은 돈가스' 투표 성사!"; 
+            const timerEl = document.getElementById('eventTimer');
+            if(timerEl) timerEl.innerText = "";
+            createBtn('청원 수락하기', 'yellow', () => { 
+                buffs.menuBuff = 2; 
+                closeEvent(true, "급식 대만족! 1시간 동안 수익 2배!", 2); 
+                setTimeout(()=>buffs.menuBuff=1, 60000); 
+            });
         }
         else if(type === 'audit') {
-            document.getElementById('eventTitle').innerText = "🕵️ 교육청 감사!"; document.getElementById('eventDesc').innerText = "10초간 절대 아무것도 만지지 마세요!";
-            timeLeft = 10; document.getElementById('eventTimer').innerText = timeLeft;
+            const titleEl = document.getElementById('eventTitle');
+            const descEl = document.getElementById('eventDesc');
+            if(titleEl) titleEl.innerText = "🕵️ 교육청 감사!"; 
+            if(descEl) descEl.innerText = "10초간 절대 아무것도 만지지 마세요!";
+            timeLeft = 10; 
+            const timerEl = document.getElementById('eventTimer');
+            if(timerEl) timerEl.innerText = timeLeft;
             act.innerHTML = `<div class="text-sm text-red-300 font-bold mb-4 animate-pulse">화면 터치 시 즉시 적발 실패</div>`;
-            globalAuditListener = () => { closeEvent(false, "감사 적발! 시말서 작성..."); }; setTimeout(() => document.addEventListener('pointerdown', globalAuditListener), 500); 
-            eventTimerObj = setInterval(() => { timeLeft--; document.getElementById('eventTimer').innerText = timeLeft; if(timeLeft <= 0) { const rew = currentAutoProfit * 100; s.money += rew; closeEvent(true, `감사 통과! 격려금 +${formatMoney(rew)}`, 5); } }, 1000);
+            globalAuditListener = () => { closeEvent(false, "감사 적발! 시말서 작성..."); }; 
+            setTimeout(() => document.addEventListener('pointerdown', globalAuditListener), 500); 
+            eventTimerObj = setInterval(() => { 
+                timeLeft--; 
+                if(timerEl) timerEl.innerText = timeLeft; 
+                if(timeLeft <= 0) { 
+                    const rew = currentAutoProfit * 100; 
+                    s.money += rew; 
+                    closeEvent(true, `감사 통과! 격려금 +${formatMoney(rew)}`, 5); 
+                } 
+            }, 1000);
         }
     }
 
     function spawnRunner() {
-        if(document.getElementById('eventOverlay').classList.contains('flex')) return;
-        const el = document.createElement('div'); el.className = 'runner'; el.innerText = '🏃‍♂️';
-        el.onpointerdown = (e) => { e.stopPropagation(); const rew = s.money * 0.1; s.money += rew; playAudio('buy'); showFloat(e.clientX, e.clientY, `+${formatMoney(rew)}`); el.remove(); updateUI(); };
-        document.getElementById('clickArea').appendChild(el); setTimeout(() => { if(el.parentNode) el.remove(); }, 3000);
+        const clickArea = document.getElementById('clickArea');
+        if(!clickArea || document.getElementById('eventOverlay').classList.contains('flex')) return;
+        const el = document.createElement('div'); 
+        el.className = 'runner'; 
+        el.innerText = '🏃‍♂️';
+        el.onpointerdown = (e) => { 
+            e.stopPropagation(); 
+            const rew = s.money * 0.1; 
+            s.money += rew; 
+            playAudio('buy'); 
+            showFloat(e.clientX, e.clientY, `+${formatMoney(rew)}`); 
+            el.remove(); 
+            updateUI(); 
+        };
+        clickArea.appendChild(el); 
+        setTimeout(() => { if(el.parentNode) el.remove(); }, 3000);
+    }
+
+    function initAudio() { 
+        if(!audioCtx) { 
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext(); 
+            bgmGainNode = audioCtx.createGain();
+            bgmGainNode.gain.value = 0.05;
+            bgmGainNode.connect(audioCtx.destination);
+
+            const osc = audioCtx.createOscillator(); 
+            osc.connect(audioCtx.destination); 
+            osc.start(0); 
+            osc.stop(0.01); 
+            if(!isBgmPlaying) toggleAudio(); 
+        } else if(audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    }
+
+    function playAudio(type) {
+        if(!isBgmPlaying || !audioCtx) return;
+        const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); const now = audioCtx.currentTime;
+        if(type==='click' || type==='coin') { osc.type = 'sine'; osc.frequency.setValueAtTime(987.77, now); osc.frequency.exponentialRampToValueAtTime(1318.51, now+0.1); gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.01, now+0.1); osc.start(now); osc.stop(now+0.1); } 
+        else if(type==='buy') { osc.type = 'square'; osc.frequency.setValueAtTime(440, now); osc.frequency.setValueAtTime(659.25, now+0.2); gain.gain.setValueAtTime(0.05, now); gain.gain.linearRampToValueAtTime(0, now+0.4); osc.start(now); osc.stop(now+0.4); } 
+        else if(type==='error') { osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, now); gain.gain.setValueAtTime(0.1, now); gain.gain.linearRampToValueAtTime(0, now+0.2); osc.start(now); osc.stop(now+0.2); }
+    }
+
+    function toggleAudio() { 
+        isBgmPlaying = !isBgmPlaying; 
+        const btn = document.getElementById('audioBtn');
+        if (btn) btn.innerText = isBgmPlaying ? '🔊 ON' : '🔇 OFF'; 
+        
+        if(isBgmPlaying) { 
+            if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); 
+            if(bgmGainNode && audioCtx) bgmGainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            playBGM(); 
+        } else { 
+            if(bgmGainNode && audioCtx) bgmGainNode.gain.setValueAtTime(0, audioCtx.currentTime); 
+            if(bgmOscillator) {
+                clearTimeout(bgmOscillator);
+                bgmOscillator = null;
+            }
+        }
+    }
+
+    function playBGM() {
+        if(!audioCtx || !isBgmPlaying) return; 
+        const melody = [[392,0.2],[523,0.2],[659,0.4],[523,0.2],[392,0.2],[330,0.4],[349,0.2],[440,0.2],[587,0.4],[523,0.4]]; 
+        let t = audioCtx.currentTime + 0.05;
+        
+        const loop = () => { 
+            if(!isBgmPlaying) return; 
+            melody.forEach(n => { 
+                if(!isBgmPlaying) return;
+                const o = audioCtx.createOscillator(); const g = audioCtx.createGain(); 
+                o.type = 'triangle'; o.frequency.value = n[0]; 
+                
+                g.gain.setValueAtTime(1, t); 
+                g.gain.exponentialRampToValueAtTime(0.001, t + n[1] - 0.02); 
+                
+                o.connect(g); 
+                g.connect(bgmGainNode); 
+                
+                o.start(t); o.stop(t + n[1]); 
+                t += n[1]; 
+            }); 
+            bgmOscillator = setTimeout(loop, (t - audioCtx.currentTime) * 1000 - 50); 
+        }; 
+        loop();
     }
 </script>
 </body>
