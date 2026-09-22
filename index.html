@@ -41,7 +41,7 @@
         <div></div>
         <div class="flex flex-col items-center justify-center">
             <h1 class="text-3xl font-bold text-center text-blue-600 drop-shadow-md leading-tight mb-2">👨‍🏫 건물주가 되고 싶은<br>선생님</h1>
-            <p class="text-gray-500 text-sm mb-6 text-center">Ultimate Teacher Simulator v6.3</p>
+            <p class="text-gray-500 text-sm mb-6 text-center">Ultimate Teacher Simulator v6.4</p>
             <div class="flex space-x-4 mb-6">
                 <button onclick="startGame('남교사', '👨‍🏫')" class="p-5 bg-blue-100 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition"><div class="text-4xl mb-1">👨‍🏫</div><div class="font-bold text-sm">남교사</div></button>
                 <button onclick="startGame('여교사', '👩‍🏫')" class="p-5 bg-pink-100 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition"><div class="text-4xl mb-1">👩‍🏫</div><div class="font-bold text-sm">여교사</div></button>
@@ -56,9 +56,8 @@
     <!-- 메인 게임 컨테이너 -->
     <div id="gameScreen" class="hidden flex-col h-full w-full max-w-md mx-auto bg-white shadow-2xl relative justify-between">
         
-        <!-- 상단 스탯창 (홈 및 오디오 버튼 영역 포함으로 겹침 현상 원천 차단) -->
+        <!-- 상단 스탯창 -->
         <div id="headerArea" class="bg-blue-600 text-white p-2.5 pb-2 shadow-md transition-colors duration-500 rounded-b-lg z-20">
-            <!-- 상단 제어 바 행 -->
             <div class="flex justify-between items-center mb-1.5 px-0.5">
                 <button onclick="goHome()" class="bg-blue-800 bg-opacity-60 text-white px-2.5 py-1 rounded-full text-[10px] font-bold shadow flex items-center space-x-1 active:scale-95 transition">🏠 홈으로</button>
                 <button onclick="toggleAudio()" id="audioBtn" class="bg-blue-800 bg-opacity-60 text-white px-2.5 py-1 rounded-full text-[10px] font-bold shadow active:scale-95 transition">🔊 ON</button>
@@ -249,18 +248,18 @@
     let audioCtx = null; let isBgmPlaying = false; let bgmOscillator = null; 
     let bgmGainNode = null; 
     let loopInterval = null; let eventTimerObj = null; let globalAuditListener = null;
-    let currentClickProfit = 10, currentAutoProfit = 0, currentExpPerClick = 1, currentExpPerSec = 0;
+    let currentClickProfit = 50, currentAutoProfit = 0, currentExpPerClick = 1, currentExpPerSec = 0; // 클릭 수익 기본값 상향 (50원)
     let buffs = { isSilence: false, isFever: false, papsMult: 1, cafMult: 1, menuBuff: 1 };
     
     const seasons = ['봄', '여름', '가을', '겨울']; let currentSeasonIdx = 0;
     
     const DB = {
         clicks: [ 
-            { id: 'c1', name: '맞춤형복지 믹스커피', baseCost: 100, profit: 5, icon: '☕' }, 
-            { id: 'c2', name: '공문기안 무소음 키보드', baseCost: 800, profit: 35, icon: '⌨️' }, 
-            { id: 'c3', name: '교원연구비 스탠딩 책상', baseCost: 6000, profit: 200, icon: '🪑' },
-            { id: 'c4', name: 'NEIS 결재용 듀얼모니터', baseCost: 50000, profit: 1200, icon: '🖥️' },
-            { id: 'c5', name: '스마트 레이저 포인터', baseCost: 350000, profit: 7000, icon: '🔦' }
+            { id: 'c1', name: '맞춤형복지 믹스커피', baseCost: 100, profit: 25, icon: '☕' }, 
+            { id: 'c2', name: '공문기안 무소음 키보드', baseCost: 700, profit: 150, icon: '⌨️' }, 
+            { id: 'c3', name: '교원연구비 스탠딩 책상', baseCost: 5000, profit: 800, icon: '🪑' },
+            { id: 'c4', name: 'NEIS 결재용 듀얼모니터', baseCost: 40000, profit: 4500, icon: '🖥️' },
+            { id: 'c5', name: '스마트 레이저 포인터', baseCost: 300000, profit: 25000, icon: '🔦' }
         ],
         autos: [ 
             { id: 'a1', name: 'K-에듀파인 연동 알림장', baseCost: 300, profit: 15, icon: '📱' }, 
@@ -301,7 +300,7 @@
     }
     
     function loadGame() {
-        const saved = localStorage.getItem('v6_3_ultimate_save');
+        const saved = localStorage.getItem('v6_4_ultimate_save');
         if(saved) {
             try { 
                 const p = JSON.parse(saved); 
@@ -328,12 +327,12 @@
     
     function saveGame() { 
         s.lastSaveTime = Date.now(); 
-        localStorage.setItem('v6_3_ultimate_save', JSON.stringify(s)); 
+        localStorage.setItem('v6_4_ultimate_save', JSON.stringify(s)); 
     }
     
     function clearData() { 
         if(confirm("모든 데이터를 지울까요?")) { 
-            localStorage.removeItem('v6_3_ultimate_save'); 
+            localStorage.removeItem('v6_4_ultimate_save'); 
             location.reload(); 
         } 
     }
@@ -377,17 +376,18 @@
             checkLevelUp(); 
         }
         
-        s.stockPrice = Math.max(1000, s.stockPrice * (1 + (Math.random()*0.1 - 0.05)));
+        // 부동산 시세 상승 속도 대폭 완화 (변동 폭을 매우 부드럽게 조정)
+        s.stockPrice = Math.max(1000, s.stockPrice * (1 + (Math.random()*0.04 - 0.02)));
         ['r1','r2','r3','r4'].forEach(k => {
             const base = [5e8, 2e9, 1e10, 5e10][parseInt(k.replace('r',''))-1] * s.hobong;
-            s.reals[k].price = Math.max(base*0.5, s.reals[k].price * (1 + (Math.random()*0.06 - 0.03)));
+            s.reals[k].price = Math.max(base*0.5, s.reals[k].price * (1 + (Math.random()*0.015 - 0.007)));
         });
         updateUI(); 
         saveGame();
     }
 
     function calculateMultipliers() {
-        let cv = 10, av = (s.emoticonIncome||0), ec = 1, ea = 0;
+        let cv = 50, av = (s.emoticonIncome||0), ec = 1, ea = 0; // 기본 클릭 수익 50으로 상향
         const sum = (list, obj) => list.reduce((acc, b) => acc + (b.profit * ((obj && obj[b.id]) || 0)), 0);
         
         if (s.inventory) cv += sum(DB.clicks, s.inventory);
