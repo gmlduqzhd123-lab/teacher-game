@@ -41,7 +41,7 @@
         <div></div>
         <div class="flex flex-col items-center justify-center">
             <h1 class="text-3xl font-bold text-center text-blue-600 drop-shadow-md leading-tight mb-2">👨‍🏫 건물주가 되고 싶은<br>선생님</h1>
-            <p class="text-gray-500 text-sm mb-6 text-center">Ultimate Teacher Simulator v6.4</p>
+            <p class="text-gray-500 text-sm mb-6 text-center">Ultimate Teacher Simulator v7.0 (All-in-One)</p>
             <div class="flex space-x-4 mb-6">
                 <button onclick="startGame('남교사', '👨‍🏫')" class="p-5 bg-blue-100 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition"><div class="text-4xl mb-1">👨‍🏫</div><div class="font-bold text-sm">남교사</div></button>
                 <button onclick="startGame('여교사', '👩‍🏫')" class="p-5 bg-pink-100 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition"><div class="text-4xl mb-1">👩‍🏫</div><div class="font-bold text-sm">여교사</div></button>
@@ -60,6 +60,7 @@
         <div id="headerArea" class="bg-blue-600 text-white p-2.5 pb-2 shadow-md transition-colors duration-500 rounded-b-lg z-20">
             <div class="flex justify-between items-center mb-1.5 px-0.5">
                 <button onclick="goHome()" class="bg-blue-800 bg-opacity-60 text-white px-2.5 py-1 rounded-full text-[10px] font-bold shadow flex items-center space-x-1 active:scale-95 transition">🏠 홈으로</button>
+                <button onclick="openSnackBox()" class="bg-yellow-500 text-gray-900 px-2 py-0.5 rounded-full text-[10px] font-bold shadow active:scale-95 transition">🍫 간식함</button>
                 <button onclick="toggleAudio()" id="audioBtn" class="bg-blue-800 bg-opacity-60 text-white px-2.5 py-1 rounded-full text-[10px] font-bold shadow active:scale-95 transition">🔊 ON</button>
             </div>
 
@@ -83,7 +84,6 @@
                 </div>
                 <span id="expText" class="w-14 text-right whitespace-nowrap">0/100</span>
             </div>
-            <!-- 텐션 한 줄 고정 -->
             <div class="flex items-center space-x-2 text-[10px] font-bold mt-1">
                 <span class="whitespace-nowrap flex-shrink-0 w-10">☕ 텐션</span>
                 <div class="flex-1 bg-gray-700 rounded-full h-2 relative overflow-hidden shadow-inner">
@@ -140,18 +140,21 @@
 
         <!-- 탭 컨텐츠 영역 -->
         <div class="scrollable-tab bg-white pb-1 relative px-2 flex-shrink-0">
+            <!-- 1. 업무 -->
             <div id="tab-up" class="tab-content p-2 space-y-3">
                 <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">👆 클릭 강화</h3><div id="clickUpgrades" class="space-y-1"></div></div>
                 <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">⏳ 자동 수익</h3><div id="autoUpgrades" class="space-y-1"></div></div>
             </div>
 
+            <!-- 2. 강화 (장비 + 맞춤형복지 인테리어) -->
             <div id="tab-enforce" class="tab-content p-2 space-y-3 hidden">
                 <div class="bg-indigo-50 p-2 rounded-lg border border-indigo-200 text-[11px] text-indigo-900 font-bold mb-1">
-                    🛠️ 장비를 강화하여 전체 수익에 영구 배율을 부여하세요!
+                    🛠️ 장비 및 맞춤형복지 인테리어를 강화하여 영구 배율을 부여하세요!
                 </div>
                 <div id="enforceList" class="space-y-1.5"></div>
             </div>
             
+            <!-- 3. 자산 -->
             <div id="tab-asset" class="tab-content p-2 space-y-3 hidden">
                 <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200 shadow-sm">
                     <h3 class="font-bold text-xs mb-1.5 text-gray-800">📈 K-에듀테크 테마주</h3>
@@ -168,9 +171,15 @@
                 <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1 mt-1">🏢 부동산</h3><div id="realEstateList" class="space-y-1"></div></div>
             </div>
 
+            <!-- 4. 활동 (블라인드, 이모티콘, 당근마켓, 에듀테크 가챠) -->
             <div id="tab-act" class="tab-content p-2 space-y-2.5 hidden">
+                <div class="bg-purple-50 p-3 rounded-lg border border-purple-100">
+                    <h3 class="font-bold text-purple-800 text-xs mb-0.5">📦 에듀테크 기자재 언박싱 가챠</h3>
+                    <p class="text-[10px] text-gray-600 mb-2">랜덤 박스로 최신 스마트기기 및 버프 획득 (50만 원)</p>
+                    <button onclick="openGacha()" class="w-full bg-purple-600 text-white py-2.5 rounded-md text-xs font-bold shadow">기자재 언박싱하기</button>
+                </div>
                 <div class="bg-blue-50 p-3 rounded-lg border border-blue-100">
-                    <h3 class="font-bold text-blue-800 text-xs mb-0.5">📱 익명 커뮤니티 (블라인드)</h3>
+                    <h3 class="font-bold text-blue-800 text-xs mb-0.5">📱 교사 익명 커뮤니티 (블라인드)</h3>
                     <p class="text-[10px] text-gray-600 mb-2">교직 썰을 풀어 베스트글에 도전! (쿨타임 1분)</p>
                     <button onclick="postBlind()" id="btn-blind" class="w-full bg-blue-500 text-white py-2.5 rounded-md text-xs font-bold shadow">썰 풀기 (준비됨)</button>
                 </div>
@@ -186,17 +195,20 @@
                 </div>
             </div>
 
+            <!-- 5. 동아리 (늘봄, 소모임, 연수, 운동부, 여행) -->
             <div id="tab-club" class="tab-content p-2 space-y-3 hidden">
                 <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">🎒 방과후 동아리 및 늘봄학교</h3><div id="clubList" class="space-y-1"></div></div>
-                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">⚽ 교직원 소모임</h3><div id="somoimList" class="space-y-1"></div></div>
-                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">📜 직무 연수</h3><div id="certList" class="space-y-1"></div></div>
+                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">⚽ 교직원 소모임 및 맛집탐방</h3><div id="somoimList" class="space-y-1"></div></div>
+                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">🏆 학교 운동부 및 스포츠클럽 서포트</h3><div id="sportList" class="space-y-1"></div></div>
+                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">📜 직무연수 및 자율연수 마스터</h3><div id="certList" class="space-y-1"></div></div>
                 <div class="bg-teal-50 p-3 rounded-lg border border-teal-200 text-center">
                     <h3 class="font-bold text-teal-800 text-xs mb-1">✈️ 방학 시즌 힐링 여행</h3>
                     <p class="text-[10px] text-gray-600 mb-2">하와이 여행으로 영구 효율 +20%!</p>
-                    <button onclick="buyTravel()" class="bg-teal-600 text-white text-xs px-3 py-2.5 rounded-md shadow font-bold w-full">하와이 여행 떠나기 (5억 원)</button>
+                    <button onclick="buyTravel()" class="bg-teal-600 text-white text-xs px-3 py-2.5 rounded-md shadow font-bold w-full">하와이 여행 떠나기 (5천만 원)</button>
                 </div>
             </div>
 
+            <!-- 6. 특수 -->
             <div id="tab-sp" class="tab-content p-2 space-y-3 hidden">
                 <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200">
                     <h3 class="font-bold text-xs mb-1.5 text-gray-800">👕 OOTD (출근룩 장착)</h3>
@@ -238,8 +250,11 @@
         character: '👨‍🏫', money: 0, exp: 0, level: 1, hobong: 1, grade: '전담교사', motto: '무사히 퇴근하자', 
         caffeine: 0, succulentGrowth: 0, succulentBuff: 0, honor: 0, travelBuff: 1,
         inventory: {}, collections: {}, spareItems: 0, stockPrice: 10000, stockCount: 0, emoticonIncome: 0, 
-        clubs: { coding: 0, band: 0 }, somoims: { soccer: 0, food: 0 }, certs: { counsel: 0, codingCert: 0 },
-        enforce: { laptop: 0, coffee: 0, mic: 0, stamp: 0 },
+        clubs: { coding: 0, band: 0, nulbom: 0 }, 
+        somoims: { soccer: 0, food: 0 }, 
+        sports: { team: 0 },
+        certs: { counsel: 0, codingCert: 0, digital: 0 },
+        enforce: { laptop: 0, coffee: 0, mic: 0, stamp: 0, aircon: 0, plant: 0 },
         reals: { r1: {own:0, price: 500000000}, r2: {own:0, price: 2000000000}, r3: {own:0, price: 10000000000}, r4: {own:0, price: 50000000000} }, 
         skills: { vacation: 0, silence: 0, blind: 0, emo: 0 }, ootd: 'none', stats: { totalClicks: 0 }, endings: 0, lastSaveTime: Date.now() 
     };
@@ -248,11 +263,12 @@
     let audioCtx = null; let isBgmPlaying = false; let bgmOscillator = null; 
     let bgmGainNode = null; 
     let loopInterval = null; let eventTimerObj = null; let globalAuditListener = null;
-    let currentClickProfit = 50, currentAutoProfit = 0, currentExpPerClick = 1, currentExpPerSec = 0; // 클릭 수익 기본값 상향 (50원)
+    let currentClickProfit = 50, currentAutoProfit = 0, currentExpPerClick = 1, currentExpPerSec = 0;
     let buffs = { isSilence: false, isFever: false, papsMult: 1, cafMult: 1, menuBuff: 1 };
     
     const seasons = ['봄', '여름', '가을', '겨울']; let currentSeasonIdx = 0;
     
+    // 300대 초등교사 키워드 기반 전면 통합 DB[cite: 7]
     const DB = {
         clicks: [ 
             { id: 'c1', name: '맞춤형복지 믹스커피', baseCost: 100, profit: 25, icon: '☕' }, 
@@ -272,11 +288,27 @@
             { id: 'laptop', name: '에듀테크 교실 노트북', baseCost: 1000, mult: 0.1, icon: '💻' },
             { id: 'coffee', name: '맞춤형복지 텀블러', baseCost: 5000, mult: 0.15, icon: '🧊' },
             { id: 'mic', name: 'Wee클래스 무선 마이크', baseCost: 30000, mult: 0.2, icon: '📢' },
-            { id: 'stamp', name: '나이스 전결 결재도장', baseCost: 200000, mult: 0.3, icon: '💮' }
+            { id: 'stamp', name: '나이스 전결 결재도장', baseCost: 200000, mult: 0.3, icon: '💮' },
+            { id: 'aircon', name: '교실 대형 공기청정기', baseCost: 800000, mult: 0.4, icon: '🌬️' },
+            { id: 'plant', name: '플랜테리어 화분 인테리어', baseCost: 3000000, mult: 0.6, icon: '🪴' }
         ],
-        clubs: [ { id: 'coding', name: 'AI·코딩 동아리 육성', baseCost: 5000, profit: 250, icon: '💻' }, { id: 'band', name: '창체 오케스트라부', baseCost: 30000, profit: 1500, icon: '🎸' } ],
-        somoims: [ { id: 'soccer', name: '교사 축구 동호회', baseCost: 20000, profit: 800, icon: '⚽' }, { id: 'food', name: '학교 맛집탐방 소모임', baseCost: 100000, profit: 5000, icon: '🍜' } ],
-        certs: [ { id: 'counsel', name: '상담심리사 직무연수', baseCost: 50000, profit: 2000, icon: '📜' }, { id: 'counsel2', name: '디지털 리터러시 자격연수', baseCost: 300000, profit: 12000, icon: '🏅' } ],
+        clubs: [ 
+            { id: 'coding', name: 'AI·코딩 동아리 육성', baseCost: 5000, profit: 250, icon: '💻' }, 
+            { id: 'band', name: '창체 오케스트라부', baseCost: 30000, profit: 1500, icon: '🎸' },
+            { id: 'nulbom', name: '늘봄학교 특기적성 프로그램', baseCost: 150000, profit: 7000, icon: '🎨' }
+        ],
+        somoims: [ 
+            { id: 'soccer', name: '교사 축구 동호회', baseCost: 20000, profit: 800, icon: '⚽' }, 
+            { id: 'food', name: '학교 맛집탐방 소모임', baseCost: 100000, profit: 5000, icon: '🍜' } 
+        ],
+        sports: [
+            { id: 'team', name: '학교 운동부 및 스포츠클럽 지원', baseCost: 80000, profit: 3500, icon: '🏅' }
+        ],
+        certs: [ 
+            { id: 'counsel', name: '상담심리사 직무연수', baseCost: 50000, profit: 2000, icon: '📜' }, 
+            { id: 'codingCert', name: '디지털 리터러시 자격연수', baseCost: 300000, profit: 12000, icon: '🏅' },
+            { id: 'digital', name: 'AI융합 교육대학원 파견 연수', baseCost: 1500000, profit: 60000, icon: '🎓' }
+        ],
         cols: [ { id: 'col1', name: '액체괴물', icon: '🟢' }, { id: 'col2', name: '포켓몬 띠부씰', icon: '🐢' }, { id: 'col3', name: '피젯스피너', icon: '🌀' }, { id: 'col4', name: '유희왕 카드', icon: '🃏' } ]
     };
 
@@ -300,7 +332,7 @@
     }
     
     function loadGame() {
-        const saved = localStorage.getItem('v6_4_ultimate_save');
+        const saved = localStorage.getItem('v7_0_ultimate_save');
         if(saved) {
             try { 
                 const p = JSON.parse(saved); 
@@ -309,10 +341,11 @@
                 s.skills = p.skills || defaultState.skills; 
                 s.inventory = p.inventory || {}; 
                 s.collections = p.collections || {};
-                s.clubs = p.clubs || { coding: 0, band: 0 };
+                s.clubs = p.clubs || { coding: 0, band: 0, nulbom: 0 };
                 s.somoims = p.somoims || { soccer: 0, food: 0 };
-                s.certs = p.certs || { counsel: 0, codingCert: 0 };
-                s.enforce = p.enforce || { laptop: 0, coffee: 0, mic: 0, stamp: 0 };
+                s.sports = p.sports || { team: 0 };
+                s.certs = p.certs || { counsel: 0, codingCert: 0, digital: 0 };
+                s.enforce = p.enforce || { laptop: 0, coffee: 0, mic: 0, stamp: 0, aircon: 0, plant: 0 };
                 s.spareItems = p.spareItems || 0; 
                 s.caffeine = s.caffeine || 0; 
                 s.honor = s.honor || 0; 
@@ -327,12 +360,12 @@
     
     function saveGame() { 
         s.lastSaveTime = Date.now(); 
-        localStorage.setItem('v6_4_ultimate_save', JSON.stringify(s)); 
+        localStorage.setItem('v7_0_ultimate_save', JSON.stringify(s)); 
     }
     
     function clearData() { 
         if(confirm("모든 데이터를 지울까요?")) { 
-            localStorage.removeItem('v6_4_ultimate_save'); 
+            localStorage.removeItem('v7_0_ultimate_save'); 
             location.reload(); 
         } 
     }
@@ -344,6 +377,46 @@
             document.getElementById('gameScreen').classList.add('hidden');
             document.getElementById('startScreen').classList.remove('hidden');
         }
+    }
+
+    // 아이디어 8: 교무실 비밀 간식함 시스템
+    function openSnackBox() {
+        const snacks = [
+            { name: '달콤한 초콜릿 🍫', effect: '텐션 즉시 +30 & 10초간 클릭 수익 3배!', action: () => { s.caffeine = Math.min(100, s.caffeine + 30); } },
+            { name: '시원한 아이스 아메리카노 ☕', effect: '텐션 100% 풀충전!', action: () => { s.caffeine = 100; } },
+            { name: '비타민C 활력캔디 🍬', effect: '즉시 소지금 + 10분치 자동 수익!', action: () => { s.money += currentAutoProfit * 600; } }
+        ];
+        const chosen = snacks[Math.floor(Math.random() * snacks.length)];
+        chosen.action();
+        playAudio('buy');
+        showTitleNotification(`[간식함] ${chosen.name} 당첨! (${chosen.effect})`);
+        updateUI();
+    }
+
+    // 아이디어 5: 에듀테크 기자재 언박싱 가챠
+    function openGacha() {
+        const cost = 500000;
+        if (s.money < cost) {
+            playAudio('error');
+            alert("소지금이 부족합니다! (50만 원 필요)");
+            return;
+        }
+        s.money -= cost;
+        const rewards = [
+            { name: '최신형 스마트 태블릿 세트 📱', type: 'money', val: 2000000, msg: '대박! 교육청 지원금 당첨 (+200만 원)' },
+            { name: 'AI 보조 로봇 허브 🤖', type: 'honor', val: 10, msg: '학교 우수 혁신 사례 선정! (명예 +10)' },
+            { name: '학급용 무선 응답기 📶', type: 'buff', val: 1, msg: '수업 참여도 폭발! 30초간 클릭 수익 5배!' }
+        ];
+        const rw = rewards[Math.floor(Math.random() * rewards.length)];
+        if (rw.type === 'money') s.money += rw.val;
+        else if (rw.type === 'honor') s.honor += rw.val;
+        else if (rw.type === 'buff') {
+            currentClickProfit *= 5;
+            setTimeout(() => calculateMultipliers(), 30000);
+        }
+        playAudio('buy');
+        showTitleNotification(`🎁 [언박싱] ${rw.msg}`);
+        updateUI();
     }
 
     function calculateOfflineProgress() {
@@ -376,7 +449,6 @@
             checkLevelUp(); 
         }
         
-        // 부동산 시세 상승 속도 대폭 완화 (변동 폭을 매우 부드럽게 조정)
         s.stockPrice = Math.max(1000, s.stockPrice * (1 + (Math.random()*0.04 - 0.02)));
         ['r1','r2','r3','r4'].forEach(k => {
             const base = [5e8, 2e9, 1e10, 5e10][parseInt(k.replace('r',''))-1] * s.hobong;
@@ -387,13 +459,14 @@
     }
 
     function calculateMultipliers() {
-        let cv = 50, av = (s.emoticonIncome||0), ec = 1, ea = 0; // 기본 클릭 수익 50으로 상향
+        let cv = 50, av = (s.emoticonIncome||0), ec = 1, ea = 0;
         const sum = (list, obj) => list.reduce((acc, b) => acc + (b.profit * ((obj && obj[b.id]) || 0)), 0);
         
         if (s.inventory) cv += sum(DB.clicks, s.inventory);
         if (s.inventory) av += sum(DB.autos, s.inventory);
         if (s.clubs) av += sum(DB.clubs, s.clubs);
         if (s.somoims) av += sum(DB.somoims, s.somoims);
+        if (s.sports) av += sum(DB.sports, s.sports);
         if (s.certs) av += sum(DB.certs, s.certs);
         
         let enforceMult = 1;
@@ -575,6 +648,7 @@
         renderList(DB.enforce, 'enforceList', s.enforce, 'enforce');
         renderList(DB.clubs, 'clubList', s.clubs, 'clubs');
         renderList(DB.somoims, 'somoimList', s.somoims, 'somoims');
+        renderList(DB.sports, 'sportList', s.sports, 'sports');
         renderList(DB.certs, 'certList', s.certs, 'certs');
         
         const rEl = document.getElementById('realEstateList');
@@ -613,6 +687,9 @@
         } else if(type === 'somoims') {
             item = DB.somoims.find(i => i.id === id); 
             targetObj = s.somoims;
+        } else if(type === 'sports') {
+            item = DB.sports.find(i => i.id === id); 
+            targetObj = s.sports;
         } else if(type === 'certs') {
             item = DB.certs.find(i => i.id === id); 
             targetObj = s.certs;
@@ -894,17 +971,8 @@
             act.appendChild(b); 
         };
 
-        if(type === 'fight') {
-            const titleEl = document.getElementById('eventTitle');
-            const descEl = document.getElementById('eventDesc');
-            if(titleEl) titleEl.innerText = "⚔️ 학생 다툼 발생!"; 
-            if(descEl) descEl.innerText = "누구 편을 드시겠습니까?"; 
-            const timerEl = document.getElementById('eventTimer');
-            if(timerEl) timerEl.innerText = "";
-            createBtn('A 학생 공감하기', 'blue', () => { s.exp += 500; closeEvent(true, "원만한 해결! 명예 +2", 2); });
-            createBtn('원칙대로 규정 적용', 'red', () => { s.exp += 500; closeEvent(true, "깔끔한 처리! 명예 +3", 3); });
-        }
-        else if(type === 'counsel') {
+        // 아이디어 3: 학부모 상담주간 선택지 이벤트
+        if(type === 'counsel') {
             const titleEl = document.getElementById('eventTitle');
             const descEl = document.getElementById('eventDesc');
             if(titleEl) titleEl.innerText = "📞 학부모 상담 주간"; 
@@ -914,29 +982,40 @@
             createBtn('폭풍 칭찬과 공감', 'green', () => { s.money += currentAutoProfit*20; closeEvent(true, "학부모 대만족! 후원금 획득", 5); });
             createBtn('객관적인 사실 전달', 'blue', () => { s.exp += 800; closeEvent(true, "신뢰도 상승! 명예 +3", 3); });
         }
+        // 아이디어 7: 공개수업 시연 페스티벌
         else if(type === 'festival') {
             const titleEl = document.getElementById('eventTitle');
             const descEl = document.getElementById('eventDesc');
-            if(titleEl) titleEl.innerText = "🎵 학교 축제(학예회)"; 
-            if(descEl) descEl.innerText = "아이들의 장기자랑을 성공적으로 지도하세요!";
+            if(titleEl) titleEl.innerText = "🎵 공개수업 시연 페스티벌"; 
+            if(descEl) descEl.innerText = "방문 교사들 앞에서 성공적으로 수업을 시연하세요!";
             timeLeft = 5; 
             const timerEl = document.getElementById('eventTimer');
             if(timerEl) timerEl.innerText = timeLeft;
             let taps = 0;
-            createBtn('박자에 맞춰 광클!! (0/15)', 'yellow', () => {
+            createBtn('열정 수업 시연 광클!! (0/15)', 'yellow', () => {
                 taps++; 
-                if(act.children[0]) act.children[0].innerText = `박자에 맞춰 광클!! (${taps}/15)`;
+                if(act.children[0]) act.children[0].innerText = `열정 수업 시연 광클!! (${taps}/15)`;
                 if(taps >= 15) { 
                     clearInterval(eventTimerObj); 
                     s.money += currentAutoProfit*50; 
-                    closeEvent(true, "학예회 대성공! 학부모 환호 + 상금", 10); 
+                    closeEvent(true, "공개수업 대성공! 방문 교사 환호 + 트로피", 10); 
                 }
             });
             eventTimerObj = setInterval(() => { 
                 timeLeft--; 
                 if(timerEl) timerEl.innerText = timeLeft; 
-                if(timeLeft<=0) closeEvent(false, "박자 놓쳐서 아쉬운 축제..."); 
+                if(timeLeft<=0) closeEvent(false, "수업 시연이 다소 산만했습니다..."); 
             }, 1000);
+        }
+        else if(type === 'fight') {
+            const titleEl = document.getElementById('eventTitle');
+            const descEl = document.getElementById('eventDesc');
+            if(titleEl) titleEl.innerText = "⚔️ 학생 다툼 발생!"; 
+            if(descEl) descEl.innerText = "누구 편을 드시겠습니까?"; 
+            const timerEl = document.getElementById('eventTimer');
+            if(timerEl) timerEl.innerText = "";
+            createBtn('A 학생 공감하기', 'blue', () => { s.exp += 500; closeEvent(true, "원만한 해결! 명예 +2", 2); });
+            createBtn('원칙대로 규정 적용', 'red', () => { s.exp += 500; closeEvent(true, "깔끔한 처리! 명예 +3", 3); });
         }
         else if(type === 'animal') {
             const titleEl = document.getElementById('eventTitle');
@@ -963,7 +1042,7 @@
         else if(type === 'audit') {
             const titleEl = document.getElementById('eventTitle');
             const descEl = document.getElementById('eventDesc');
-            if(titleEl) titleEl.innerText = "🕵️ 교육청 감사!"; 
+            if(titleEl) titleEl.innerText = "🕵️ 교육청 감사 (NEIS 긴급 결재)"; 
             if(descEl) descEl.innerText = "10초간 절대 아무것도 만지지 마세요!";
             timeLeft = 10; 
             const timerEl = document.getElementById('eventTimer');
