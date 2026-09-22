@@ -41,7 +41,7 @@
         <div></div>
         <div class="flex flex-col items-center justify-center">
             <h1 class="text-3xl font-bold text-center text-blue-600 drop-shadow-md leading-tight mb-2">👨‍🏫 건물주가 되고 싶은<br>선생님</h1>
-            <p class="text-gray-500 text-sm mb-6 text-center">Ultimate Teacher Simulator v6.2 (Safe Fix)</p>
+            <p class="text-gray-500 text-sm mb-6 text-center">Ultimate Teacher Simulator v6.3</p>
             <div class="flex space-x-4 mb-6">
                 <button onclick="startGame('남교사', '👨‍🏫')" class="p-5 bg-blue-100 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition"><div class="text-4xl mb-1">👨‍🏫</div><div class="font-bold text-sm">남교사</div></button>
                 <button onclick="startGame('여교사', '👩‍🏫')" class="p-5 bg-pink-100 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition"><div class="text-4xl mb-1">👩‍🏫</div><div class="font-bold text-sm">여교사</div></button>
@@ -56,11 +56,14 @@
     <!-- 메인 게임 컨테이너 -->
     <div id="gameScreen" class="hidden flex-col h-full w-full max-w-md mx-auto bg-white shadow-2xl relative justify-between">
         
-        <button onclick="goHome()" class="absolute top-2 left-2 z-50 bg-gray-800 text-white p-1 px-2.5 rounded-full opacity-75 text-xs shadow">🏠 홈</button>
-        <button onclick="toggleAudio()" id="audioBtn" class="absolute top-2 right-2 z-50 bg-gray-800 text-white p-1 px-2.5 rounded-full opacity-75 text-xs shadow">🔊 ON</button>
-        
-        <!-- 상단 스탯창 -->
-        <div id="headerArea" class="bg-blue-600 text-white p-2.5 pb-2 shadow-md transition-colors duration-500 rounded-b-lg z-20 pt-7">
+        <!-- 상단 스탯창 (홈 및 오디오 버튼 영역 포함으로 겹침 현상 원천 차단) -->
+        <div id="headerArea" class="bg-blue-600 text-white p-2.5 pb-2 shadow-md transition-colors duration-500 rounded-b-lg z-20">
+            <!-- 상단 제어 바 행 -->
+            <div class="flex justify-between items-center mb-1.5 px-0.5">
+                <button onclick="goHome()" class="bg-blue-800 bg-opacity-60 text-white px-2.5 py-1 rounded-full text-[10px] font-bold shadow flex items-center space-x-1 active:scale-95 transition">🏠 홈으로</button>
+                <button onclick="toggleAudio()" id="audioBtn" class="bg-blue-800 bg-opacity-60 text-white px-2.5 py-1 rounded-full text-[10px] font-bold shadow active:scale-95 transition">🔊 ON</button>
+            </div>
+
             <div class="flex justify-between items-end mb-1">
                 <div>
                     <div class="text-[10px] text-yellow-300 font-bold tracking-tight" id="seasonDisplay">[봄학기] 🏆트로피: <span id="trophyDisplay">0</span> | 명예: <span id="honorDisplay">0</span></div>
@@ -298,7 +301,7 @@
     }
     
     function loadGame() {
-        const saved = localStorage.getItem('v6_2_ultimate_save');
+        const saved = localStorage.getItem('v6_3_ultimate_save');
         if(saved) {
             try { 
                 const p = JSON.parse(saved); 
@@ -325,12 +328,12 @@
     
     function saveGame() { 
         s.lastSaveTime = Date.now(); 
-        localStorage.setItem('v6_2_ultimate_save', JSON.stringify(s)); 
+        localStorage.setItem('v6_3_ultimate_save', JSON.stringify(s)); 
     }
     
     function clearData() { 
         if(confirm("모든 데이터를 지울까요?")) { 
-            localStorage.removeItem('v6_2_ultimate_save'); 
+            localStorage.removeItem('v6_3_ultimate_save'); 
             location.reload(); 
         } 
     }
