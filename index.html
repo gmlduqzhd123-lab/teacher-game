@@ -41,7 +41,7 @@
         <div></div>
         <div class="flex flex-col items-center justify-center">
             <h1 class="text-3xl font-bold text-center text-blue-600 drop-shadow-md leading-tight mb-2">👨‍🏫 건물주가 되고 싶은<br>선생님</h1>
-            <p class="text-gray-500 text-sm mb-6 text-center">Ultimate Teacher Simulator v6.0</p>
+            <p class="text-gray-500 text-sm mb-6 text-center">Ultimate Teacher Simulator v5.5</p>
             <div class="flex space-x-4 mb-6">
                 <button onclick="startGame('남교사', '👨‍🏫')" class="p-5 bg-blue-100 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition"><div class="text-4xl mb-1">👨‍🏫</div><div class="font-bold text-sm">남교사</div></button>
                 <button onclick="startGame('여교사', '👩‍🏫')" class="p-5 bg-pink-100 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition"><div class="text-4xl mb-1">👩‍🏫</div><div class="font-bold text-sm">여교사</div></button>
@@ -139,20 +139,20 @@
         <!-- 탭 컨텐츠 영역 -->
         <div class="scrollable-tab bg-white pb-1 relative px-2 flex-shrink-0">
             <div id="tab-up" class="tab-content p-2 space-y-3">
-                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">👆 클릭 강화 (교원연구비 활용)</h3><div id="clickUpgrades" class="space-y-1"></div></div>
-                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">⏳ 자동 수업/행정</h3><div id="autoUpgrades" class="space-y-1"></div></div>
+                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">👆 클릭 강화</h3><div id="clickUpgrades" class="space-y-1"></div></div>
+                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">⏳ 자동 수익</h3><div id="autoUpgrades" class="space-y-1"></div></div>
             </div>
 
             <div id="tab-enforce" class="tab-content p-2 space-y-3 hidden">
                 <div class="bg-indigo-50 p-2 rounded-lg border border-indigo-200 text-[11px] text-indigo-900 font-bold mb-1">
-                    🛠️ 에듀테크 및 교실 장비를 강화하여 영구 배율을 부여하세요!
+                    🛠️ 장비를 강화하여 전체 수익에 영구 배율을 부여하세요!
                 </div>
                 <div id="enforceList" class="space-y-1.5"></div>
             </div>
             
             <div id="tab-asset" class="tab-content p-2 space-y-3 hidden">
                 <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200 shadow-sm">
-                    <h3 class="font-bold text-xs mb-1.5 text-gray-800">📈 K-에듀테크 테마주</h3>
+                    <h3 class="font-bold text-xs mb-1.5 text-gray-800">📈 K-에듀테크 주식 시세</h3>
                     <div class="flex justify-between text-[11px] mb-2 px-1"><span>현재가: <span id="stockPrice" class="font-bold text-blue-600"></span>원</span><span>보유: <span id="stockCount" class="font-bold"></span>주</span></div>
                     <div class="flex space-x-1.5">
                         <button onclick="tradeStock('buy')" class="flex-1 bg-red-500 text-white py-2 rounded-md text-[11px] font-bold active:bg-red-600 shadow-sm">매수</button>
@@ -163,12 +163,12 @@
                     <div><div class="text-xs font-bold text-yellow-700">행복 연금복권</div><div class="text-[10px] text-gray-500">장당 10만 원 (확률 극악)</div></div>
                     <button onclick="buyLottery()" class="bg-yellow-500 text-white px-3 py-2 rounded-md text-[11px] font-bold active:bg-yellow-600 shadow">구매</button>
                 </div>
-                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1 mt-1">🏢 부동산 (건물주 루트)</h3><div id="realEstateList" class="space-y-1"></div></div>
+                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1 mt-1">🏢 부동산</h3><div id="realEstateList" class="space-y-1"></div></div>
             </div>
 
             <div id="tab-act" class="tab-content p-2 space-y-2.5 hidden">
                 <div class="bg-blue-50 p-3 rounded-lg border border-blue-100">
-                    <h3 class="font-bold text-blue-800 text-xs mb-0.5">📱 교사 익명 커뮤니티 (블라인드)</h3>
+                    <h3 class="font-bold text-blue-800 text-xs mb-0.5">📱 익명 커뮤니티 (블라인드)</h3>
                     <p class="text-[10px] text-gray-600 mb-2">교직 썰을 풀어 베스트글에 도전! (쿨타임 1분)</p>
                     <button onclick="postBlind()" id="btn-blind" class="w-full bg-blue-500 text-white py-2.5 rounded-md text-xs font-bold shadow">썰 풀기 (준비됨)</button>
                 </div>
@@ -185,9 +185,9 @@
             </div>
 
             <div id="tab-club" class="tab-content p-2 space-y-3 hidden">
-                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">🎒 방과후 동아리 및 늘봄학교</h3><div id="clubList" class="space-y-1"></div></div>
+                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">🎒 방과후 동아리</h3><div id="clubList" class="space-y-1"></div></div>
                 <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">⚽ 교직원 소모임</h3><div id="somoimList" class="space-y-1"></div></div>
-                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">📜 직무연수 및 자율연수</h3><div id="certList" class="space-y-1"></div></div>
+                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">📜 직무 연수</h3><div id="certList" class="space-y-1"></div></div>
                 <div class="bg-teal-50 p-3 rounded-lg border border-teal-200 text-center">
                     <h3 class="font-bold text-teal-800 text-xs mb-1">✈️ 방학 시즌 힐링 여행</h3>
                     <p class="text-[10px] text-gray-600 mb-2">하와이 여행으로 영구 효율 +20%!</p>
@@ -197,7 +197,7 @@
 
             <div id="tab-sp" class="tab-content p-2 space-y-3 hidden">
                 <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200">
-                    <h3 class="font-bold text-xs mb-1.5 text-gray-800">👕 출근룩 (OOTD)</h3>
+                    <h3 class="font-bold text-xs mb-1.5 text-gray-800">👕 OOTD (출근룩 장착)</h3>
                     <div class="flex space-x-1.5 text-xs font-bold">
                         <button onclick="setOOTD('none')" class="flex-1 py-2 bg-white border rounded-md">기본</button>
                         <button onclick="setOOTD('츄리닝')" class="flex-1 py-2 bg-white border rounded-md">츄리닝🎽</button>
@@ -205,7 +205,7 @@
                     </div>
                 </div>
                 <div class="space-y-1.5">
-                    <h3 class="font-bold text-xs mb-1 px-1">✨ 교사의 비기 (액티브 스킬)</h3>
+                    <h3 class="font-bold text-xs mb-1 px-1">✨ 액티브 스킬</h3>
                     <button onclick="useSkill('vacation')" id="btn-vacation" class="w-full bg-green-100 border border-green-300 p-2.5 rounded-lg flex justify-between items-center text-xs font-bold shadow-sm">
                         <span>연가 쿠폰 🎫 (1시간치 수익)</span><span id="cd-vacation" class="text-green-800">준비됨</span>
                     </button>
@@ -214,7 +214,7 @@
                     </button>
                 </div>
                 <div class="bg-red-50 p-3 rounded-lg border border-red-200 text-center">
-                    <h3 class="font-bold text-red-700 text-xs mb-1">💼 다른 학교로 전근 (호봉승급)</h3>
+                    <h3 class="font-bold text-red-700 text-xs mb-1">💼 다른 학교로 전근 (호봉 승급)</h3>
                     <p class="text-[10px] text-gray-600 mb-2">자산 초기화 및 호봉/수익 배율 상승</p>
                     <button onclick="rebirth()" class="bg-red-600 text-white text-xs px-4 py-2.5 rounded-md shadow font-bold w-full">전근 서류 제출</button>
                 </div>
@@ -251,32 +251,31 @@
     
     const seasons = ['봄', '여름', '가을', '겨울']; let currentSeasonIdx = 0;
     
-    // 초등교사 300대 키워드 기반 실제 현장 용어 매칭 데이터베이스[cite: 8]
     const DB = {
         clicks: [ 
-            { id: 'c1', name: '맞춤형복지 믹스커피', baseCost: 100, profit: 5, icon: '☕' }, 
-            { id: 'c2', name: '공문기안 무소음 키보드', baseCost: 800, profit: 35, icon: '⌨️' }, 
-            { id: 'c3', name: '교원연구비 스탠딩 책상', baseCost: 6000, profit: 200, icon: '🪑' },
-            { id: 'c4', name: 'NEIS 결재용 듀얼모니터', baseCost: 50000, profit: 1200, icon: '🖥️' },
-            { id: 'c5', name: '스마트 레이저 포인터', baseCost: 350000, profit: 7000, icon: '🔦' }
+            { id: 'c1', name: '믹스커피 수혈', baseCost: 100, profit: 5, icon: '☕' }, 
+            { id: 'c2', name: '기계식 키보드', baseCost: 800, profit: 35, icon: '⌨️' }, 
+            { id: 'c3', name: '전동 높낮이 책상', baseCost: 6000, profit: 200, icon: '🪑' },
+            { id: 'c4', name: '듀얼 울트라와이드 모니터', baseCost: 50000, profit: 1200, icon: '🖥️' },
+            { id: 'c5', name: '원격 레이저 포인터', baseCost: 350000, profit: 7000, icon: '🔦' }
         ],
         autos: [ 
-            { id: 'a1', name: 'K-에듀파인 연동 알림장', baseCost: 300, profit: 15, icon: '📱' }, 
-            { id: 'a2', name: '디지털 교과서 태블릿 보급', baseCost: 3500, profit: 180, icon: '📲' }, 
-            { id: 'a3', name: 'AI 코스웨어 자동채점', baseCost: 30000, profit: 1200, icon: '🤖' },
-            { id: 'a4', name: '늘봄학교 돌봄교실 운영', baseCost: 250000, profit: 8000, icon: '🚌' },
-            { id: 'a5', name: '2022 개정 교육과정 허브', baseCost: 2000000, profit: 45000, icon: '🌐' }
+            { id: 'a1', name: '알림장 앱 도입', baseCost: 300, profit: 15, icon: '📱' }, 
+            { id: 'a2', name: '1인 1태블릿 배부', baseCost: 3500, profit: 180, icon: '📲' }, 
+            { id: 'a3', name: 'AI 자동 채점 시스템', baseCost: 30000, profit: 1200, icon: '🤖' },
+            { id: 'a4', name: '스마트 자율주행 스쿨버스', baseCost: 250000, profit: 8000, icon: '🚌' },
+            { id: 'a5', name: '메타버스 원격 교실 구축', baseCost: 2000000, profit: 45000, icon: '🌐' }
         ],
         enforce: [
-            { id: 'laptop', name: '에듀테크 교실 노트북', baseCost: 1000, mult: 0.1, icon: '💻' },
-            { id: 'coffee', name: '맞춤형복지 텀블러', baseCost: 5000, mult: 0.15, icon: '🧊' },
-            { id: 'mic', name: 'Wee클래스 무선 마이크', baseCost: 30000, mult: 0.2, icon: '📢' },
-            { id: 'stamp', name: '나이스 전결 결재도장', baseCost: 200000, mult: 0.3, icon: '💮' }
+            { id: 'laptop', name: '교실용 게이밍 노트북', baseCost: 1000, mult: 0.1, icon: '💻' },
+            { id: 'coffee', name: '무한 얼음 텀블러', baseCost: 5000, mult: 0.15, icon: '🧊' },
+            { id: 'mic', name: '메가폰 마이크', baseCost: 30000, mult: 0.2, icon: '📢' },
+            { id: 'stamp', name: '치트키 결재 도장', baseCost: 200000, mult: 0.3, icon: '💮' }
         ],
-        clubs: [ { id: 'coding', name: 'AI·코딩 동아리 육성', baseCost: 5000, profit: 250, icon: '💻' }, { id: 'band', name: '창체 오케스트라부', baseCost: 30000, profit: 1500, icon: '🎸' } ],
-        somoims: [ { id: 'soccer', name: '교사 축구 동호회', baseCost: 20000, profit: 800, icon: '⚽' }, { id: 'food', name: '학교 맛집탐방 소모임', baseCost: 100000, profit: 5000, icon: '🍜' } ],
-        certs: [ { id: 'counsel', name: '상담심리사 직무연수', baseCost: 50000, profit: 2000, icon: '📜' }, { id: 'counsel2', name: '디지털 리터러시 자격연수', baseCost: 300000, profit: 12000, icon: '🏅' } ],
-        cols: [ { id: 'col1', name: '액체괴물', icon: '🟢' }, { id: 'col2', name: '포켓몬 띠부씰', icon: '🐢' }, { id: 'col3', name: '피젯스피너', icon: '🌀' }, { id: 'col4', name: '유희왕 카드', icon: '🃏' } ]
+        clubs: [ { id: 'coding', name: '코딩부 육성', baseCost: 5000, profit: 250, icon: '💻' }, { id: 'band', name: '밴드부 육성', baseCost: 30000, profit: 1500, icon: '🎸' } ],
+        somoims: [ { id: 'soccer', name: '축구 동호회', baseCost: 20000, profit: 800, icon: '⚽' }, { id: 'food', name: '맛집 탐방 동호회', baseCost: 100000, profit: 5000, icon: '🍜' } ],
+        certs: [ { id: 'counsel', name: '상담심리사 연수', baseCost: 50000, profit: 2000, icon: '📜' }, { id: 'counsel2', name: '코딩교육 자격증', baseCost: 300000, profit: 12000, icon: '🏅' } ],
+        cols: [ { id: 'col1', name: '액괴', icon: '🟢' }, { id: 'col2', name: '띠부씰', icon: '🐢' }, { id: 'col3', name: '스피너', icon: '🌀' }, { id: 'col4', name: '유희왕', icon: '🃏' } ]
     };
 
     function startGame(charName, emoji) {
@@ -290,7 +289,7 @@
     }
     
     function loadGame() {
-        const saved = localStorage.getItem('v6_ultimate_save');
+        const saved = localStorage.getItem('v5_5_ultimate_save');
         if(saved) {
             try { 
                 const p = JSON.parse(saved); s = Object.assign({}, defaultState, p);
@@ -302,8 +301,8 @@
         } else { s = JSON.parse(JSON.stringify(defaultState)); }
     }
     
-    function saveGame() { s.lastSaveTime = Date.now(); localStorage.setItem('v6_ultimate_save', JSON.stringify(s)); }
-    function clearData() { if(confirm("모든 데이터를 지울까요?")) { localStorage.removeItem('v6_ultimate_save'); location.reload(); } }
+    function saveGame() { s.lastSaveTime = Date.now(); localStorage.setItem('v5_5_ultimate_save', JSON.stringify(s)); }
+    function clearData() { if(confirm("모든 데이터를 지울까요?")) { localStorage.removeItem('v5_5_ultimate_save'); location.reload(); } }
 
     function goHome() {
         if(confirm("메인 타이틀 화면으로 돌아가시겠습니까? (현재 진행 상황은 자동 저장됩니다)")) {
@@ -366,7 +365,10 @@
 
     function handleMainClick(e) {
         if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+        
+        // 텐션 증가량 확실하게 반영
         s.caffeine = Math.min(100, s.caffeine + 8);
+        
         s.money += currentClickProfit; s.exp += currentExpPerClick; s.stats.totalClicks++;
         playAudio('coin'); showFloat(e.clientX, e.clientY, `+${formatMoney(currentClickProfit)}`);
         
@@ -429,6 +431,7 @@
         document.getElementById('expText').innerText = `${Math.floor(s.exp)}/${s.level*100}`;
         document.getElementById('autoMoneyText').innerText = formatMoney(currentAutoProfit);
         
+        // 텐션 게이지 바 너비 명시적 반영
         const cb = document.getElementById('caffeineBar'); 
         const cafPct = Math.min(Math.max(0, s.caffeine), 100);
         cb.style.width = cafPct + '%';
@@ -564,6 +567,7 @@
     function rebirth(force = false) { 
         if(!force && !confirm("자산을 포기하고 전근하시겠습니까?\n호봉 및 수익 배율이 증가합니다.")) return; 
         
+        // 전근 시 영구 데이터 보존 및 버그 수정
         const preservedHobong = (s.hobong || 1) + 1;
         const preservedEndings = s.endings || 0;
         const preservedHonor = s.honor || 0;
