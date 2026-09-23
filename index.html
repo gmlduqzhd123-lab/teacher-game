@@ -38,7 +38,7 @@
 </head>
 <body class="flex flex-col text-gray-800 relative items-center justify-center">
 
-    <!-- 시작 화면 (메인) - 요청사항 반영 -->
+    <!-- 시작 화면 (메인) -->
     <div id="startScreen" class="absolute inset-0 bg-white z-50 flex flex-col items-center justify-between p-8">
         <div></div>
         <div class="flex flex-col items-center justify-center">
@@ -344,7 +344,7 @@
     }
     
     function loadGame() {
-        const saved = localStorage.getItem('v8_0_ultimate_save');
+        const saved = localStorage.getItem('v8_1_ultimate_save');
         if(saved) {
             try { 
                 const p = JSON.parse(saved); 
@@ -372,12 +372,12 @@
     
     function saveGame() { 
         s.lastSaveTime = Date.now(); 
-        localStorage.setItem('v8_0_ultimate_save', JSON.stringify(s)); 
+        localStorage.setItem('v8_1_ultimate_save', JSON.stringify(s)); 
     }
     
     function clearData() { 
         if(confirm("모든 데이터를 지울까요?")) { 
-            localStorage.removeItem('v8_0_ultimate_save'); 
+            localStorage.removeItem('v8_1_ultimate_save'); 
             location.reload(); 
         } 
     }
@@ -952,6 +952,7 @@
 
     function applyOOTDVisual() { setOOTD(s.ootd); }
 
+    // 전근(환생) 시 홈 화면으로 튕기지 않고 게임 화면 유지하도록 버그 수정
     function rebirth(force = false) { 
         if(!force && !confirm("자산을 포기하고 전근하시겠습니까?\n호봉 및 수익 배율이 증가합니다.")) return; 
         
@@ -961,6 +962,7 @@
         const preservedCollections = s.collections || {};
         const preservedSpareItems = s.spareItems || 0;
         const preservedTravelBuff = s.travelBuff || 1;
+        const preservedCharacter = s.character || '👨‍🏫';
         
         s = JSON.parse(JSON.stringify(defaultState));
         s.hobong = preservedHobong;
@@ -969,11 +971,15 @@
         s.collections = preservedCollections;
         s.spareItems = preservedSpareItems;
         s.travelBuff = preservedTravelBuff;
+        s.character = preservedCharacter;
         
         const grades = ['1학년', '6학년', '전담교사']; 
         s.grade = grades[Math.floor(Math.random() * grades.length)]; 
+        
         saveGame(); 
-        location.reload(); 
+        renderAll();
+        updateUI();
+        showTitleNotification(`🎉 새로운 학교로 전근 완료! (${s.hobong}호봉 승급)`);
     }
     
     function triggerEnding() { 
