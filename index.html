@@ -32,6 +32,8 @@
         
         #caffeineBar { transition: width 0.1s linear, background-color 0.3s; }
         .sweet-spot { background-color: #f59e0b !important; box-shadow: 0 0 8px #f59e0b; }
+        @keyframes glow { 0% { box-shadow: 0 0 5px #fbbf24; } 50% { box-shadow: 0 0 15px #f59e0b, 0 0 25px #f59e0b; } 100% { box-shadow: 0 0 5px #fbbf24; } }
+        .pivot-glow { animation: glow 1s infinite; }
     </style>
 </head>
 <body class="flex flex-col text-gray-800 relative items-center justify-center">
@@ -41,7 +43,7 @@
         <div></div>
         <div class="flex flex-col items-center justify-center">
             <h1 class="text-3xl font-bold text-center text-blue-600 drop-shadow-md leading-tight mb-2">👨‍🏫 건물주가 되고 싶은<br>선생님</h1>
-            <p class="text-gray-500 text-sm mb-6 text-center">Ultimate Teacher Simulator v7.5 (Stable)</p>
+            <p class="text-gray-500 text-sm mb-6 text-center">Ultimate Teacher Simulator v8.0 (1000 Keywords Master)</p>
             <div class="flex space-x-4 mb-6">
                 <button onclick="startGame('남교사', '👨‍🏫')" class="p-5 bg-blue-100 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition"><div class="text-4xl mb-1">👨‍🏫</div><div class="font-bold text-sm">남교사</div></button>
                 <button onclick="startGame('여교사', '👩‍🏫')" class="p-5 bg-pink-100 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition"><div class="text-4xl mb-1">👩‍🏫</div><div class="font-bold text-sm">여교사</div></button>
@@ -60,6 +62,7 @@
         <div id="headerArea" class="bg-blue-600 text-white p-2.5 pb-2 shadow-md transition-colors duration-500 rounded-b-lg z-20">
             <div class="flex justify-between items-center mb-1.5 px-0.5">
                 <button onclick="goHome()" class="bg-blue-800 bg-opacity-60 text-white px-2.5 py-1 rounded-full text-[10px] font-bold shadow flex items-center space-x-1 active:scale-95 transition">🏠 홈으로</button>
+                <button onclick="activatePivotTime()" id="pivotBtn" class="bg-gray-700 text-gray-300 px-2.5 py-1 rounded-full text-[10px] font-bold shadow transition select-none">🚀 피벗타임 (0%)</button>
                 <button onclick="openSnackBox()" class="bg-yellow-500 text-gray-900 px-2 py-0.5 rounded-full text-[10px] font-bold shadow active:scale-95 transition">🍫 간식함</button>
                 <button onclick="toggleAudio()" id="audioBtn" class="bg-blue-800 bg-opacity-60 text-white px-2.5 py-1 rounded-full text-[10px] font-bold shadow active:scale-95 transition">🔊 ON</button>
             </div>
@@ -145,13 +148,13 @@
         <!-- 탭 컨텐츠 영역 -->
         <div class="scrollable-tab bg-white pb-1 relative px-2 flex-shrink-0">
             <div id="tab-up" class="tab-content p-2 space-y-3">
-                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">👆 클릭 강화</h3><div id="clickUpgrades" class="space-y-1"></div></div>
+                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">👆 클릭 강화 (꾹 누르면 연타 강화)</h3><div id="clickUpgrades" class="space-y-1"></div></div>
                 <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">⏳ 자동 수익</h3><div id="autoUpgrades" class="space-y-1"></div></div>
             </div>
 
             <div id="tab-enforce" class="tab-content p-2 space-y-3 hidden">
                 <div class="bg-indigo-50 p-2 rounded-lg border border-indigo-200 text-[11px] text-indigo-900 font-bold mb-1">
-                    🛠️ 장비를 강화하여 전체 수익에 영구 배율을 부여하세요!
+                    🛠️ 장비 및 맞춤형복지 인테리어를 강화하여 영구 배율을 부여하세요!
                 </div>
                 <div id="enforceList" class="space-y-1.5"></div>
             </div>
@@ -262,9 +265,12 @@
     let bgmGainNode = null; 
     let loopInterval = null; let eventTimerObj = null; let globalAuditListener = null;
     let currentClickProfit = 200, currentAutoProfit = 50, currentExpPerClick = 5, currentExpPerSec = 2;
-    let buffs = { isSilence: false, isFever: false, papsMult: 1, cafMult: 1, menuBuff: 1 };
+    let buffs = { isSilence: false, isFever: false, papsMult: 1, cafMult: 1, menuBuff: 1, isPivot: false };
     
     let continuousClickTimer = null;
+    let continuousUpgradeTimer = null;
+    let pivotCharge = 0;
+    let pivotTimer = null;
     
     const seasons = ['봄', '여름', '가을', '겨울']; let currentSeasonIdx = 0;
     
@@ -331,7 +337,7 @@
     }
     
     function loadGame() {
-        const saved = localStorage.getItem('v7_5_ultimate_save');
+        const saved = localStorage.getItem('v8_0_ultimate_save');
         if(saved) {
             try { 
                 const p = JSON.parse(saved); 
@@ -359,12 +365,12 @@
     
     function saveGame() { 
         s.lastSaveTime = Date.now(); 
-        localStorage.setItem('v7_5_ultimate_save', JSON.stringify(s)); 
+        localStorage.setItem('v8_0_ultimate_save', JSON.stringify(s)); 
     }
     
     function clearData() { 
         if(confirm("모든 데이터를 지울까요?")) { 
-            localStorage.removeItem('v7_5_ultimate_save'); 
+            localStorage.removeItem('v8_0_ultimate_save'); 
             location.reload(); 
         } 
     }
@@ -394,6 +400,52 @@
         if (continuousClickTimer) {
             clearInterval(continuousClickTimer);
             continuousClickTimer = null;
+        }
+    }
+
+    function startContinuousUpgrade(id, type) {
+        buySpecialItem(id, type);
+        if (continuousUpgradeTimer) clearInterval(continuousUpgradeTimer);
+        continuousUpgradeTimer = setInterval(() => {
+            buySpecialItem(id, type);
+        }, 120);
+    }
+
+    function stopContinuousUpgrade() {
+        if (continuousUpgradeTimer) {
+            clearInterval(continuousUpgradeTimer);
+            continuousUpgradeTimer = null;
+        }
+    }
+
+    function activatePivotTime() {
+        if (pivotCharge < 100 || buffs.isPivot) return;
+        buffs.isPivot = true;
+        pivotCharge = 0;
+        playAudio('buy');
+        showTitleNotification("🚀 [피벗 타임] 업무 효율 10배 폭발 기간!");
+        updatePivotUI();
+        
+        if (pivotTimer) clearTimeout(pivotTimer);
+        pivotTimer = setTimeout(() => {
+            buffs.isPivot = false;
+            showTitleNotification("피벗 타임 종료! 원래 속도로 복귀합니다.");
+            updatePivotUI();
+        }, 15000);
+    }
+
+    function updatePivotUI() {
+        const btn = document.getElementById('pivotBtn');
+        if (!btn) return;
+        if (buffs.isPivot) {
+            btn.innerText = "🚀 피벗타임 중! (10배)";
+            btn.className = "bg-yellow-400 text-gray-900 px-2.5 py-1 rounded-full text-[10px] font-bold shadow pivot-glow transition select-none";
+        } else if (pivotCharge >= 100) {
+            btn.innerText = "🚀 피벗타임 발동가능!";
+            btn.className = "bg-yellow-500 text-gray-900 px-2.5 py-1 rounded-full text-[10px] font-bold shadow pivot-glow transition select-none cursor-pointer";
+        } else {
+            btn.innerText = `🚀 피벗타임 (${Math.floor(pivotCharge)}%)`;
+            btn.className = "bg-gray-700 text-gray-300 px-2.5 py-1 rounded-full text-[10px] font-bold shadow transition select-none";
         }
     }
 
@@ -503,11 +555,12 @@
         if(s.motto === '부자가 되자') { cv *= 1.2; av *= 1.2; } 
         if(s.motto === '배움이 먼저다') { ec *= 1.5; ea *= 1.5; }
         
+        const pivotMult = buffs.isPivot ? 10 : 1;
         const hM = (1 + ((s.hobong-1)*0.1) + s.succulentBuff) * s.travelBuff * enforceMult;
         av += (s.reals.r1.own * 1e6) + (s.reals.r2.own * 5e6) + (s.reals.r3.own * 3e7) + (s.reals.r4.own * 2e8);
         
-        currentClickProfit = cv * hM * buffs.cafMult * gradeM * mottoM * buffs.menuBuff * (buffs.isFever?3:1);
-        currentAutoProfit = av * hM * buffs.papsMult * gradeM * mottoM * buffs.menuBuff;
+        currentClickProfit = cv * hM * buffs.cafMult * gradeM * mottoM * buffs.menuBuff * (buffs.isFever?3:1) * pivotMult;
+        currentAutoProfit = av * hM * buffs.papsMult * gradeM * mottoM * buffs.menuBuff * pivotMult;
         currentExpPerClick = ec * hM; 
         currentExpPerSec = ea * hM;
     }
@@ -518,6 +571,11 @@
         s.money += currentClickProfit * 2; 
         s.exp += currentExpPerClick * 2; 
         s.stats.totalClicks++;
+        
+        if (!buffs.isPivot && pivotCharge < 100) {
+            pivotCharge = Math.min(100, pivotCharge + 1.5);
+            updatePivotUI();
+        }
         
         playAudio('coin'); 
         showFloat(e.clientX, e.clientY, `+${formatMoney(currentClickProfit * 2)} (EXP+${Math.floor(currentExpPerClick * 2)})`);
@@ -660,7 +718,11 @@
                 const profitText = item.profit ? `+${formatMoney(item.profit)}` : `전체 수익 +${(item.mult||0)*100}%`;
                 return `<div class="flex justify-between items-center p-2.5 bg-gray-50 rounded-lg border border-gray-200 shadow-sm text-xs font-bold">
                     <div class="flex items-center space-x-2.5"><div class="text-xl drop-shadow-sm">${item.icon}</div><div><div class="text-gray-800">${item.name} <span class="text-blue-600">Lv.${cnt}</span></div><div class="text-gray-500 font-normal text-[11px]">${profitText}</div></div></div>
-                    <button class="buy-btn bg-blue-500 text-white px-3 py-2 rounded-md active:bg-blue-600 shadow-sm active:scale-95 transition" data-cost="${cost}" onclick="buySpecialItem('${item.id}','${type}')">${formatMoney(cost)}원</button></div>`;
+                    <button class="buy-btn bg-blue-500 text-white px-3 py-2 rounded-md active:bg-blue-600 shadow-sm active:scale-95 transition select-none" data-cost="${cost}" 
+                        onpointerdown="startContinuousUpgrade('${item.id}','${type}')" 
+                        onpointerup="stopContinuousUpgrade()" 
+                        onpointerleave="stopContinuousUpgrade()" 
+                        onpointercancel="stopContinuousUpgrade()">${formatMoney(cost)}원</button></div>`;
             }).join('');
         };
         
