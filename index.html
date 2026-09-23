@@ -38,22 +38,31 @@
 </head>
 <body class="flex flex-col text-gray-800 relative items-center justify-center">
 
-    <!-- 전용 플로팅 토스트 메시지 팝업 (가림 현상 원천 해결) -->
+    <!-- 전용 플로팅 토스트 메시지 팝업 -->
     <div id="gameToast" class="fixed top-16 left-1/2 transform -translate-x-1/2 bg-gray-900 bg-opacity-95 text-yellow-300 px-4 py-2.5 rounded-2xl text-xs font-bold z-50 hidden shadow-2xl border border-yellow-400 text-center pointer-events-none transition-all duration-300 max-w-[90%]"></div>
 
     <!-- 시작 화면 (메인) -->
-    <div id="startScreen" class="absolute inset-0 bg-white z-50 flex flex-col items-center justify-between p-8">
+    <div id="startScreen" class="absolute inset-0 bg-white z-50 flex flex-col items-center justify-between p-6">
         <div></div>
-        <div class="flex flex-col items-center justify-center">
-            <h1 class="text-3xl font-bold text-center text-blue-600 drop-shadow-md leading-tight mb-8">건물주가 되고 싶은<br>선생님</h1>
-            <div class="flex space-x-5 mb-4">
-                <button onclick="startGame('남교사', '🧑‍🏫')" class="p-6 bg-blue-50 border-2 border-blue-200 rounded-3xl shadow-md hover:scale-105 active:scale-95 transition flex flex-col items-center">
-                    <div class="text-5xl mb-2">🧑‍🏫</div>
-                    <div class="font-bold text-sm text-blue-700">남교사</div>
+        <div class="flex flex-col items-center justify-center w-full max-w-xs">
+            <h1 class="text-3xl font-bold text-center text-blue-600 drop-shadow-md leading-tight mb-4">건물주가 되고 싶은<br>선생님</h1>
+            
+            <div class="text-xs font-bold text-gray-500 mb-1.5 self-start px-1">난이도 선택</div>
+            <div class="flex space-x-2 w-full mb-6">
+                <button onclick="setDifficulty('easy')" id="diff-easy" class="flex-1 py-2 bg-green-50 text-green-700 border-2 border-green-200 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm">🌱 초보</button>
+                <button onclick="setDifficulty('normal')" id="diff-normal" class="flex-1 py-2 bg-blue-500 text-white border-2 border-blue-600 rounded-xl font-bold text-xs transition active:scale-95 shadow-md">🌿 보통</button>
+                <button onclick="setDifficulty('hard')" id="diff-hard" class="flex-1 py-2 bg-red-50 text-red-700 border-2 border-red-200 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm">🔥 어려움</button>
+            </div>
+
+            <div class="text-xs font-bold text-gray-500 mb-1.5 self-start px-1">아바타 선택</div>
+            <div class="flex space-x-3 w-full mb-4">
+                <button onclick="startGame('남교사', '🧑‍🏫')" class="flex-1 p-4 bg-blue-50 border-2 border-blue-200 rounded-2xl shadow-md hover:scale-105 active:scale-95 transition flex flex-col items-center">
+                    <div class="text-4xl mb-1">🧑‍🏫</div>
+                    <div class="font-bold text-xs text-blue-700">남교사</div>
                 </button>
-                <button onclick="startGame('여교사', '👩‍🏫')" class="p-6 bg-pink-50 border-2 border-pink-200 rounded-3xl shadow-md hover:scale-105 active:scale-95 transition flex flex-col items-center">
-                    <div class="text-5xl mb-2">👩‍🏫</div>
-                    <div class="font-bold text-sm text-pink-700">여교사</div>
+                <button onclick="startGame('여교사', '👩‍🏫')" class="flex-1 p-4 bg-pink-50 border-2 border-pink-200 rounded-2xl shadow-md hover:scale-105 active:scale-95 transition flex flex-col items-center">
+                    <div class="text-4xl mb-1">👩‍🏫</div>
+                    <div class="font-bold text-xs text-pink-700">여교사</div>
                 </button>
             </div>
         </div>
@@ -259,7 +268,7 @@
 <script>
     const defaultState = { 
         character: '👨‍🏫', money: 0, exp: 0, level: 1, hobong: 1, grade: '전담교사', motto: '무사히 퇴근하자', 
-        caffeine: 0, succulentGrowth: 0, succulentBuff: 0, honor: 0, travelBuff: 1,
+        caffeine: 0, succulentGrowth: 0, succulentBuff: 0, honor: 0, travelBuff: 1, difficulty: 'normal',
         inventory: {}, collections: {}, spareItems: 0, stockPrice: 10000, stockCount: 0, emoticonIncome: 0, 
         clubs: { coding: 0, band: 0, nulbom: 0 }, 
         somoims: { soccer: 0, food: 0 }, 
@@ -281,10 +290,10 @@
     let continuousUpgradeTimer = null;
     let pivotCharge = 0;
     let pivotTimer = null;
+    let currentDifficulty = 'normal';
     
     const seasons = ['봄', '여름', '가을', '겨울']; let currentSeasonIdx = 0;
     
-    // 대폭 확장된 1000대 초등교사 키워드 기반 아이템 데이터베이스 (10종 이상 대폭 추가)[cite: 5]
     const DB = {
         clicks: [ 
             { id: 'c1', name: '맞춤형복지 믹스커피', baseCost: 100, profit: 100, icon: '☕' }, 
@@ -340,6 +349,23 @@
         cols: [ { id: 'col1', name: '액체괴물', icon: '🟢' }, { id: 'col2', name: '포켓몬 띠부씰', icon: '🐢' }, { id: 'col3', name: '피젯스피너', icon: '🌀' }, { id: 'col4', name: '유희왕 카드', icon: '🃏' } ]
     };
 
+    function setDifficulty(diff) {
+        currentDifficulty = diff;
+        ['easy', 'normal', 'hard'].forEach(d => {
+            const btn = document.getElementById(`diff-${d}`);
+            if (!btn) return;
+            if (d === diff) {
+                if (d === 'easy') btn.className = "flex-1 py-2 bg-green-500 text-white border-2 border-green-600 rounded-xl font-bold text-xs transition active:scale-95 shadow-md";
+                else if (d === 'normal') btn.className = "flex-1 py-2 bg-blue-500 text-white border-2 border-blue-600 rounded-xl font-bold text-xs transition active:scale-95 shadow-md";
+                else btn.className = "flex-1 py-2 bg-red-500 text-white border-2 border-red-600 rounded-xl font-bold text-xs transition active:scale-95 shadow-md";
+            } else {
+                if (d === 'easy') btn.className = "flex-1 py-2 bg-green-50 text-green-700 border-2 border-green-200 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm";
+                else if (d === 'normal') btn.className = "flex-1 py-2 bg-blue-50 text-blue-700 border-2 border-blue-200 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm";
+                else btn.className = "flex-1 py-2 bg-red-50 text-red-700 border-2 border-red-200 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm";
+            }
+        });
+    }
+
     function startGame(charName, emoji) {
         document.getElementById('startScreen').classList.add('hidden');
         document.getElementById('gameScreen').classList.remove('hidden'); 
@@ -347,6 +373,13 @@
         initAudio(); 
         loadGame(); 
         s.character = emoji; 
+        s.difficulty = currentDifficulty;
+
+        if (s.money === 0) {
+            if (s.difficulty === 'easy') s.money = 10000;
+            else if (s.difficulty === 'hard') s.money = 0;
+        }
+
         const charEl = document.getElementById('characterEmoji');
         if (charEl) charEl.innerText = emoji;
         calculateOfflineProgress(); 
@@ -360,7 +393,7 @@
     }
     
     function loadGame() {
-        const saved = localStorage.getItem('v8_1_ultimate_save');
+        const saved = localStorage.getItem('v8_2_ultimate_save');
         if(saved) {
             try { 
                 const p = JSON.parse(saved); 
@@ -378,22 +411,26 @@
                 s.caffeine = s.caffeine || 0; 
                 s.honor = s.honor || 0; 
                 s.travelBuff = s.travelBuff || 1;
+                s.difficulty = s.difficulty || 'normal';
+                currentDifficulty = s.difficulty;
+                setDifficulty(currentDifficulty);
             } catch(e) { 
                 s = JSON.parse(JSON.stringify(defaultState)); 
             }
         } else { 
             s = JSON.parse(JSON.stringify(defaultState)); 
+            s.difficulty = currentDifficulty;
         }
     }
     
     function saveGame() { 
         s.lastSaveTime = Date.now(); 
-        localStorage.setItem('v8_1_ultimate_save', JSON.stringify(s)); 
+        localStorage.setItem('v8_2_ultimate_save', JSON.stringify(s)); 
     }
     
     function clearData() { 
         if(confirm("모든 데이터를 지울까요?")) { 
-            localStorage.removeItem('v8_1_ultimate_save'); 
+            localStorage.removeItem('v8_2_ultimate_save'); 
             location.reload(); 
         } 
     }
@@ -472,58 +509,6 @@
         }
     }
 
-    // 화면 가림 현상이 절대 없는 전용 토스트 메시지 출력 함수
-    function showToast(msg) {
-        const toast = document.getElementById('gameToast');
-        if (!toast) return;
-        toast.innerText = msg;
-        toast.classList.remove('hidden');
-        toast.style.opacity = '1';
-        if (window.toastTimeout) clearTimeout(window.toastTimeout);
-        window.toastTimeout = setTimeout(() => {
-            toast.style.opacity = '0';
-            setTimeout(() => toast.classList.add('hidden'), 300);
-        }, 3000);
-    }
-
-    function openSnackBox() {
-        const snacks = [
-            { name: '달콤한 초콜릿 🍫', effect: '텐션 즉시 +30 & 10초간 클릭 수익 3배!', action: () => { s.caffeine = Math.min(100, s.caffeine + 30); } },
-            { name: '시원한 아이스 아메리카노 ☕', effect: '텐션 100% 풀충전!', action: () => { s.caffeine = 100; } },
-            { name: '비타민C 활력캔디 🍬', effect: '즉시 소지금 + 10분치 자동 수익!', action: () => { s.money += currentAutoProfit * 600; } }
-        ];
-        const chosen = snacks[Math.floor(Math.random() * snacks.length)];
-        chosen.action();
-        playAudio('buy');
-        showToast(`[간식함] ${chosen.name} 당첨! (${chosen.effect})`);
-        updateUI();
-    }
-
-    function openGacha() {
-        const cost = 500000;
-        if (s.money < cost) {
-            playAudio('error');
-            alert("소지금이 부족합니다! (50만 원 필요)");
-            return;
-        }
-        s.money -= cost;
-        const rewards = [
-            { name: '최신형 스마트 태블릿 세트 📱', type: 'money', val: 2000000, msg: '대박! 교육청 지원금 당첨 (+200만 원)' },
-            { name: 'AI 보조 로봇 허브 🤖', type: 'honor', val: 10, msg: '학교 우수 혁신 사례 선정! (명예 +10)' },
-            { name: '학급용 무선 응답기 📶', type: 'buff', val: 1, msg: '수업 참여도 폭발! 30초간 클릭 수익 5배!' }
-        ];
-        const rw = rewards[Math.floor(Math.random() * rewards.length)];
-        if (rw.type === 'money') s.money += rw.val;
-        else if (rw.type === 'honor') s.honor += rw.val;
-        else if (rw.type === 'buff') {
-            currentClickProfit *= 5;
-            setTimeout(() => calculateMultipliers(), 30000);
-        }
-        playAudio('buy');
-        showToast(`🎁 [언박싱] ${rw.msg}`);
-        updateUI();
-    }
-
     function calculateOfflineProgress() {
         const diff = Math.floor((Date.now() - s.lastSaveTime)/1000);
         if(diff > 30) {
@@ -592,13 +577,17 @@
         if(s.motto === '부자가 되자') { cv *= 1.2; av *= 1.2; } 
         if(s.motto === '배움이 먼저다') { ec *= 1.5; ea *= 1.5; }
         
+        let diffMult = 1.0;
+        if (s.difficulty === 'easy') diffMult = 2.0;
+        else if (s.difficulty === 'hard') diffMult = 0.5;
+
         const pivotMult = buffs.isPivot ? 10 : 1;
         const hM = (1 + ((s.hobong-1)*0.1) + s.succulentBuff) * s.travelBuff * enforceMult;
         av += (s.reals.r1.own * 1e6) + (s.reals.r2.own * 5e6) + (s.reals.r3.own * 3e7) + (s.reals.r4.own * 2e8);
         
-        currentClickProfit = cv * hM * buffs.cafMult * gradeM * mottoM * buffs.menuBuff * (buffs.isFever?3:1) * pivotMult;
-        currentAutoProfit = av * hM * buffs.papsMult * gradeM * mottoM * buffs.menuBuff * pivotMult;
-        currentExpPerClick = ec * hM; 
+        currentClickProfit = cv * hM * buffs.cafMult * gradeM * mottoM * buffs.menuBuff * (buffs.isFever?3:1) * pivotMult * diffMult;
+        currentAutoProfit = av * hM * buffs.papsMult * gradeM * mottoM * buffs.menuBuff * pivotMult * diffMult;
+        currentExpPerClick = ec * hM * (s.difficulty === 'easy' ? 1.5 : 1.0); 
         currentExpPerSec = ea * hM;
     }
 
@@ -658,19 +647,6 @@
         el.style.left = `${posX-20 + (Math.random()*40-20)}px`; el.style.top = `${posY-30}px`; 
         document.body.appendChild(el); 
         el.addEventListener('animationend', ()=>el.remove());
-    }
-    
-    function showTitleNotification(msg) {
-        showToast(msg);
-        const b = document.getElementById('boardText'); 
-        if (b) {
-            b.innerText = msg; 
-            b.classList.add('text-yellow-300');
-            setTimeout(() => { 
-                b.innerText = s.motto; 
-                b.classList.remove('text-yellow-300'); 
-            }, 3000);
-        }
     }
     
     function changeTab(id, btnEl) {
@@ -751,9 +727,10 @@
         const renderList = (dbList, targetId, stateObj, type) => {
             const container = document.getElementById(targetId);
             if (!container) return;
+            const inflation = s.difficulty === 'hard' ? 1.22 : 1.18;
             container.innerHTML = dbList.map(item => {
                 const cnt = (stateObj && stateObj[item.id]) || 0; 
-                const cost = Math.floor(item.baseCost * Math.pow(1.18, cnt));
+                const cost = Math.floor(item.baseCost * Math.pow(inflation, cnt));
                 const profitText = item.profit ? `+${formatMoney(item.profit)}` : `전체 수익 +${(item.mult||0)*100}%`;
                 return `<div class="flex justify-between items-center p-2.5 bg-gray-50 rounded-lg border border-gray-200 shadow-sm text-xs font-bold">
                     <div class="flex items-center space-x-2.5"><div class="text-xl drop-shadow-sm">${item.icon}</div><div><div class="text-gray-800">${item.name} <span class="text-blue-600">Lv.${cnt}</span></div><div class="text-gray-500 font-normal text-[11px]">${profitText}</div></div></div>
@@ -819,7 +796,8 @@
         
         if (!item || !targetObj) return;
         const cnt = targetObj[id] || 0; 
-        const cost = Math.floor(item.baseCost * Math.pow(1.18, cnt));
+        const inflation = s.difficulty === 'hard' ? 1.22 : 1.18;
+        const cost = Math.floor(item.baseCost * Math.pow(inflation, cnt));
         if(s.money >= cost) {
             s.money -= cost; 
             targetObj[id] = cnt + 1; 
@@ -994,6 +972,7 @@
         const preservedSpareItems = s.spareItems || 0;
         const preservedTravelBuff = s.travelBuff || 1;
         const preservedCharacter = s.character || '👨‍🏫';
+        const preservedDifficulty = s.difficulty || 'normal';
         
         s = JSON.parse(JSON.stringify(defaultState));
         s.hobong = preservedHobong;
@@ -1003,6 +982,7 @@
         s.spareItems = preservedSpareItems;
         s.travelBuff = preservedTravelBuff;
         s.character = preservedCharacter;
+        s.difficulty = preservedDifficulty;
         
         const grades = ['1학년', '6학년', '전담교사']; 
         s.grade = grades[Math.floor(Math.random() * grades.length)]; 
