@@ -81,7 +81,7 @@
         <div id="headerArea" class="bg-blue-600 text-white p-2.5 pb-2 shadow-md transition-colors duration-500 rounded-b-lg z-20">
             <div class="flex justify-between items-center mb-1.5 px-0.5">
                 <button onclick="goHome()" class="bg-blue-800 bg-opacity-60 text-white px-2.5 py-1 rounded-full text-[10px] font-bold shadow flex items-center space-x-1 active:scale-95 transition">🏠 홈으로</button>
-                <button onclick="activatePivotTime()" id="pivotBtn" class="bg-gray-700 text-gray-300 px-2.5 py-1 rounded-full text-[10px] font-bold shadow transition select-none">🚀 피벗타임 (0%)</button>
+                <button onclick="activatePivotTime()" id="pivotBtn" class="bg-gray-700 text-gray-300 px-2.5 py-1 rounded-full text-[10px] font-bold shadow transition select-none cursor-pointer">🚀 피벗타임 (0%)</button>
                 <button onclick="openSnackBox()" class="bg-yellow-500 text-gray-900 px-2 py-0.5 rounded-full text-[10px] font-bold shadow active:scale-95 transition">🍫 간식함</button>
                 <button onclick="toggleAudio()" id="audioBtn" class="bg-blue-800 bg-opacity-60 text-white px-2.5 py-1 rounded-full text-[10px] font-bold shadow active:scale-95 transition">🔊 ON</button>
             </div>
@@ -179,17 +179,14 @@
             </div>
             
             <div id="tab-asset" class="tab-content p-2 space-y-3 hidden">
-                <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200 shadow-sm">
-                    <h3 class="font-bold text-xs mb-1.5 text-gray-800">📈 K-에듀테크 테마주</h3>
-                    <div class="flex justify-between text-[11px] mb-2 px-1"><span>현재가: <span id="stockPrice" class="font-bold text-blue-600"></span>원</span><span>보유: <span id="stockCount" class="font-bold"></span>주</span></div>
-                    <div class="flex space-x-1.5">
-                        <button onclick="tradeStock('buy')" class="flex-1 bg-red-500 text-white py-2 rounded-md text-[11px] font-bold active:bg-red-600 shadow-sm">매수</button>
-                        <button onclick="tradeStock('sell')" class="flex-1 bg-blue-500 text-white py-2 rounded-md text-[11px] font-bold active:bg-blue-600 shadow-sm">매도(전량)</button>
-                    </div>
+                <!-- 코스피 실전 종목 테마시장 (확장) -->
+                <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200 shadow-sm mb-3">
+                    <h3 class="font-bold text-xs mb-2 text-gray-800">📈 KOSPI 실전 우량주 테마시장</h3>
+                    <div id="stockMarketList" class="space-y-2 max-h-52 overflow-y-auto pr-1"></div>
                 </div>
-                <div class="bg-yellow-50 p-2.5 rounded-lg border border-yellow-200 flex justify-between items-center shadow-sm">
+                <div class="bg-yellow-50 p-2.5 rounded-lg border border-yellow-200 flex justify-between items-center shadow-sm mb-3">
                     <div><div class="text-xs font-bold text-yellow-700">행복 연금복권</div><div class="text-[10px] text-gray-500">장당 10만 원 (확률 극악)</div></div>
-                    <button onclick="buyLottery()" class="bg-yellow-500 text-white px-3 py-2 rounded-md text-[11px] font-bold active:bg-yellow-600 shadow">구매</button>
+                    <button onclick="buyLottery()" class="bg-yellow-500 text-white px-3 py-2 rounded-md text-[11px] font-bold active:bg-yellow-600 shadow cursor-pointer">구매</button>
                 </div>
                 <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1 mt-1">🏢 부동산</h3><div id="realEstateList" class="space-y-1"></div></div>
             </div>
@@ -198,22 +195,22 @@
                 <div class="bg-purple-50 p-3 rounded-lg border border-purple-100">
                     <h3 class="font-bold text-purple-800 text-xs mb-0.5">📦 에듀테크 기자재 언박싱 가챠</h3>
                     <p class="text-[10px] text-gray-600 mb-2">랜덤 박스로 최신 스마트기기 및 버프 획득 (50만 원)</p>
-                    <button onclick="openGacha()" class="w-full bg-purple-600 text-white py-2.5 rounded-md text-xs font-bold shadow">기자재 언박싱하기</button>
+                    <button onclick="openGacha()" class="w-full bg-purple-600 text-white py-2.5 rounded-md text-xs font-bold shadow cursor-pointer">기자재 언박싱하기</button>
                 </div>
                 <div class="bg-blue-50 p-3 rounded-lg border border-blue-100">
                     <h3 class="font-bold text-blue-800 text-xs mb-0.5">📱 익명 커뮤니티 (블라인드)</h3>
                     <p class="text-[10px] text-gray-600 mb-2">교직 썰을 풀어 베스트글에 도전! (쿨타임 1분)</p>
-                    <button onclick="postBlind()" id="btn-blind" class="w-full bg-blue-500 text-white py-2.5 rounded-md text-xs font-bold shadow">썰 풀기 (준비됨)</button>
+                    <button onclick="postBlind()" id="btn-blind" class="w-full bg-blue-500 text-white py-2.5 rounded-md text-xs font-bold shadow cursor-pointer">썰 풀기 (준비됨)</button>
                 </div>
                 <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-100">
                     <h3 class="font-bold text-yellow-800 text-xs mb-0.5">🎨 이모티콘 작가 도전</h3>
                     <p class="text-[10px] text-gray-600 mb-2">100만원 투자 후 1분 심사 (영구 수익 증가)</p>
-                    <button onclick="makeEmoticon()" id="btn-emo" class="w-full bg-yellow-500 text-white py-2.5 rounded-md text-xs font-bold shadow">시안 제작하기 (100만원)</button>
+                    <button onclick="makeEmoticon()" id="btn-emo" class="w-full bg-yellow-500 text-white py-2.5 rounded-md text-xs font-bold shadow cursor-pointer">시안 제작하기 (100만원)</button>
                 </div>
                 <div class="bg-orange-50 p-3 rounded-lg border border-orange-100">
                     <h3 class="font-bold text-orange-800 text-xs mb-0.5">🥕 당근마켓 벼룩시장</h3>
                     <div class="text-[11px] font-bold mb-2 text-orange-900">보유 잉여템: <span id="carrotCount">0</span>개</div>
-                    <button onclick="sellCarrot()" class="w-full bg-orange-500 text-white py-2.5 rounded-md text-xs font-bold shadow">잉여템 판매하기</button>
+                    <button onclick="sellCarrot()" class="w-full bg-orange-500 text-white py-2.5 rounded-md text-xs font-bold shadow cursor-pointer">잉여템 판매하기</button>
                 </div>
             </div>
 
@@ -225,7 +222,7 @@
                 <div class="bg-teal-50 p-3 rounded-lg border border-teal-200 text-center">
                     <h3 class="font-bold text-teal-800 text-xs mb-1">✈️ 방학 시즌 힐링 여행</h3>
                     <p class="text-[10px] text-gray-600 mb-2">하와이 여행으로 영구 효율 +20%!</p>
-                    <button onclick="buyTravel()" class="bg-teal-600 text-white text-xs px-3 py-2.5 rounded-md shadow font-bold w-full">하와이 여행 떠나기 (5천만 원)</button>
+                    <button onclick="buyTravel()" class="bg-teal-600 text-white text-xs px-3 py-2.5 rounded-md shadow font-bold w-full cursor-pointer">하와이 여행 떠나기 (5천만 원)</button>
                 </div>
             </div>
 
@@ -233,24 +230,24 @@
                 <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200">
                     <h3 class="font-bold text-xs mb-1.5 px-1">👕 OOTD (출근룩 장착)</h3>
                     <div class="flex space-x-1.5 text-xs font-bold">
-                        <button onclick="setOOTD('none')" class="flex-1 py-2 bg-white border rounded-md">기본</button>
-                        <button onclick="setOOTD('츄리닝')" class="flex-1 py-2 bg-white border rounded-md">츄리닝🎽</button>
-                        <button onclick="setOOTD('정장')" class="flex-1 py-2 bg-white border rounded-md">정장👔</button>
+                        <button onclick="setOOTD('none')" class="flex-1 py-2 bg-white border rounded-md cursor-pointer">기본</button>
+                        <button onclick="setOOTD('츄리닝')" class="flex-1 py-2 bg-white border rounded-md cursor-pointer">츄리닝🎽</button>
+                        <button onclick="setOOTD('정장')" class="flex-1 py-2 bg-white border rounded-md cursor-pointer">정장👔</button>
                     </div>
                 </div>
                 <div class="space-y-1.5">
                     <h3 class="font-bold text-xs mb-1 px-1">✨ 액티브 스킬</h3>
-                    <button onclick="useSkill('vacation')" id="btn-vacation" class="w-full bg-green-100 border border-green-300 p-2.5 rounded-lg flex justify-between items-center text-xs font-bold shadow-sm">
+                    <button onclick="useSkill('vacation')" id="btn-vacation" class="w-full bg-green-100 border border-green-300 p-2.5 rounded-lg flex justify-between items-center text-xs font-bold shadow-sm cursor-pointer">
                         <span>연가 쿠폰 🎫 (1시간치 수익)</span><span id="cd-vacation" class="text-green-800">준비됨</span>
                     </button>
-                    <button onclick="useSkill('silence')" id="btn-silence" class="w-full bg-purple-100 border border-purple-300 p-2.5 rounded-lg flex justify-between items-center text-xs font-bold shadow-sm">
+                    <button onclick="useSkill('silence')" id="btn-silence" class="w-full bg-purple-100 border border-purple-300 p-2.5 rounded-lg flex justify-between items-center text-xs font-bold shadow-sm cursor-pointer">
                         <span>침묵의 응시 🤫 (30초 평화)</span><span id="cd-silence" class="text-purple-800">준비됨</span>
                     </button>
                 </div>
                 <div class="bg-red-50 p-3 rounded-lg border border-red-200 text-center">
                     <h3 class="font-bold text-red-700 text-sm mb-1">💼 다른 학교로 전근 (호봉 승급)</h3>
                     <p class="text-[10px] text-gray-600 mb-2">자산 초기화 및 호봉/수익 배율 상승</p>
-                    <button onclick="rebirth()" class="bg-red-600 text-white text-xs px-4 py-2.5 rounded-md shadow font-bold w-full">전근 서류 제출</button>
+                    <button onclick="rebirth()" class="bg-red-600 text-white text-xs px-4 py-2.5 rounded-md shadow font-bold w-full cursor-pointer">전근 서류 제출</button>
                 </div>
                 <div>
                     <h3 class="font-bold text-xs mb-1.5 px-1">📦 압수물품 도감</h3>
@@ -269,7 +266,19 @@
     const defaultState = { 
         character: '👨‍🏫', money: 0, exp: 0, level: 1, hobong: 1, grade: '전담교사', motto: '무사히 퇴근하자', 
         caffeine: 0, succulentGrowth: 0, succulentBuff: 0, honor: 0, travelBuff: 1, difficulty: 'normal',
-        inventory: {}, collections: {}, spareItems: 0, stockPrice: 10000, stockCount: 0, emoticonIncome: 0, 
+        inventory: {}, collections: {}, spareItems: 0, emoticonIncome: 0, 
+        stocks: {
+            samsung: { name: '삼성전자', price: 70000, count: 0 },
+            skhynix: { name: 'SK하이닉스', price: 150000, count: 0 },
+            lgensol: { name: 'LG에너지솔루션', price: 400000, count: 0 },
+            hyundai: { name: '현대차', price: 200000, count: 0 },
+            kia: { name: '기아', price: 100000, count: 0 },
+            naver: { name: 'NAVER', price: 200000, count: 0 },
+            kakao: { name: '카카오', price: 50000, count: 0 },
+            posco: { name: 'POSCO홀딩스', price: 400000, count: 0 },
+            kb: { name: 'KB금융', price: 70000, count: 0 },
+            celltrion: { name: '셀트리온', price: 180000, count: 0 }
+        },
         clubs: { coding: 0, band: 0, nulbom: 0 }, 
         somoims: { soccer: 0, food: 0 }, 
         sports: { team: 0 },
@@ -393,7 +402,7 @@
     }
     
     function loadGame() {
-        const saved = localStorage.getItem('v8_4_ultimate_save');
+        const saved = localStorage.getItem('v8_5_ultimate_save');
         if(saved) {
             try { 
                 const p = JSON.parse(saved); 
@@ -402,6 +411,7 @@
                 s.skills = p.skills || defaultState.skills; 
                 s.inventory = p.inventory || {}; 
                 s.collections = p.collections || {};
+                s.stocks = p.stocks || JSON.parse(JSON.stringify(defaultState.stocks));
                 s.clubs = p.clubs || { coding: 0, band: 0, nulbom: 0 };
                 s.somoims = p.somoims || { soccer: 0, food: 0 };
                 s.sports = p.sports || { team: 0 };
@@ -425,12 +435,12 @@
     
     function saveGame() { 
         s.lastSaveTime = Date.now(); 
-        localStorage.setItem('v8_4_ultimate_save', JSON.stringify(s)); 
+        localStorage.setItem('v8_5_ultimate_save', JSON.stringify(s)); 
     }
     
     function clearData() { 
         if(confirm("모든 데이터를 지울까요?")) { 
-            localStorage.removeItem('v8_4_ultimate_save'); 
+            localStorage.removeItem('v8_5_ultimate_save'); 
             location.reload(); 
         } 
     }
@@ -479,7 +489,12 @@
     }
 
     function activatePivotTime() {
-        if (pivotCharge < 100 || buffs.isPivot) return;
+        if (pivotCharge < 100) {
+            showToast(`🚀 피벗타임 게이지가 아직 부족합니다! (${Math.floor(pivotCharge)}%)`);
+            playAudio('error');
+            return;
+        }
+        if (buffs.isPivot) return;
         buffs.isPivot = true;
         pivotCharge = 0;
         playAudio('buy');
@@ -499,14 +514,65 @@
         if (!btn) return;
         if (buffs.isPivot) {
             btn.innerText = "🚀 피벗타임 중! (10배)";
-            btn.className = "bg-yellow-400 text-gray-900 px-2.5 py-1 rounded-full text-[10px] font-bold shadow pivot-glow transition select-none";
+            btn.className = "bg-yellow-400 text-gray-900 px-2.5 py-1 rounded-full text-[10px] font-bold shadow pivot-glow transition select-none cursor-pointer";
         } else if (pivotCharge >= 100) {
             btn.innerText = "🚀 피벗타임 발동가능!";
             btn.className = "bg-yellow-500 text-gray-900 px-2.5 py-1 rounded-full text-[10px] font-bold shadow pivot-glow transition select-none cursor-pointer";
         } else {
             btn.innerText = `🚀 피벗타임 (${Math.floor(pivotCharge)}%)`;
-            btn.className = "bg-gray-700 text-gray-300 px-2.5 py-1 rounded-full text-[10px] font-bold shadow transition select-none";
+            btn.className = "bg-gray-700 text-gray-300 px-2.5 py-1 rounded-full text-[10px] font-bold shadow transition select-none cursor-pointer";
         }
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('gameToast');
+        if (!toast) return;
+        toast.innerText = msg;
+        toast.classList.remove('hidden');
+        toast.style.opacity = '1';
+        if (window.toastTimeout) clearTimeout(window.toastTimeout);
+        window.toastTimeout = setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.classList.add('hidden'), 300);
+        }, 3000);
+    }
+
+    function openSnackBox() {
+        const snacks = [
+            { name: '달콤한 초콜릿 🍫', effect: '텐션 즉시 +30 & 10초간 클릭 수익 3배!', action: () => { s.caffeine = Math.min(100, s.caffeine + 30); } },
+            { name: '시원한 아이스 아메리카노 ☕', effect: '텐션 100% 풀충전!', action: () => { s.caffeine = 100; } },
+            { name: '비타민C 활력캔디 🍬', effect: '즉시 소지금 + 10분치 자동 수익!', action: () => { s.money += currentAutoProfit * 600; } }
+        ];
+        const chosen = snacks[Math.floor(Math.random() * snacks.length)];
+        chosen.action();
+        playAudio('buy');
+        showToast(`[간식함] ${chosen.name} 당첨! (${chosen.effect})`);
+        updateUI();
+    }
+
+    function openGacha() {
+        const cost = 500000;
+        if (s.money < cost) {
+            playAudio('error');
+            alert("소지금이 부족합니다! (50만 원 필요)");
+            return;
+        }
+        s.money -= cost;
+        const rewards = [
+            { name: '최신형 스마트 태블릿 세트 📱', type: 'money', val: 2000000, msg: '대박! 교육청 지원금 당첨 (+200만 원)' },
+            { name: 'AI 보조 로봇 허브 🤖', type: 'honor', val: 10, msg: '학교 우수 혁신 사례 선정! (명예 +10)' },
+            { name: '학급용 무선 응답기 📶', type: 'buff', val: 1, msg: '수업 참여도 폭발! 30초간 클릭 수익 5배!' }
+        ];
+        const rw = rewards[Math.floor(Math.random() * rewards.length)];
+        if (rw.type === 'money') s.money += rw.val;
+        else if (rw.type === 'honor') s.honor += rw.val;
+        else if (rw.type === 'buff') {
+            currentClickProfit *= 5;
+            setTimeout(() => calculateMultipliers(), 30000);
+        }
+        playAudio('buy');
+        showToast(`🎁 [언박싱] ${rw.msg}`);
+        updateUI();
     }
 
     function calculateOfflineProgress() {
@@ -542,12 +608,19 @@
         s.exp += passiveExp; 
         checkLevelUp();
         
+        // 코스피 실전 종목 시세 변동
+        Object.keys(s.stocks).forEach(k => {
+            const st = s.stocks[k];
+            st.price = Math.max(1000, Math.floor(st.price * (1 + (Math.random() * 0.08 - 0.04))));
+        });
+
         s.stockPrice = Math.max(1000, s.stockPrice * (1 + (Math.random()*0.04 - 0.02)));
         ['r1','r2','r3','r4'].forEach(k => {
             const base = [5e8, 2e9, 1e10, 5e10][parseInt(k.replace('r',''))-1] * s.hobong;
             s.reals[k].price = Math.max(base*0.5, s.reals[k].price * (1 + (Math.random()*0.015 - 0.007)));
         });
         updateUI(); 
+        renderStocks();
         saveGame();
     }
 
@@ -723,6 +796,50 @@
         });
     }
 
+    // 코스피 실전 종목 리스트 렌더링 함수
+    function renderStocks() {
+        const listEl = document.getElementById('stockMarketList');
+        if (!listEl) return;
+        if (!s.stocks) s.stocks = JSON.parse(JSON.stringify(defaultState.stocks));
+        listEl.innerHTML = Object.keys(s.stocks).map(k => {
+            const st = s.stocks[k];
+            return `<div class="flex justify-between items-center bg-white p-2 rounded border border-gray-100 text-[11px]">
+                <div><div class="font-bold text-gray-800">${st.name}</div><div class="text-gray-500">시세: <span class="text-blue-600 font-bold">${formatMoney(st.price)}원</span> | 보유: <span class="text-purple-600 font-bold">${st.count}주</span></div></div>
+                <div class="space-x-1"><button onclick="tradeStockItem('${k}', 'buy')" class="bg-red-500 text-white px-2.5 py-1 rounded text-[10px] font-bold active:bg-red-600 cursor-pointer">매수</button><button onclick="tradeStockItem('${k}', 'sell')" class="bg-blue-500 text-white px-2.5 py-1 rounded text-[10px] font-bold active:bg-blue-600 cursor-pointer">매도</button></div>
+            </div>`;
+        }).join('');
+    }
+
+    function tradeStockItem(id, act) {
+        if (!s.stocks || !s.stocks[id]) return;
+        const st = s.stocks[id];
+        if (act === 'buy') {
+            if (s.money >= st.price) {
+                const count = Math.floor(s.money / st.price);
+                s.money -= count * st.price;
+                st.count += count;
+                playAudio('buy');
+                showToast(`📈 ${st.name} ${count}주 매수 완료!`);
+            } else {
+                playAudio('error');
+                showToast("❌ 소지금이 부족합니다!");
+            }
+        } else if (act === 'sell') {
+            if (st.count > 0) {
+                const total = st.count * st.price;
+                s.money += total;
+                showToast(`📉 ${st.name} ${st.count}주 전량 매도 (+${formatMoney(total)}원)`);
+                st.count = 0;
+                playAudio('coin');
+            } else {
+                playAudio('error');
+                showToast("❌ 보유 중인 주식이 없습니다!");
+            }
+        }
+        renderStocks();
+        updateUI();
+    }
+
     function renderAll() {
         const renderList = (dbList, targetId, stateObj, type) => {
             const container = document.getElementById(targetId);
@@ -750,6 +867,8 @@
         renderList(DB.sports, 'sportList', s.sports, 'sports');
         renderList(DB.certs, 'certList', s.certs, 'certs');
         
+        renderStocks();
+
         const rEl = document.getElementById('realEstateList');
         if (rEl) {
             const rNames = ['동네 상가', '지식산업센터', '한강뷰 아파트', '강남 랜드마크'];
@@ -810,7 +929,6 @@
         }
     }
 
-    // 버그 수정: 하와이 여행 구매 시 자금 부족 시 안내 토스트 출력 및 터치 반응성 보완
     function buyTravel() {
         const cost = 50000000;
         if(s.money >= cost) {
