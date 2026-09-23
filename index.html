@@ -38,6 +38,9 @@
 </head>
 <body class="flex flex-col text-gray-800 relative items-center justify-center">
 
+    <!-- 전용 플로팅 토스트 메시지 팝업 (가림 현상 원천 해결) -->
+    <div id="gameToast" class="fixed top-16 left-1/2 transform -translate-x-1/2 bg-gray-900 bg-opacity-95 text-yellow-300 px-4 py-2.5 rounded-2xl text-xs font-bold z-50 hidden shadow-2xl border border-yellow-400 text-center pointer-events-none transition-all duration-300 max-w-[90%]"></div>
+
     <!-- 시작 화면 (메인) -->
     <div id="startScreen" class="absolute inset-0 bg-white z-50 flex flex-col items-center justify-between p-8">
         <div></div>
@@ -281,20 +284,27 @@
     
     const seasons = ['봄', '여름', '가을', '겨울']; let currentSeasonIdx = 0;
     
+    // 대폭 확장된 1000대 초등교사 키워드 기반 아이템 데이터베이스 (10종 이상 대폭 추가)[cite: 5]
     const DB = {
         clicks: [ 
             { id: 'c1', name: '맞춤형복지 믹스커피', baseCost: 100, profit: 100, icon: '☕' }, 
             { id: 'c2', name: '공문기안 무소음 키보드', baseCost: 700, profit: 500, icon: '⌨️' }, 
             { id: 'c3', name: '교원연구비 스탠딩 책상', baseCost: 5000, profit: 3000, icon: '🪑' },
             { id: 'c4', name: 'NEIS 결재용 듀얼모니터', baseCost: 40000, profit: 20000, icon: '🖥️' },
-            { id: 'c5', name: '스마트 레이저 포인터', baseCost: 300000, profit: 150000, icon: '🔦' }
+            { id: 'c5', name: '스마트 레이저 포인터', baseCost: 300000, profit: 150000, icon: '🔦' },
+            { id: 'c6', name: '초고속 무선 제본기', baseCost: 2000000, profit: 800000, icon: '📖' },
+            { id: 'c7', name: '교무실 네스프레소 머신', baseCost: 15000000, profit: 4500000, icon: '☕' },
+            { id: 'c8', name: '전자칠판 스타일러스 펜', baseCost: 100000000, profit: 25000000, icon: '✒️' }
         ],
         autos: [ 
             { id: 'a1', name: 'K-에듀파인 연동 알림장', baseCost: 300, profit: 50, icon: '📱' }, 
             { id: 'a2', name: '디지털 교과서 태블릿 보급', baseCost: 3500, profit: 600, icon: '📲' }, 
             { id: 'a3', name: 'AI 코스웨어 자동채점', baseCost: 30000, profit: 5000, icon: '🤖' },
             { id: 'a4', name: '늘봄학교 돌봄교실 운영', baseCost: 250000, profit: 35000, icon: '🚌' },
-            { id: 'a5', name: '2022 개정 교육과정 허브', baseCost: 2000000, profit: 200000, icon: '🌐' }
+            { id: 'a5', name: '2022 개정 교육과정 허브', baseCost: 2000000, profit: 200000, icon: '🌐' },
+            { id: 'a6', name: 'AI 튜터 맞춤학습 플랫폼', baseCost: 15000000, profit: 1200000, icon: '💡' },
+            { id: 'a7', name: '스마트 자율주행 스쿨버스', baseCost: 100000000, profit: 7500000, icon: '🚐' },
+            { id: 'a8', name: '메타버스 가상원격 교실', baseCost: 800000000, profit: 50000000, icon: '🪐' }
         ],
         enforce: [
             { id: 'laptop', name: '에듀테크 교실 노트북', baseCost: 1000, mult: 0.1, icon: '💻' },
@@ -302,24 +312,30 @@
             { id: 'mic', name: 'Wee클래스 무선 마이크', baseCost: 30000, mult: 0.2, icon: '📢' },
             { id: 'stamp', name: '나이스 전결 결재도장', baseCost: 200000, mult: 0.3, icon: '💮' },
             { id: 'aircon', name: '교실 대형 공기청정기', baseCost: 800000, mult: 0.4, icon: '🌬️' },
-            { id: 'plant', name: '플랜테리어 화분 인테리어', baseCost: 3000000, mult: 0.6, icon: '🪴' }
+            { id: 'plant', name: '플랜테리어 화분 인테리어', baseCost: 3000000, mult: 0.6, icon: '🪴' },
+            { id: 'voice', name: 'AI 음성인식 녹음기', baseCost: 15000000, mult: 0.8, icon: '🎙️' },
+            { id: 'smartsys', name: '스마트 냉난방 중앙제어기', baseCost: 80000000, mult: 1.0, icon: '🌡️' }
         ],
         clubs: [ 
             { id: 'coding', name: 'AI·코딩 동아리 육성', baseCost: 5000, profit: 800, icon: '💻' }, 
             { id: 'band', name: '창체 오케스트라부', baseCost: 30000, profit: 5000, icon: '🎸' },
-            { id: 'nulbom', name: '늘봄학교 특기적성 프로그램', baseCost: 150000, profit: 25000, icon: '🎨' }
+            { id: 'nulbom', name: '늘봄학교 특기적성 프로그램', baseCost: 150000, profit: 25000, icon: '🎨' },
+            { id: 'media', name: '학교 방송반(미디어크리에이터)', baseCost: 1000000, profit: 140000, icon: '🎥' }
         ],
         somoims: [ 
             { id: 'soccer', name: '교사 축구 동호회', baseCost: 20000, profit: 3000, icon: '⚽' }, 
-            { id: 'food', name: '학교 맛집탐방 소모임', baseCost: 100000, profit: 18000, icon: '🍜' } 
+            { id: 'food', name: '학교 맛집탐방 소모임', baseCost: 100000, profit: 18000, icon: '🍜' },
+            { id: 'bandclub', name: '교사 밴드(악기연주) 소모임', baseCost: 700000, profit: 95000, icon: '🎷' }
         ],
         sports: [
-            { id: 'team', name: '학교 운동부 및 스포츠클럽 지원', baseCost: 80000, profit: 12000, icon: '🏅' }
+            { id: 'team', name: '학교 운동부 및 스포츠클럽 지원', baseCost: 80000, profit: 12000, icon: '🏅' },
+            { id: 'league', name: '학교 스포츠클럽 뉴스포츠 리그', baseCost: 500000, profit: 70000, icon: '⚽' }
         ],
         certs: [ 
             { id: 'counsel', name: '상담심리사 직무연수', baseCost: 50000, profit: 7000, icon: '📜' }, 
             { id: 'codingCert', name: '디지털 리터러시 자격연수', baseCost: 300000, profit: 45000, icon: '🏅' },
-            { id: 'digital', name: 'AI융합 교육대학원 파견 연수', baseCost: 1500000, profit: 250000, icon: '🎓' }
+            { id: 'digital', name: 'AI융합 교육대학원 파견 연수', baseCost: 1500000, profit: 250000, icon: '🎓' },
+            { id: 'master', name: '초등 수석교사 심화 직무연수', baseCost: 10000000, profit: 1500000, icon: '👑' }
         ],
         cols: [ { id: 'col1', name: '액체괴물', icon: '🟢' }, { id: 'col2', name: '포켓몬 띠부씰', icon: '🐢' }, { id: 'col3', name: '피젯스피너', icon: '🌀' }, { id: 'col4', name: '유희왕 카드', icon: '🃏' } ]
     };
@@ -430,13 +446,13 @@
         buffs.isPivot = true;
         pivotCharge = 0;
         playAudio('buy');
-        showTitleNotification("🚀 [피벗 타임] 업무 효율 10배 폭발 기간!");
+        showToast("🚀 [피벗 타임] 업무 효율 10배 폭발 기간!");
         updatePivotUI();
         
         if (pivotTimer) clearTimeout(pivotTimer);
         pivotTimer = setTimeout(() => {
             buffs.isPivot = false;
-            showTitleNotification("피벗 타임 종료! 원래 속도로 복귀합니다.");
+            showToast("피벗 타임 종료! 원래 속도로 복귀합니다.");
             updatePivotUI();
         }, 15000);
     }
@@ -456,6 +472,20 @@
         }
     }
 
+    // 화면 가림 현상이 절대 없는 전용 토스트 메시지 출력 함수
+    function showToast(msg) {
+        const toast = document.getElementById('gameToast');
+        if (!toast) return;
+        toast.innerText = msg;
+        toast.classList.remove('hidden');
+        toast.style.opacity = '1';
+        if (window.toastTimeout) clearTimeout(window.toastTimeout);
+        window.toastTimeout = setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.classList.add('hidden'), 300);
+        }, 3000);
+    }
+
     function openSnackBox() {
         const snacks = [
             { name: '달콤한 초콜릿 🍫', effect: '텐션 즉시 +30 & 10초간 클릭 수익 3배!', action: () => { s.caffeine = Math.min(100, s.caffeine + 30); } },
@@ -465,7 +495,7 @@
         const chosen = snacks[Math.floor(Math.random() * snacks.length)];
         chosen.action();
         playAudio('buy');
-        showTitleNotification(`[간식함] ${chosen.name} 당첨! (${chosen.effect})`);
+        showToast(`[간식함] ${chosen.name} 당첨! (${chosen.effect})`);
         updateUI();
     }
 
@@ -490,7 +520,7 @@
             setTimeout(() => calculateMultipliers(), 30000);
         }
         playAudio('buy');
-        showTitleNotification(`🎁 [언박싱] ${rw.msg}`);
+        showToast(`🎁 [언박싱] ${rw.msg}`);
         updateUI();
     }
 
@@ -510,7 +540,7 @@
             s.succulentGrowth = 0; 
             s.succulentBuff += 0.05; 
             playAudio('buy'); 
-            showTitleNotification("다육이가 자라 마음의 평화 획득!"); 
+            showToast("다육이가 자라 마음의 평화 획득!"); 
         }
         const succPctEl = document.getElementById('succulentPct');
         if (succPctEl) succPctEl.innerText = Math.floor((s.succulentGrowth/300)*100)+'%';
@@ -604,7 +634,7 @@
             s.level++; 
             s.exp = 0; 
             playAudio('buy'); 
-            showTitleNotification(`레벨업! 평교사 Lv.${s.level}`);
+            showToast(`레벨업! 평교사 Lv.${s.level}`);
             if(s.level % 5 === 0) { 
                 const mottos = ['무사히 퇴근하자', '부자가 되자', '배움이 먼저다']; 
                 s.motto = mottos[Math.floor(Math.random()*mottos.length)]; 
@@ -631,14 +661,16 @@
     }
     
     function showTitleNotification(msg) {
+        showToast(msg);
         const b = document.getElementById('boardText'); 
-        if (!b) return;
-        b.innerText = msg; 
-        b.classList.add('text-yellow-300');
-        setTimeout(() => { 
-            b.innerText = s.motto; 
-            b.classList.remove('text-yellow-300'); 
-        }, 3000);
+        if (b) {
+            b.innerText = msg; 
+            b.classList.add('text-yellow-300');
+            setTimeout(() => { 
+                b.innerText = s.motto; 
+                b.classList.remove('text-yellow-300'); 
+            }, 3000);
+        }
     }
     
     function changeTab(id, btnEl) {
@@ -806,7 +838,7 @@
             s.money -= cost; 
             s.travelBuff += 0.2; 
             playAudio('buy');
-            showTitleNotification("하와이 여행으로 힐링 완료! (영구 수익 효율 +20%)");
+            showToast("하와이 여행으로 힐링 완료! (영구 수익 효율 +20%)");
             updateUI();
         } else playAudio('error');
     }
@@ -852,12 +884,12 @@
             const earn = currentAutoProfit * 3600; 
             s.money += earn; 
             playAudio('buy'); 
-            showTitleNotification(`연가 1시간분! +${formatMoney(earn)}`); 
+            showToast(`연가 1시간분! +${formatMoney(earn)}`); 
             s.skills.vacation = Date.now() + 300000; 
         } else if(k === 'silence') { 
             buffs.isSilence = true; 
             playAudio('buy'); 
-            showTitleNotification("침묵 발동! 30초 평화"); 
+            showToast("침묵 발동! 30초 평화"); 
             setTimeout(()=>buffs.isSilence=false, 30000); 
             s.skills.silence = Date.now() + 120000; 
         } 
@@ -870,10 +902,10 @@
         if(Math.random() < 0.2) { 
             const earn = currentAutoProfit * 300; 
             s.money += earn; 
-            showTitleNotification(`🔥블라인드 베스트! +${formatMoney(earn)}`); 
+            showToast(`🔥블라인드 베스트! +${formatMoney(earn)}`); 
             playAudio('buy'); 
         } else { 
-            showTitleNotification("블라인드 묻힘..."); 
+            showToast("블라인드 묻힘..."); 
             playAudio('error'); 
         } 
         updateUI(); 
@@ -884,13 +916,13 @@
         s.money -= 1000000; 
         s.skills.emo = Date.now() + 60000; 
         playAudio('buy'); 
-        showTitleNotification("이모티콘 심사 제출 (1분)"); 
+        showToast("이모티콘 심사 제출 (1분)"); 
         setTimeout(() => { 
             if(Math.random() < 0.3) { 
                 s.emoticonIncome += 5000; 
-                showTitleNotification("🎉 이모티콘 승인! 영구수익+5000"); 
+                showToast("🎉 이모티콘 승인! 영구수익+5000"); 
             } else { 
-                showTitleNotification("❌ 이모티콘 미승인 (대중성 부족)"); 
+                showToast("❌ 이모티콘 미승인 (대중성 부족)"); 
                 playAudio('error');
             } 
             calculateMultipliers(); 
@@ -903,7 +935,7 @@
         if(s.collections[item.id]) s.spareItems++; 
         else s.collections[item.id] = true; 
         playAudio('buy'); 
-        showTitleNotification(`${item.name} 획득!`); 
+        showToast(`${item.name} 획득!`); 
         renderAll(); 
         updateUI(); 
     }
@@ -920,7 +952,7 @@
             s.money += 10000; 
             s.spareItems--; 
             playAudio('buy'); 
-            showTitleNotification("쿨거래 완료!"); 
+            showToast("쿨거래 완료!"); 
         } 
         updateUI(); 
     }
@@ -933,7 +965,7 @@
             alert("🎉 1등 당첨! 10억 획득!"); 
             playAudio('buy'); 
         } else { 
-            showTitleNotification("복권 낙첨..."); 
+            showToast("복권 낙첨..."); 
             playAudio('click'); 
         } 
         updateUI(); 
@@ -952,7 +984,6 @@
 
     function applyOOTDVisual() { setOOTD(s.ootd); }
 
-    // 전근(환생) 시 홈 화면으로 튕기지 않고 게임 화면 유지하도록 버그 수정
     function rebirth(force = false) { 
         if(!force && !confirm("자산을 포기하고 전근하시겠습니까?\n호봉 및 수익 배율이 증가합니다.")) return; 
         
@@ -979,7 +1010,7 @@
         saveGame(); 
         renderAll();
         updateUI();
-        showTitleNotification(`🎉 새로운 학교로 전근 완료! (${s.hobong}호봉 승급)`);
+        showToast(`🎉 새로운 학교로 전근 완료! (${s.hobong}호봉 승급)`);
     }
     
     function triggerEnding() { 
@@ -1020,7 +1051,7 @@
         else if(r < 0.45) startMinigame('animal');
         else if(r < 0.5) { 
             buffs.isFever = true; 
-            showTitleNotification("🔥방학식 피버! 클릭 5배"); 
+            showToast("🔥방학식 피버! 클릭 5배"); 
             setTimeout(()=>buffs.isFever=false, 10000); 
         }
     }
@@ -1050,11 +1081,11 @@
             } 
             if(succ) { 
                 playAudio('buy'); 
-                showTitleNotification(msg); 
+                showToast(msg); 
                 s.honor += honorGain; 
             } else { 
                 playAudio('error'); 
-                showTitleNotification(msg); 
+                showToast(msg); 
                 s.money = Math.max(0, s.money - currentAutoProfit*10); 
             } 
             updateUI(); 
