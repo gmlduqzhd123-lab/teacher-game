@@ -179,7 +179,6 @@
             </div>
             
             <div id="tab-asset" class="tab-content p-2 space-y-3 hidden">
-                <!-- 코스피 실전 종목 테마시장 (확장) -->
                 <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200 shadow-sm mb-3">
                     <h3 class="font-bold text-xs mb-2 text-gray-800">📈 KOSPI 실전 우량주 테마시장</h3>
                     <div id="stockMarketList" class="space-y-2 max-h-52 overflow-y-auto pr-1"></div>
@@ -321,7 +320,7 @@
             { id: 'a4', name: '늘봄학교 돌봄교실 운영', baseCost: 250000, profit: 35000, icon: '🚌' },
             { id: 'a5', name: '2022 개정 교육과정 허브', baseCost: 2000000, profit: 200000, icon: '🌐' },
             { id: 'a6', name: 'AI 튜터 맞춤학습 플랫폼', baseCost: 15000000, profit: 1200000, icon: '💡' },
-            { id: 'a7', name: '스마트 자율주행 스쿨버스', baseCost: 100000000, profit: 7500000, icon: '🚐' },
+            { id: 'a7', name: '스마트 자율주행 스쿨버스', baseCost: 100000000, profit: 7500700, icon: '🚐' },
             { id: 'a8', name: '메타버스 가상원격 교실', baseCost: 800000000, profit: 50000000, icon: '🪐' }
         ],
         enforce: [
@@ -402,7 +401,7 @@
     }
     
     function loadGame() {
-        const saved = localStorage.getItem('v8_5_ultimate_save');
+        const saved = localStorage.getItem('v8_7_ultimate_save');
         if(saved) {
             try { 
                 const p = JSON.parse(saved); 
@@ -435,12 +434,12 @@
     
     function saveGame() { 
         s.lastSaveTime = Date.now(); 
-        localStorage.setItem('v8_5_ultimate_save', JSON.stringify(s)); 
+        localStorage.setItem('v8_7_ultimate_save', JSON.stringify(s)); 
     }
     
     function clearData() { 
         if(confirm("모든 데이터를 지울까요?")) { 
-            localStorage.removeItem('v8_5_ultimate_save'); 
+            localStorage.removeItem('v8_7_ultimate_save'); 
             location.reload(); 
         } 
     }
@@ -490,8 +489,8 @@
 
     function activatePivotTime() {
         if (pivotCharge < 100) {
-            showToast(`🚀 피벗타임 게이지가 아직 부족합니다! (${Math.floor(pivotCharge)}%)`);
             playAudio('error');
+            showToast(`🚀 피벗타임 게이지가 부족합니다! (${Math.floor(pivotCharge)}%)`);
             return;
         }
         if (buffs.isPivot) return;
@@ -522,57 +521,6 @@
             btn.innerText = `🚀 피벗타임 (${Math.floor(pivotCharge)}%)`;
             btn.className = "bg-gray-700 text-gray-300 px-2.5 py-1 rounded-full text-[10px] font-bold shadow transition select-none cursor-pointer";
         }
-    }
-
-    function showToast(msg) {
-        const toast = document.getElementById('gameToast');
-        if (!toast) return;
-        toast.innerText = msg;
-        toast.classList.remove('hidden');
-        toast.style.opacity = '1';
-        if (window.toastTimeout) clearTimeout(window.toastTimeout);
-        window.toastTimeout = setTimeout(() => {
-            toast.style.opacity = '0';
-            setTimeout(() => toast.classList.add('hidden'), 300);
-        }, 3000);
-    }
-
-    function openSnackBox() {
-        const snacks = [
-            { name: '달콤한 초콜릿 🍫', effect: '텐션 즉시 +30 & 10초간 클릭 수익 3배!', action: () => { s.caffeine = Math.min(100, s.caffeine + 30); } },
-            { name: '시원한 아이스 아메리카노 ☕', effect: '텐션 100% 풀충전!', action: () => { s.caffeine = 100; } },
-            { name: '비타민C 활력캔디 🍬', effect: '즉시 소지금 + 10분치 자동 수익!', action: () => { s.money += currentAutoProfit * 600; } }
-        ];
-        const chosen = snacks[Math.floor(Math.random() * snacks.length)];
-        chosen.action();
-        playAudio('buy');
-        showToast(`[간식함] ${chosen.name} 당첨! (${chosen.effect})`);
-        updateUI();
-    }
-
-    function openGacha() {
-        const cost = 500000;
-        if (s.money < cost) {
-            playAudio('error');
-            alert("소지금이 부족합니다! (50만 원 필요)");
-            return;
-        }
-        s.money -= cost;
-        const rewards = [
-            { name: '최신형 스마트 태블릿 세트 📱', type: 'money', val: 2000000, msg: '대박! 교육청 지원금 당첨 (+200만 원)' },
-            { name: 'AI 보조 로봇 허브 🤖', type: 'honor', val: 10, msg: '학교 우수 혁신 사례 선정! (명예 +10)' },
-            { name: '학급용 무선 응답기 📶', type: 'buff', val: 1, msg: '수업 참여도 폭발! 30초간 클릭 수익 5배!' }
-        ];
-        const rw = rewards[Math.floor(Math.random() * rewards.length)];
-        if (rw.type === 'money') s.money += rw.val;
-        else if (rw.type === 'honor') s.honor += rw.val;
-        else if (rw.type === 'buff') {
-            currentClickProfit *= 5;
-            setTimeout(() => calculateMultipliers(), 30000);
-        }
-        playAudio('buy');
-        showToast(`🎁 [언박싱] ${rw.msg}`);
-        updateUI();
     }
 
     function calculateOfflineProgress() {
@@ -608,11 +556,12 @@
         s.exp += passiveExp; 
         checkLevelUp();
         
-        // 코스피 실전 종목 시세 변동
-        Object.keys(s.stocks).forEach(k => {
-            const st = s.stocks[k];
-            st.price = Math.max(1000, Math.floor(st.price * (1 + (Math.random() * 0.08 - 0.04))));
-        });
+        if (s.stocks) {
+            Object.keys(s.stocks).forEach(k => {
+                const st = s.stocks[k];
+                st.price = Math.max(1000, Math.floor(st.price * (1 + (Math.random() * 0.08 - 0.04))));
+            });
+        }
 
         s.stockPrice = Math.max(1000, s.stockPrice * (1 + (Math.random()*0.04 - 0.02)));
         ['r1','r2','r3','r4'].forEach(k => {
@@ -721,6 +670,19 @@
         document.body.appendChild(el); 
         el.addEventListener('animationend', ()=>el.remove());
     }
+
+    function showToast(msg) {
+        const toast = document.getElementById('gameToast');
+        if (!toast) return;
+        toast.innerText = msg;
+        toast.classList.remove('hidden');
+        toast.style.opacity = '1';
+        if (window.toastTimeout) clearTimeout(window.toastTimeout);
+        window.toastTimeout = setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.classList.add('hidden'), 300);
+        }, 3000);
+    }
     
     function changeTab(id, btnEl) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden')); 
@@ -796,7 +758,6 @@
         });
     }
 
-    // 코스피 실전 종목 리스트 렌더링 함수
     function renderStocks() {
         const listEl = document.getElementById('stockMarketList');
         if (!listEl) return;
@@ -1288,6 +1249,16 @@
                 } 
             }, 1000);
         }
+        else if(type === 'zoom') {
+            const titleEl = document.getElementById('eventTitle');
+            const descEl = document.getElementById('eventDesc');
+            if(titleEl) titleEl.innerText = "💻 원격수업 줌(Zoom) 접속 오류!"; 
+            if(descEl) descEl.innerText = "아이들의 화상 수업 마이크가 안 됩니다. 어떻게 해결하시겠습니까?"; 
+            const timerEl = document.getElementById('eventTimer');
+            if(timerEl) timerEl.innerText = "";
+            createEventBtn('오디오 설정 재부팅 안내', 'bg-blue-600 hover:bg-blue-700', () => { s.exp += 600; closeEvent(true, "줌 수업 정상화! 경험치 획득", 3); });
+            createEventBtn('링크 다시 보내기', 'bg-green-600 hover:bg-green-700', () => { s.money += currentAutoProfit*15; closeEvent(true, "신속한 조치 완료!", 2); });
+        }
     }
 
     function spawnRunner() {
@@ -1372,7 +1343,7 @@
         
         if(isBgmPlaying) { 
             if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); 
-            if(bgmGainNode && audioCtx) bgmGainNode.gain.setValueAtTime(0.04, audioCtx.currentTime);
+            if(bgmGainNode && audioCtx) bgmGainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
             playBGM(); 
         } else { 
             if(bgmGainNode && audioCtx) bgmGainNode.gain.setValueAtTime(0, audioCtx.currentTime); 
