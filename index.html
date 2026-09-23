@@ -146,12 +146,12 @@
             </div>
         </div>
 
-        <!-- 미니게임 오버레이 -->
-        <div id="eventOverlay" class="absolute inset-0 bg-black bg-opacity-85 z-40 hidden flex-col items-center justify-center text-white p-4 text-center">
-            <h2 id="eventTitle" class="text-2xl font-bold mb-2 drop-shadow">이벤트</h2>
-            <p id="eventDesc" class="mb-4 text-sm w-[90%] break-keep leading-relaxed">설명</p>
-            <div class="text-4xl font-bold text-yellow-300 mb-4 drop-shadow-lg" id="eventTimer"></div>
-            <div id="eventActionArea" class="flex flex-col space-y-2 w-full max-w-[240px]"></div>
+        <!-- 미니게임 오버레이 (버그 수정: z-index 최상위 확보 및 가독성 개편) -->
+        <div id="eventOverlay" class="absolute inset-0 bg-black bg-opacity-90 z-50 hidden flex-col items-center justify-center text-white p-6 text-center">
+            <h2 id="eventTitle" class="text-2xl font-bold mb-3 text-yellow-300 drop-shadow">이벤트 발생</h2>
+            <p id="eventDesc" class="mb-5 text-sm w-[95%] break-keep leading-relaxed text-gray-100">설명</p>
+            <div class="text-4xl font-bold text-yellow-400 mb-6 drop-shadow-lg" id="eventTimer"></div>
+            <div id="eventActionArea" class="flex flex-col space-y-3 w-full max-w-[260px]"></div>
         </div>
 
         <!-- 하단 탭 메뉴 (6개) -->
@@ -393,7 +393,7 @@
     }
     
     function loadGame() {
-        const saved = localStorage.getItem('v8_2_ultimate_save');
+        const saved = localStorage.getItem('v8_3_ultimate_save');
         if(saved) {
             try { 
                 const p = JSON.parse(saved); 
@@ -425,12 +425,12 @@
     
     function saveGame() { 
         s.lastSaveTime = Date.now(); 
-        localStorage.setItem('v8_2_ultimate_save', JSON.stringify(s)); 
+        localStorage.setItem('v8_3_ultimate_save', JSON.stringify(s)); 
     }
     
     function clearData() { 
         if(confirm("모든 데이터를 지울까요?")) { 
-            localStorage.removeItem('v8_2_ultimate_save'); 
+            localStorage.removeItem('v8_3_ultimate_save'); 
             location.reload(); 
         } 
     }
@@ -1070,9 +1070,10 @@
             } 
             updateUI(); 
         };
-        const createBtn = (txt, color, onClick) => { 
+
+        const createEventBtn = (txt, bgColor, onClick) => { 
             const b = document.createElement('button'); 
-            b.className = `bg-${color}-500 py-3 mb-2 rounded-xl w-full text-white font-bold shadow-md active:scale-95 transition text-sm`; 
+            b.className = `${bgColor} py-3 mb-2 rounded-xl w-full text-white font-bold shadow-md active:scale-95 transition text-sm cursor-pointer`; 
             b.innerText = txt; 
             b.onclick = onClick; 
             act.appendChild(b); 
@@ -1085,8 +1086,8 @@
             if(descEl) descEl.innerText = "학부모의 까다로운 질문: '우리 아이 학교생활 어때요?'"; 
             const timerEl = document.getElementById('eventTimer');
             if(timerEl) timerEl.innerText = "";
-            createBtn('폭풍 칭찬과 공감', 'green', () => { s.money += currentAutoProfit*20; closeEvent(true, "학부모 대만족! 후원금 획득", 5); });
-            createBtn('객관적인 사실 전달', 'blue', () => { s.exp += 800; closeEvent(true, "신뢰도 상승! 명예 +3", 3); });
+            createEventBtn('폭풍 칭찬과 공감', 'bg-green-600 hover:bg-green-700', () => { s.money += currentAutoProfit*20; closeEvent(true, "학부모 대만족! 후원금 획득", 5); });
+            createEventBtn('객관적인 사실 전달', 'bg-blue-600 hover:bg-blue-700', () => { s.exp += 800; closeEvent(true, "신뢰도 상승! 명예 +3", 3); });
         }
         else if(type === 'festival') {
             const titleEl = document.getElementById('eventTitle');
@@ -1097,7 +1098,7 @@
             const timerEl = document.getElementById('eventTimer');
             if(timerEl) timerEl.innerText = timeLeft;
             let taps = 0;
-            createBtn('열정 수업 시연 광클!! (0/15)', 'yellow', () => {
+            createEventBtn('열정 수업 시연 광클!! (0/15)', 'bg-yellow-500 hover:bg-yellow-600 text-gray-900', () => {
                 taps++; 
                 if(act.children[0]) act.children[0].innerText = `열정 수업 시연 광클!! (${taps}/15)`;
                 if(taps >= 15) { 
@@ -1119,8 +1120,8 @@
             if(descEl) descEl.innerText = "누구 편을 드시겠습니까?"; 
             const timerEl = document.getElementById('eventTimer');
             if(timerEl) timerEl.innerText = "";
-            createBtn('A 학생 공감하기', 'blue', () => { s.exp += 500; closeEvent(true, "원만한 해결! 명예 +2", 2); });
-            createBtn('원칙대로 규정 적용', 'red', () => { s.exp += 500; closeEvent(true, "깔끔한 처리! 명예 +3", 3); });
+            createEventBtn('A 학생 공감하기', 'bg-blue-600 hover:bg-blue-700', () => { s.exp += 500; closeEvent(true, "원만한 해결! 명예 +2", 2); });
+            createEventBtn('원칙대로 규정 적용', 'bg-red-600 hover:bg-red-700', () => { s.exp += 500; closeEvent(true, "깔끔한 처리! 명예 +3", 3); });
         }
         else if(type === 'animal') {
             const titleEl = document.getElementById('eventTitle');
@@ -1129,7 +1130,7 @@
             if(descEl) descEl.innerText = "아이들과 함께 안전하게 구조하세요!"; 
             const timerEl = document.getElementById('eventTimer');
             if(timerEl) timerEl.innerText = "";
-            createBtn('간식으로 유인해 구조하기', 'teal', () => { s.honor += 5; closeEvent(true, "모두가 행복한 동물 보호 성공! 명예 +5", 5); });
+            createEventBtn('간식으로 유인해 구조하기', 'bg-teal-600 hover:bg-teal-700', () => { s.honor += 5; closeEvent(true, "모두가 행복한 동물 보호 성공! 명예 +5", 5); });
         }
         else if(type === 'lunch') {
             const titleEl = document.getElementById('eventTitle');
@@ -1138,7 +1139,7 @@
             if(descEl) descEl.innerText = "'수요일은 돈가스' 투표 성사!"; 
             const timerEl = document.getElementById('eventTimer');
             if(timerEl) timerEl.innerText = "";
-            createBtn('청원 수락하기', 'yellow', () => { 
+            createEventBtn('청원 수락하기', 'bg-yellow-500 hover:bg-yellow-600 text-gray-900', () => { 
                 buffs.menuBuff = 2; 
                 closeEvent(true, "급식 대만족! 1시간 동안 수익 2배!", 2); 
                 setTimeout(()=>buffs.menuBuff=1, 60000); 
