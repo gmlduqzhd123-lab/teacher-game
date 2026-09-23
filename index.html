@@ -146,7 +146,7 @@
             </div>
         </div>
 
-        <!-- 미니게임 오버레이 (버그 수정: z-index 최상위 확보 및 가독성 개편) -->
+        <!-- 미니게임 오버레이 -->
         <div id="eventOverlay" class="absolute inset-0 bg-black bg-opacity-90 z-50 hidden flex-col items-center justify-center text-white p-6 text-center">
             <h2 id="eventTitle" class="text-2xl font-bold mb-3 text-yellow-300 drop-shadow">이벤트 발생</h2>
             <p id="eventDesc" class="mb-5 text-sm w-[95%] break-keep leading-relaxed text-gray-100">설명</p>
@@ -393,7 +393,7 @@
     }
     
     function loadGame() {
-        const saved = localStorage.getItem('v8_3_ultimate_save');
+        const saved = localStorage.getItem('v8_4_ultimate_save');
         if(saved) {
             try { 
                 const p = JSON.parse(saved); 
@@ -425,12 +425,12 @@
     
     function saveGame() { 
         s.lastSaveTime = Date.now(); 
-        localStorage.setItem('v8_3_ultimate_save', JSON.stringify(s)); 
+        localStorage.setItem('v8_4_ultimate_save', JSON.stringify(s)); 
     }
     
     function clearData() { 
         if(confirm("모든 데이터를 지울까요?")) { 
-            localStorage.removeItem('v8_3_ultimate_save'); 
+            localStorage.removeItem('v8_4_ultimate_save'); 
             location.reload(); 
         } 
     }
@@ -734,7 +734,7 @@
                 const profitText = item.profit ? `+${formatMoney(item.profit)}` : `전체 수익 +${(item.mult||0)*100}%`;
                 return `<div class="flex justify-between items-center p-2.5 bg-gray-50 rounded-lg border border-gray-200 shadow-sm text-xs font-bold">
                     <div class="flex items-center space-x-2.5"><div class="text-xl drop-shadow-sm">${item.icon}</div><div><div class="text-gray-800">${item.name} <span class="text-blue-600">Lv.${cnt}</span></div><div class="text-gray-500 font-normal text-[11px]">${profitText}</div></div></div>
-                    <button class="buy-btn bg-blue-500 text-white px-3 py-2 rounded-md active:bg-blue-600 shadow-sm active:scale-95 transition select-none" data-cost="${cost}" 
+                    <button class="buy-btn bg-blue-500 text-white px-3 py-2 rounded-md active:bg-blue-600 shadow-sm active:scale-95 transition select-none cursor-pointer" data-cost="${cost}" 
                         onpointerdown="startContinuousUpgrade('${item.id}','${type}')" 
                         onpointerup="stopContinuousUpgrade()" 
                         onpointerleave="stopContinuousUpgrade()" 
@@ -756,7 +756,7 @@
             rEl.innerHTML = ['r1','r2','r3','r4'].map((k,i) => `
                 <div class="flex justify-between items-center p-2.5 bg-gray-50 rounded-lg border border-gray-200 shadow-sm text-xs font-bold">
                 <div><div class="text-gray-800">${rNames[i]} <span class="text-blue-600">${s.reals[k].own}채</span></div><div class="text-gray-500 font-normal text-[11px]">시세: <span id="price-${k}">${formatMoney(s.reals[k].price)}</span></div></div>
-                <div class="space-x-1"><button class="bg-red-500 text-white px-2.5 py-1.5 rounded-md active:bg-red-600 shadow-sm" onclick="buyReal('${k}')">매수</button><button class="bg-blue-500 text-white px-2.5 py-1.5 rounded-md active:bg-blue-600 shadow-sm" onclick="sellReal('${k}')">매도</button></div>
+                <div class="space-x-1"><button class="bg-red-500 text-white px-2.5 py-1.5 rounded-md active:bg-red-600 shadow-sm cursor-pointer" onclick="buyReal('${k}')">매수</button><button class="bg-blue-500 text-white px-2.5 py-1.5 rounded-md active:bg-blue-600 shadow-sm cursor-pointer" onclick="sellReal('${k}')">매도</button></div>
                 </div>`).join('');
         }
             
@@ -810,15 +810,19 @@
         }
     }
 
+    // 버그 수정: 하와이 여행 구매 시 자금 부족 시 안내 토스트 출력 및 터치 반응성 보완
     function buyTravel() {
         const cost = 50000000;
         if(s.money >= cost) {
             s.money -= cost; 
             s.travelBuff += 0.2; 
             playAudio('buy');
-            showToast("하와이 여행으로 힐링 완료! (영구 수익 효율 +20%)");
+            showToast("✈️ 하와이 여행으로 힐링 완료! (영구 수익 효율 +20%)");
             updateUI();
-        } else playAudio('error');
+        } else {
+            playAudio('error');
+            showToast("❌ 소지금이 부족합니다! (5천만 원 필요)");
+        }
     }
 
     function tradeStock(act) { 
