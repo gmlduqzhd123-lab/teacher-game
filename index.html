@@ -38,20 +38,27 @@
 </head>
 <body class="flex flex-col text-gray-800 relative items-center justify-center">
 
-    <!-- 시작 화면 (메인) -->
-    <div id="startScreen" class="absolute inset-0 bg-white z-50 flex flex-col items-center justify-between p-6">
+    <!-- 시작 화면 (메인) - 요청사항 반영 -->
+    <div id="startScreen" class="absolute inset-0 bg-white z-50 flex flex-col items-center justify-between p-8">
         <div></div>
         <div class="flex flex-col items-center justify-center">
-            <h1 class="text-3xl font-bold text-center text-blue-600 drop-shadow-md leading-tight mb-2">👨‍🏫 건물주가 되고 싶은<br>선생님</h1>
-            <p class="text-gray-500 text-sm mb-6 text-center">Ultimate Teacher Simulator v8.0 (1000 Keywords Master)</p>
-            <div class="flex space-x-4 mb-6">
-                <button onclick="startGame('남교사', '👨‍🏫')" class="p-5 bg-blue-100 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition"><div class="text-4xl mb-1">👨‍🏫</div><div class="font-bold text-sm">남교사</div></button>
-                <button onclick="startGame('여교사', '👩‍🏫')" class="p-5 bg-pink-100 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition"><div class="text-4xl mb-1">👩‍🏫</div><div class="font-bold text-sm">여교사</div></button>
+            <h1 class="text-3xl font-bold text-center text-blue-600 drop-shadow-md leading-tight mb-8">건물주가 되고 싶은<br>선생님</h1>
+            <div class="flex space-x-5 mb-4">
+                <button onclick="startGame('남교사', '🧑‍🏫')" class="p-6 bg-blue-50 border-2 border-blue-200 rounded-3xl shadow-md hover:scale-105 active:scale-95 transition flex flex-col items-center">
+                    <div class="text-5xl mb-2">🧑‍🏫</div>
+                    <div class="font-bold text-sm text-blue-700">남교사</div>
+                </button>
+                <button onclick="startGame('여교사', '👩‍🏫')" class="p-6 bg-pink-50 border-2 border-pink-200 rounded-3xl shadow-md hover:scale-105 active:scale-95 transition flex flex-col items-center">
+                    <div class="text-5xl mb-2">👩‍🏫</div>
+                    <div class="font-bold text-sm text-pink-700">여교사</div>
+                </button>
             </div>
-            <button onclick="clearData()" class="text-xs text-red-400 underline p-2">데이터 초기화 (버그 발생 시)</button>
         </div>
-        <div class="text-center text-[10px] text-gray-400">
-            Copyright © 2026. 엽쌤 All rights reserved.
+        <div class="flex flex-col items-center space-y-2 pb-2">
+            <button onclick="clearData()" class="text-xs text-red-400 underline p-1">데이터 초기화 (버그 발생 시)</button>
+            <div class="text-center text-[10px] text-gray-400">
+                Copyright © 2026. 엽쌤 All rights reserved.
+            </div>
         </div>
     </div>
 
