@@ -185,41 +185,42 @@
                 </div>
                 <div class="bg-yellow-50 p-2.5 rounded-lg border border-yellow-200 flex justify-between items-center shadow-sm mb-3">
                     <div><div class="text-xs font-bold text-yellow-700">행복 연금복권</div><div class="text-[10px] text-gray-500">장당 10만 원 (확률 극악)</div></div>
-                    <button onclick="buyLottery()" class="bg-yellow-500 text-white px-3 py-2 rounded-md text-[11px] font-bold active:bg-yellow-600 shadow cursor-pointer">구매</button>
+                    <button onclick="buyLottery()" class="bg-yellow-500 text-white px-3 py-2 rounded-md text-[11px] font-bold active:bg-yellow-600 shadow cursor-pointer">구매 (10만 원)</button>
                 </div>
                 <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1 mt-1">🏢 부동산</h3><div id="realEstateList" class="space-y-1"></div></div>
             </div>
 
+            <!-- 활동 탭 (버튼 가시성 및 조건 피드백 완벽 강화) -->
             <div id="tab-act" class="tab-content p-2 space-y-2.5 hidden">
                 <div class="bg-purple-50 p-3 rounded-lg border border-purple-100">
                     <h3 class="font-bold text-purple-800 text-xs mb-0.5">📦 에듀테크 기자재 언박싱 가챠</h3>
-                    <p class="text-[10px] text-gray-600 mb-2">랜덤 박스로 최신 스마트기기 및 버프 획득 (50만 원)</p>
-                    <button onclick="openGacha()" class="w-full bg-purple-600 text-white py-2.5 rounded-md text-xs font-bold shadow cursor-pointer">기자재 언박싱하기</button>
+                    <p class="text-[10px] text-gray-600 mb-2">랜덤 박스로 최신 스마트기기 및 버프 획득</p>
+                    <button onclick="openGacha()" class="w-full bg-purple-600 text-white py-2.5 rounded-md text-xs font-bold shadow cursor-pointer">기자재 언박싱하기 (50만 원)</button>
                 </div>
                 <div class="bg-blue-50 p-3 rounded-lg border border-blue-100">
                     <h3 class="font-bold text-blue-800 text-xs mb-0.5">🚗 순회교사 관외 출장 정산</h3>
-                    <p class="text-[10px] text-gray-600 mb-2">인근 학교 순회 근무 및 출장비 수령 (10분마다)</p>
-                    <button onclick="runItinerantTrip()" class="w-full bg-blue-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">출장비 정산 신청</button>
+                    <p class="text-[10px] text-gray-600 mb-2">인근 학교 순회 근무 및 출장비 수령</p>
+                    <button onclick="runItinerantTrip()" class="w-full bg-blue-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">출장비 정산 신청 (즉시)</button>
                 </div>
                 <div class="bg-green-50 p-3 rounded-lg border border-green-100">
                     <h3 class="font-bold text-green-800 text-xs mb-0.5">🍱 급식실 메뉴 청원 투표</h3>
-                    <p class="text-[10px] text-gray-600 mb-2">수요일 특식(돈가스/치킨) 청원 성사 버프 (30만 원)</p>
-                    <button onclick="voteCafeteriaMenu()" class="w-full bg-green-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">급식 청원 지지하기</button>
+                    <p class="text-[10px] text-gray-600 mb-2">수요일 특식(돈가스/치킨) 청원 성사 버프</p>
+                    <button onclick="voteCafeteriaMenu()" class="w-full bg-green-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">급식 청원 지지하기 (30만 원)</button>
                 </div>
                 <div class="bg-amber-50 p-3 rounded-lg border border-amber-100">
                     <h3 class="font-bold text-amber-800 text-xs mb-0.5">🧪 과학실 실험 폐기물 처리</h3>
-                    <p class="text-[10px] text-gray-600 mb-2">실험실 안전 점검 및 폐기물 적법 처리 (명예 +5)</p>
-                    <button onclick="manageLabWaste()" class="w-full bg-amber-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">안전 점검 및 폐기 처리</button>
+                    <p class="text-[10px] text-gray-600 mb-2">실험실 안전 점검 및 폐기물 적법 처리</p>
+                    <button onclick="manageLabWaste()" class="w-full bg-amber-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">안전 점검 및 폐기 처리 (명예 +5)</button>
                 </div>
                 <div class="bg-cyan-50 p-3 rounded-lg border border-cyan-100">
                     <h3 class="font-bold text-cyan-800 text-xs mb-0.5">🏊‍♂️ 생존수영 & 체험학습 사전답사</h3>
                     <p class="text-[10px] text-gray-600 mb-2">안전사고 예방을 위한 사전답사 및 안전교육 실시</p>
-                    <button onclick="doFieldTripInspection()" class="w-full bg-cyan-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">사전답사 완료 보고</button>
+                    <button onclick="doFieldTripInspection()" class="w-full bg-cyan-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">사전답사 완료 보고 (지원금)</button>
                 </div>
                 <div class="bg-rose-50 p-3 rounded-lg border border-rose-100">
                     <h3 class="font-bold text-rose-800 text-xs mb-0.5">🌐 다문화학생 한국어 교실</h3>
                     <p class="text-[10px] text-gray-600 mb-2">중도입국 학생 맞춤형 한국어 의사소통 지원</p>
-                    <button onclick="supportMulticultural()" class="w-full bg-rose-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">한국어 지도 수업</button>
+                    <button onclick="supportMulticultural()" class="w-full bg-rose-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">한국어 지도 수업 (EXP +1000)</button>
                 </div>
                 <div class="bg-emerald-50 p-3 rounded-lg border border-emerald-100">
                     <h3 class="font-bold text-emerald-800 text-xs mb-0.5">🌱 탄소중립 텃밭 & 학교숲 가꾸기</h3>
@@ -239,7 +240,7 @@
                 <div class="bg-orange-50 p-3 rounded-lg border border-orange-100">
                     <h3 class="font-bold text-orange-800 text-xs mb-0.5">🥕 당근마켓 벼룩시장</h3>
                     <div class="text-[11px] font-bold mb-2 text-orange-900">보유 잉여템: <span id="carrotCount">0</span>개</div>
-                    <button onclick="sellCarrot()" class="w-full bg-orange-500 text-white py-2.5 rounded-md text-xs font-bold shadow cursor-pointer">잉여템 판매하기</button>
+                    <button onclick="sellCarrot()" class="w-full bg-orange-500 text-white py-2.5 rounded-md text-xs font-bold shadow cursor-pointer">잉여템 판매하기 (보유 템 필요)</button>
                 </div>
             </div>
 
@@ -1053,31 +1054,32 @@
     }
 
     function sellCarrot() { 
-        if(s.spareItems <= 0) { playAudio('error'); return; } 
+        if(s.spareItems <= 0) { playAudio('error'); showToast("❌ 보유 중인 잉여템이 없습니다!"); return; } 
         if(s.ootd !== '정장' && Math.random() < 0.5) { 
             if(confirm("학생: '선생님 반값만 깎아주세요 ㅠㅠ'\n수락하시겠습니까?")) { 
                 s.money += 5000; 
                 s.spareItems--; 
                 playAudio('coin'); 
-            } else playAudio('error'); 
+                showToast("당근마켓 쿨거래 완료! (+5천 원)");
+            } else { playAudio('error'); showToast("거래가 취소되었습니다."); } 
         } else { 
             s.money += 10000; 
             s.spareItems--; 
             playAudio('buy'); 
-            showToast("쿨거래 완료!"); 
+            showToast("당근마켓 정가 쿨거래 완료! (+1만 원)"); 
         } 
         updateUI(); 
     }
 
     function buyLottery() { 
-        if(s.money < 100000) { playAudio('error'); return; } 
+        if(s.money < 100000) { playAudio('error'); showToast("❌ 소지금이 부족합니다! (10만 원 필요)"); return; } 
         s.money -= 100000; 
         if(Math.random() < 0.005) { 
             s.money += 1000000000; 
             alert("🎉 1등 당첨! 10억 획득!"); 
             playAudio('buy'); 
         } else { 
-            showToast("복권 낙첨..."); 
+            showToast("복권 낙첨... 다음 기회에!"); 
             playAudio('click'); 
         } 
         updateUI(); 
