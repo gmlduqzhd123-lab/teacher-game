@@ -49,25 +49,25 @@
             
             <div class="text-xs font-bold text-gray-500 mb-1.5 self-start px-1">난이도 선택</div>
             <div class="flex space-x-2 w-full mb-6">
-                <button onclick="setDifficulty('easy')" id="diff-easy" class="flex-1 py-2 bg-green-50 text-green-700 border-2 border-green-200 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm">🌱 초보</button>
-                <button onclick="setDifficulty('normal')" id="diff-normal" class="flex-1 py-2 bg-blue-500 text-white border-2 border-blue-600 rounded-xl font-bold text-xs transition active:scale-95 shadow-md">🌿 보통</button>
-                <button onclick="setDifficulty('hard')" id="diff-hard" class="flex-1 py-2 bg-red-50 text-red-700 border-2 border-red-200 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm">🔥 어려움</button>
+                <button onclick="setDifficulty('easy')" id="diff-easy" class="flex-1 py-2 bg-green-50 text-green-700 border-2 border-green-200 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm cursor-pointer">🌱 초보</button>
+                <button onclick="setDifficulty('normal')" id="diff-normal" class="flex-1 py-2 bg-blue-500 text-white border-2 border-blue-600 rounded-xl font-bold text-xs transition active:scale-95 shadow-md cursor-pointer">🌿 보통</button>
+                <button onclick="setDifficulty('hard')" id="diff-hard" class="flex-1 py-2 bg-red-50 text-red-700 border-2 border-red-200 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm cursor-pointer">🔥 어려움</button>
             </div>
 
             <div class="text-xs font-bold text-gray-500 mb-1.5 self-start px-1">아바타 선택</div>
             <div class="flex space-x-3 w-full mb-4">
-                <button onclick="startGame('남교사', '🧑‍🏫')" class="flex-1 p-4 bg-blue-50 border-2 border-blue-200 rounded-2xl shadow-md hover:scale-105 active:scale-95 transition flex flex-col items-center">
+                <button onclick="startGame('남교사', '🧑‍🏫')" class="flex-1 p-4 bg-blue-50 border-2 border-blue-200 rounded-2xl shadow-md hover:scale-105 active:scale-95 transition flex flex-col items-center cursor-pointer">
                     <div class="text-4xl mb-1">🧑‍🏫</div>
                     <div class="font-bold text-xs text-blue-700">남교사</div>
                 </button>
-                <button onclick="startGame('여교사', '👩‍🏫')" class="flex-1 p-4 bg-pink-50 border-2 border-pink-200 rounded-2xl shadow-md hover:scale-105 active:scale-95 transition flex flex-col items-center">
+                <button onclick="startGame('여교사', '👩‍🏫')" class="flex-1 p-4 bg-pink-50 border-2 border-pink-200 rounded-2xl shadow-md hover:scale-105 active:scale-95 transition flex flex-col items-center cursor-pointer">
                     <div class="text-4xl mb-1">👩‍🏫</div>
                     <div class="font-bold text-xs text-pink-700">여교사</div>
                 </button>
             </div>
         </div>
         <div class="flex flex-col items-center space-y-2 pb-2">
-            <button onclick="clearData()" class="text-xs text-red-400 underline p-1">데이터 초기화 (버그 발생 시)</button>
+            <button onclick="clearData()" class="text-xs text-red-400 underline p-1 cursor-pointer">데이터 초기화 (버그 발생 시)</button>
             <div class="text-center text-[10px] text-gray-400">
                 Copyright © 2026. 엽쌤 All rights reserved.
             </div>
@@ -80,10 +80,10 @@
         <!-- 상단 스탯창 -->
         <div id="headerArea" class="bg-blue-600 text-white p-2.5 pb-2 shadow-md transition-colors duration-500 rounded-b-lg z-20">
             <div class="flex justify-between items-center mb-1.5 px-0.5">
-                <button onclick="goHome()" class="bg-blue-800 bg-opacity-60 text-white px-2.5 py-1 rounded-full text-[10px] font-bold shadow flex items-center space-x-1 active:scale-95 transition">🏠 홈으로</button>
+                <button onclick="goHome()" class="bg-blue-800 bg-opacity-60 text-white px-2.5 py-1 rounded-full text-[10px] font-bold shadow flex items-center space-x-1 active:scale-95 transition cursor-pointer">🏠 홈으로</button>
                 <button onclick="activatePivotTime()" id="pivotBtn" class="bg-gray-700 text-gray-300 px-2.5 py-1 rounded-full text-[10px] font-bold shadow transition select-none cursor-pointer">🚀 피벗타임 (0%)</button>
-                <button onclick="openSnackBox()" class="bg-yellow-500 text-gray-900 px-2 py-0.5 rounded-full text-[10px] font-bold shadow active:scale-95 transition">🍫 간식함</button>
-                <button onclick="toggleAudio()" id="audioBtn" class="bg-blue-800 bg-opacity-60 text-white px-2.5 py-1 rounded-full text-[10px] font-bold shadow active:scale-95 transition">🔊 ON</button>
+                <button onclick="openSnackBox()" class="bg-yellow-500 text-gray-900 px-2 py-0.5 rounded-full text-[10px] font-bold shadow active:scale-95 transition cursor-pointer">🍫 간식함</button>
+                <button onclick="toggleAudio()" id="audioBtn" class="bg-blue-800 bg-opacity-60 text-white px-2.5 py-1 rounded-full text-[10px] font-bold shadow active:scale-95 transition cursor-pointer">🔊 ON</button>
             </div>
 
             <div class="flex justify-between items-end mb-1">
@@ -156,12 +156,12 @@
 
         <!-- 하단 탭 메뉴 (6개) -->
         <div class="flex bg-gray-100 border-t border-gray-200 shadow-sm flex-shrink-0">
-            <button onclick="changeTab('tab-up', this)" class="tab-btn flex-1 py-2.5 text-[10px] font-bold bg-white text-blue-600 border-t-2 border-blue-600">업무</button>
-            <button onclick="changeTab('tab-enforce', this)" class="tab-btn flex-1 py-2.5 text-[10px] font-bold text-gray-500 border-t-2 border-transparent">강화</button>
-            <button onclick="changeTab('tab-asset', this)" class="tab-btn flex-1 py-2.5 text-[10px] font-bold text-gray-500 border-t-2 border-transparent">자산</button>
-            <button onclick="changeTab('tab-act', this)" class="tab-btn flex-1 py-2.5 text-[10px] font-bold text-gray-500 border-t-2 border-transparent">활동</button>
-            <button onclick="changeTab('tab-club', this)" class="tab-btn flex-1 py-2.5 text-[10px] font-bold text-gray-500 border-t-2 border-transparent">동아리</button>
-            <button onclick="changeTab('tab-sp', this)" class="tab-btn flex-1 py-2.5 text-[10px] font-bold text-gray-500 border-t-2 border-transparent rounded-tr-lg">특수</button>
+            <button onclick="changeTab('tab-up', this)" class="tab-btn flex-1 py-2.5 text-[10px] font-bold bg-white text-blue-600 border-t-2 border-blue-600 cursor-pointer">업무</button>
+            <button onclick="changeTab('tab-enforce', this)" class="tab-btn flex-1 py-2.5 text-[10px] font-bold text-gray-500 border-t-2 border-transparent cursor-pointer">강화</button>
+            <button onclick="changeTab('tab-asset', this)" class="tab-btn flex-1 py-2.5 text-[10px] font-bold text-gray-500 border-t-2 border-transparent cursor-pointer">자산</button>
+            <button onclick="changeTab('tab-act', this)" class="tab-btn flex-1 py-2.5 text-[10px] font-bold text-gray-500 border-t-2 border-transparent cursor-pointer">활동</button>
+            <button onclick="changeTab('tab-club', this)" class="tab-btn flex-1 py-2.5 text-[10px] font-bold text-gray-500 border-t-2 border-transparent cursor-pointer">동아리</button>
+            <button onclick="changeTab('tab-sp', this)" class="tab-btn flex-1 py-2.5 text-[10px] font-bold text-gray-500 border-t-2 border-transparent rounded-tr-lg cursor-pointer">특수</button>
         </div>
 
         <!-- 탭 컨텐츠 영역 -->
@@ -197,6 +197,36 @@
                     <button onclick="openGacha()" class="w-full bg-purple-600 text-white py-2.5 rounded-md text-xs font-bold shadow cursor-pointer">기자재 언박싱하기</button>
                 </div>
                 <div class="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                    <h3 class="font-bold text-blue-800 text-xs mb-0.5">🚗 순회교사 관외 출장 정산</h3>
+                    <p class="text-[10px] text-gray-600 mb-2">인근 학교 순회 근무 및 출장비 수령 (10분마다)</p>
+                    <button onclick="runItinerantTrip()" class="w-full bg-blue-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">출장비 정산 신청</button>
+                </div>
+                <div class="bg-green-50 p-3 rounded-lg border border-green-100">
+                    <h3 class="font-bold text-green-800 text-xs mb-0.5">🍱 급식실 메뉴 청원 투표</h3>
+                    <p class="text-[10px] text-gray-600 mb-2">수요일 특식(돈가스/치킨) 청원 성사 버프 (30만 원)</p>
+                    <button onclick="voteCafeteriaMenu()" class="w-full bg-green-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">급식 청원 지지하기</button>
+                </div>
+                <div class="bg-amber-50 p-3 rounded-lg border border-amber-100">
+                    <h3 class="font-bold text-amber-800 text-xs mb-0.5">🧪 과학실 실험 폐기물 처리</h3>
+                    <p class="text-[10px] text-gray-600 mb-2">실험실 안전 점검 및 폐기물 적법 처리 (명예 +5)</p>
+                    <button onclick="manageLabWaste()" class="w-full bg-amber-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">안전 점검 및 폐기 처리</button>
+                </div>
+                <div class="bg-cyan-50 p-3 rounded-lg border border-cyan-100">
+                    <h3 class="font-bold text-cyan-800 text-xs mb-0.5">🏊‍♂️ 생존수영 & 체험학습 사전답사</h3>
+                    <p class="text-[10px] text-gray-600 mb-2">안전사고 예방을 위한 사전답사 및 안전교육 실시</p>
+                    <button onclick="doFieldTripInspection()" class="w-full bg-cyan-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">사전답사 완료 보고</button>
+                </div>
+                <div class="bg-rose-50 p-3 rounded-lg border border-rose-100">
+                    <h3 class="font-bold text-rose-800 text-xs mb-0.5">🌐 다문화학생 한국어 교실</h3>
+                    <p class="text-[10px] text-gray-600 mb-2">중도입국 학생 맞춤형 한국어 의사소통 지원</p>
+                    <button onclick="supportMulticultural()" class="w-full bg-rose-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">한국어 지도 수업</button>
+                </div>
+                <div class="bg-emerald-50 p-3 rounded-lg border border-emerald-100">
+                    <h3 class="font-bold text-emerald-800 text-xs mb-0.5">🌱 탄소중립 텃밭 & 학교숲 가꾸기</h3>
+                    <p class="text-[10px] text-gray-600 mb-2">생태전환교육 실천 및 상추·방울토마토 수확</p>
+                    <button onclick="harvestGarden()" class="w-full bg-emerald-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">텃밭 수확 및 생태 교육</button>
+                </div>
+                <div class="bg-blue-50 p-3 rounded-lg border border-blue-100">
                     <h3 class="font-bold text-blue-800 text-xs mb-0.5">📱 익명 커뮤니티 (블라인드)</h3>
                     <p class="text-[10px] text-gray-600 mb-2">교직 썰을 풀어 베스트글에 도전! (쿨타임 1분)</p>
                     <button onclick="postBlind()" id="btn-blind" class="w-full bg-blue-500 text-white py-2.5 rounded-md text-xs font-bold shadow cursor-pointer">썰 풀기 (준비됨)</button>
@@ -215,6 +245,26 @@
 
             <div id="tab-club" class="tab-content p-2 space-y-3 hidden">
                 <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">🎒 방과후 동아리 및 늘봄학교</h3><div id="clubList" class="space-y-1"></div></div>
+                <div class="bg-indigo-50 p-3 rounded-lg border border-indigo-200 text-center">
+                    <h3 class="font-bold text-indigo-800 text-xs mb-1">🎓 초빙교사 지원 및 교장공모제</h3>
+                    <p class="text-[10px] text-gray-600 mb-2">탁월한 업무 실적으로 초빙교사 및 공모교장 도전!</p>
+                    <button onclick="applyPrincipalOpen()" class="bg-indigo-600 text-white text-xs px-3 py-2.5 rounded-md shadow font-bold w-full cursor-pointer">초빙교사 서류 접수 (명예 50 필요)</button>
+                </div>
+                <div class="bg-violet-50 p-3 rounded-lg border border-violet-200 text-center">
+                    <h3 class="font-bold text-violet-800 text-xs mb-1">💬 Wee클래스 또래상담 운영</h3>
+                    <p class="text-[10px] text-gray-600 mb-2">학생 정서 지원 및 관계회복 프로그램</p>
+                    <button onclick="runWeeCounseling()" class="bg-violet-600 text-white text-xs px-3 py-2.5 rounded-md shadow font-bold w-full cursor-pointer">또래상담 프로그램 가동</button>
+                </div>
+                <div class="bg-sky-50 p-3 rounded-lg border border-sky-200 text-center">
+                    <h3 class="font-bold text-sky-800 text-xs mb-1">🏛️ 학생자치회 회의 & 1인 1역</h3>
+                    <p class="text-[10px] text-gray-600 mb-2">학생들이 주도하는 학급 운영 자치활동</p>
+                    <button onclick="runStudentCouncil()" class="bg-sky-600 text-white text-xs px-3 py-2.5 rounded-md shadow font-bold w-full cursor-pointer">학급 1인 1역 자치 배정</button>
+                </div>
+                <div class="bg-fuchsia-50 p-3 rounded-lg border border-fuchsia-200 text-center">
+                    <h3 class="font-bold text-fuchsia-800 text-xs mb-1">📚 전문적학습공동체 수업나눔</h3>
+                    <p class="text-[10px] text-gray-600 mb-2">교사 동료 간 수업 연구 및 나눔 활동</p>
+                    <button onclick="runLearningCommunity()" class="bg-fuchsia-600 text-white text-xs px-3 py-2.5 rounded-md shadow font-bold w-full cursor-pointer">수업나눔 세미나 개최</button>
+                </div>
                 <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">⚽ 교직원 소모임</h3><div id="somoimList" class="space-y-1"></div></div>
                 <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">🏆 학교 운동부 서포트</h3><div id="sportList" class="space-y-1"></div></div>
                 <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">📜 직무 연수</h3><div id="certList" class="space-y-1"></div></div>
@@ -363,13 +413,13 @@
             const btn = document.getElementById(`diff-${d}`);
             if (!btn) return;
             if (d === diff) {
-                if (d === 'easy') btn.className = "flex-1 py-2 bg-green-500 text-white border-2 border-green-600 rounded-xl font-bold text-xs transition active:scale-95 shadow-md";
-                else if (d === 'normal') btn.className = "flex-1 py-2 bg-blue-500 text-white border-2 border-blue-600 rounded-xl font-bold text-xs transition active:scale-95 shadow-md";
-                else btn.className = "flex-1 py-2 bg-red-500 text-white border-2 border-red-600 rounded-xl font-bold text-xs transition active:scale-95 shadow-md";
+                if (d === 'easy') btn.className = "flex-1 py-2 bg-green-500 text-white border-2 border-green-600 rounded-xl font-bold text-xs transition active:scale-95 shadow-md cursor-pointer";
+                else if (d === 'normal') btn.className = "flex-1 py-2 bg-blue-500 text-white border-2 border-blue-600 rounded-xl font-bold text-xs transition active:scale-95 shadow-md cursor-pointer";
+                else btn.className = "flex-1 py-2 bg-red-500 text-white border-2 border-red-600 rounded-xl font-bold text-xs transition active:scale-95 shadow-md cursor-pointer";
             } else {
-                if (d === 'easy') btn.className = "flex-1 py-2 bg-green-50 text-green-700 border-2 border-green-200 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm";
-                else if (d === 'normal') btn.className = "flex-1 py-2 bg-blue-50 text-blue-700 border-2 border-blue-200 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm";
-                else btn.className = "flex-1 py-2 bg-red-50 text-red-700 border-2 border-red-200 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm";
+                if (d === 'easy') btn.className = "flex-1 py-2 bg-green-50 text-green-700 border-2 border-green-200 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm cursor-pointer";
+                else if (d === 'normal') btn.className = "flex-1 py-2 bg-blue-50 text-blue-700 border-2 border-blue-200 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm cursor-pointer";
+                else btn.className = "flex-1 py-2 bg-red-50 text-red-700 border-2 border-red-200 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm cursor-pointer";
             }
         });
     }
@@ -401,7 +451,7 @@
     }
     
     function loadGame() {
-        const saved = localStorage.getItem('v8_7_ultimate_save');
+        const saved = localStorage.getItem('v8_9_ultimate_save');
         if(saved) {
             try { 
                 const p = JSON.parse(saved); 
@@ -434,12 +484,12 @@
     
     function saveGame() { 
         s.lastSaveTime = Date.now(); 
-        localStorage.setItem('v8_7_ultimate_save', JSON.stringify(s)); 
+        localStorage.setItem('v8_9_ultimate_save', JSON.stringify(s)); 
     }
     
     function clearData() { 
         if(confirm("모든 데이터를 지울까요?")) { 
-            localStorage.removeItem('v8_7_ultimate_save'); 
+            localStorage.removeItem('v8_9_ultimate_save'); 
             location.reload(); 
         } 
     }
@@ -599,9 +649,10 @@
         if(s.motto === '부자가 되자') { cv *= 1.2; av *= 1.2; } 
         if(s.motto === '배움이 먼저다') { ec *= 1.5; ea *= 1.5; }
         
-        let diffMult = 1.0;
-        if (s.difficulty === 'easy') diffMult = 2.0;
-        else if (s.difficulty === 'hard') diffMult = 0.5;
+        let diffMult = 0.8;
+        if (s.difficulty === 'easy') diffMult = 1.5;
+        else if (s.difficulty === 'normal') diffMult = 0.8;
+        else if (s.difficulty === 'hard') diffMult = 0.3;
 
         const pivotMult = buffs.isPivot ? 10 : 1;
         const hM = (1 + ((s.hobong-1)*0.1) + s.succulentBuff) * s.travelBuff * enforceMult;
@@ -805,7 +856,7 @@
         const renderList = (dbList, targetId, stateObj, type) => {
             const container = document.getElementById(targetId);
             if (!container) return;
-            const inflation = s.difficulty === 'hard' ? 1.22 : 1.18;
+            const inflation = s.difficulty === 'hard' ? 1.28 : 1.22;
             container.innerHTML = dbList.map(item => {
                 const cnt = (stateObj && stateObj[item.id]) || 0; 
                 const cost = Math.floor(item.baseCost * Math.pow(inflation, cnt));
@@ -876,7 +927,7 @@
         
         if (!item || !targetObj) return;
         const cnt = targetObj[id] || 0; 
-        const inflation = s.difficulty === 'hard' ? 1.22 : 1.18;
+        const inflation = s.difficulty === 'hard' ? 1.28 : 1.22;
         const cost = Math.floor(item.baseCost * Math.pow(inflation, cnt));
         if(s.money >= cost) {
             s.money -= cost; 
