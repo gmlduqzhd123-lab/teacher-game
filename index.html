@@ -3,320 +3,513 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#fff6ee">
     <title>건물주가 되고 싶은 선생님</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-color: #f3f4f6; }
-        * { -webkit-tap-highlight-color: transparent; }
-        
-        body {
-            font-family: 'Jua', sans-serif; 
-            background-color: var(--bg-color);
-            margin: 0; padding: 0; 
-            height: 100dvh; overflow: hidden;
-            touch-action: none; user-select: none; -webkit-user-select: none; 
-            overscroll-behavior-y: contain; letter-spacing: -0.5px;
+        :root {
+            --ink: #5b4a44; --ink-soft: #9a857d; --line: #5b4a44;
+            --cream: #fff9f1; --paper: #ffffff; --muted: #f1e9e3;
+            --pink: #ffd3e1; --pink-l: #fff1f6; --pink-d: #ff86ad;
+            --mint: #c9f2de; --mint-l: #eefcf5; --mint-d: #3fc28e;
+            --sky: #d2e9ff; --sky-l: #eff7ff; --sky-d: #59a8ee;
+            --butter: #ffeea8; --butter-l: #fffae3; --butter-d: #ffc233;
+            --lav: #e4dbff; --lav-l: #f5f1ff; --lav-d: #9b82ef;
+            --peach: #ffdcc7; --peach-l: #fff3ec; --peach-d: #ff9458;
+            --accent: #ff86ad; --accent-soft: #ffe2ec; --wall: #fff2f6;
         }
+        body.season-1 { --accent: #45b8e6; --accent-soft: #d8f2ff; --wall: #eefaff; }
+        body.season-2 { --accent: #ff9446; --accent-soft: #ffe8d4; --wall: #fff5ea; }
+        body.season-3 { --accent: #8b98ee; --accent-soft: #e3e7ff; --wall: #f3f5ff; }
 
-        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-40px) scale(1.2); } }
-        .floating-text { position: absolute; color: #fbbf24; font-weight: bold; font-size: 1.4rem; pointer-events: none; text-shadow: 2px 2px 0 #000; z-index: 50; animation: floatUp 0.7s ease-out forwards; }
-        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(0.9); } 100% { transform: scale(1); } }
-        .character-pop { animation: pop 0.1s ease-in-out; }
-        @keyframes runAcross { 0% { left: -10%; transform: scaleX(1); } 100% { left: 110%; transform: scaleX(1); } }
-        .runner { position: absolute; font-size: 2.2rem; bottom: 25%; animation: runAcross 3s linear forwards; cursor: pointer; z-index: 45; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body { margin: 0; padding: 0; height: 100%; }
+        body {
+            font-family: 'Jua', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            color: var(--ink);
+            background-color: #fff6ee;
+            background-image: radial-gradient(#ffd9e5 1.6px, transparent 1.6px), radial-gradient(#d9ecff 1.6px, transparent 1.6px);
+            background-size: 28px 28px; background-position: 0 0, 14px 14px;
+            height: 100dvh; overflow: hidden;
+            touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+            overscroll-behavior: none; letter-spacing: -0.3px;
+        }
+        button { font-family: inherit; color: inherit; }
+        .hidden { display: none !important; }
 
-        .scrollable-tab { height: calc(100dvh - 43vh - 85px); overflow-y: auto; touch-action: pan-y; overscroll-behavior-y: contain; }
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        
-        #caffeineBar { transition: width 0.1s linear, background-color 0.3s; }
-        .sweet-spot { background-color: #f59e0b !important; box-shadow: 0 0 8px #f59e0b; }
-        @keyframes glow { 0% { box-shadow: 0 0 5px #fbbf24; } 50% { box-shadow: 0 0 15px #f59e0b, 0 0 25px #f59e0b; } 100% { box-shadow: 0 0 5px #fbbf24; } }
-        .pivot-glow { animation: glow 1s infinite; }
+        /* ---------- 공용 버튼 / 카드 ---------- */
+        .btn {
+            font-size: 14px; color: var(--ink); background: #fff;
+            border: 2.5px solid var(--line); border-radius: 14px; padding: 10px 14px;
+            box-shadow: 0 3px 0 var(--line); cursor: pointer; line-height: 1.2;
+            transition: transform .06s, box-shadow .06s, background-color .2s;
+        }
+        .btn:active { transform: translateY(3px); box-shadow: 0 0 0 var(--line); }
+        .btn-sm { font-size: 12px; padding: 6px 10px; border-radius: 12px; border-width: 2px; box-shadow: 0 2px 0 var(--line); }
+        .btn-sm:active { transform: translateY(2px); }
+        .btn-block { width: 100%; display: block; }
+        .btn-pink { background: var(--pink); } .btn-mint { background: var(--mint); } .btn-sky { background: var(--sky); }
+        .btn-butter { background: var(--butter); } .btn-lav { background: var(--lav); } .btn-peach { background: var(--peach); }
+        .btn.poor, .btn.cool { background: var(--muted); color: #b3a29b; }
+
+        .card {
+            background: #fff; border: 2.5px solid var(--line); border-radius: 18px;
+            box-shadow: 0 3px 0 var(--line); padding: 10px 12px; margin-bottom: 12px;
+        }
+        .c-pink { background: var(--pink-l); } .c-mint { background: var(--mint-l); } .c-sky { background: var(--sky-l); }
+        .c-butter { background: var(--butter-l); } .c-lav { background: var(--lav-l); } .c-peach { background: var(--peach-l); }
+        .sec-title { font-size: 15px; margin: 4px 4px 8px; display: flex; align-items: center; gap: 6px; }
+        .sec-title small { font-size: 11px; color: var(--ink-soft); }
+
+        /* ---------- 시작 화면 ---------- */
+        #startScreen {
+            position: fixed; inset: 0; z-index: 60; display: flex; flex-direction: column;
+            align-items: center; justify-content: space-between; padding: 24px 20px calc(16px + env(safe-area-inset-bottom));
+            overflow-y: auto;
+        }
+        .start-box { width: 100%; max-width: 340px; display: flex; flex-direction: column; align-items: center; margin: auto 0; }
+        .logo-scene { position: relative; font-size: 64px; height: 92px; display: flex; align-items: flex-end; gap: 4px; margin-bottom: 6px; }
+        .logo-scene .t { animation: bob 1.6s ease-in-out infinite; display: inline-block; }
+        .logo-scene .b { animation: bob 1.6s ease-in-out .4s infinite; display: inline-block; font-size: 56px; }
+        .logo-scene .sp { position: absolute; font-size: 22px; animation: twinkle 1.8s ease-in-out infinite; }
+        .title-card {
+            background: #fff; border: 3px solid var(--line); border-radius: 24px; box-shadow: 0 5px 0 var(--line);
+            padding: 14px 18px; text-align: center; margin-bottom: 18px; transform: rotate(-1.5deg);
+        }
+        .title-card h1 { margin: 0; font-size: 28px; line-height: 1.25; font-weight: normal; }
+        .title-card h1 em { font-style: normal; color: var(--pink-d); }
+        .title-card p { margin: 4px 0 0; font-size: 12px; color: var(--ink-soft); }
+        .label { font-size: 13px; align-self: flex-start; margin: 0 4px 6px; }
+        .diff-row { display: flex; gap: 8px; width: 100%; margin-bottom: 4px; }
+        .diff-row .btn { flex: 1; font-size: 13px; padding: 9px 4px; }
+        .diff-row .btn.sel-easy { background: var(--mint); } .diff-row .btn.sel-normal { background: var(--sky); } .diff-row .btn.sel-hard { background: var(--pink); }
+        .diff-desc { font-size: 11px; color: var(--ink-soft); min-height: 16px; margin-bottom: 14px; }
+        .avatar-row { display: flex; gap: 12px; width: 100%; }
+        .avatar-row .btn { flex: 1; padding: 14px 8px 10px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .avatar-row .btn .e { font-size: 44px; line-height: 1; transition: transform .2s; }
+        .avatar-row .btn:hover .e { transform: rotate(-8deg) scale(1.08); }
+        .save-info { margin-top: 12px; font-size: 12px; background: var(--butter-l); border: 2px dashed #e5c65e; border-radius: 12px; padding: 6px 10px; text-align: center; }
+        .start-foot { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .link-btn { background: none; border: none; color: #e07b9c; font-size: 12px; text-decoration: underline; cursor: pointer; padding: 4px; }
+        .copyright { font-size: 10px; color: #b8a69f; text-align: center; }
+
+        /* ---------- 게임 화면 ---------- */
+        #gameScreen { height: 100dvh; width: 100%; max-width: 440px; margin: 0 auto; display: flex; flex-direction: column; background: rgba(255,249,241,.92); position: relative; }
+        @media (min-width: 441px) { #gameScreen { border-left: 2.5px solid var(--line); border-right: 2.5px solid var(--line); } }
+
+        .hud {
+            margin: calc(8px + env(safe-area-inset-top)) 8px 0; background: #fff; border: 2.5px solid var(--line);
+            border-radius: 22px; box-shadow: 0 4px 0 var(--line); padding: 8px 10px 9px; flex-shrink: 0; position: relative; z-index: 5;
+        }
+        .hud-top { display: flex; gap: 6px; align-items: center; margin-bottom: 7px; }
+        .chip-btn {
+            border: 2px solid var(--line); border-radius: 999px; background: var(--muted); font-size: 11.5px;
+            padding: 4px 9px; box-shadow: 0 2px 0 var(--line); cursor: pointer; white-space: nowrap;
+            transition: transform .06s, box-shadow .06s;
+        }
+        .chip-btn:active { transform: translateY(2px); box-shadow: none; }
+        #pivotBtn { flex: 1; --p: 0%; background: linear-gradient(90deg, var(--butter) var(--p), var(--muted) var(--p)); overflow: hidden; text-overflow: ellipsis; }
+        #pivotBtn.ready { background: var(--butter-d); animation: glow 1s ease-in-out infinite; }
+        #pivotBtn.on { background: repeating-linear-gradient(45deg, #ffd84d 0 10px, #ffe98f 10px 20px); animation: glow .6s ease-in-out infinite; }
+        .hud-mid { display: flex; justify-content: space-between; align-items: flex-end; gap: 6px; margin-bottom: 6px; }
+        .season-line { font-size: 11px; color: var(--ink-soft); display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+        .season-chip { background: var(--accent-soft); border: 1.5px solid var(--line); border-radius: 999px; padding: 1px 7px; color: var(--ink); transition: background-color .5s; }
+        .lv-line { font-size: 17px; display: flex; align-items: center; gap: 5px; margin-top: 3px; white-space: nowrap; }
+        .lv-line .ttl { font-size: 11px; color: var(--ink-soft); }
+        .grade-chip { font-size: 10.5px; background: var(--lav); border: 1.5px solid var(--line); border-radius: 999px; padding: 1px 7px; }
+        .money-box { text-align: right; flex-shrink: 0; }
+        .money-pill { display: inline-block; background: var(--butter); border: 2px solid var(--line); border-radius: 999px; padding: 2px 10px; font-size: 18px; box-shadow: 0 2px 0 var(--line); white-space: nowrap; }
+        .per-sec { font-size: 10.5px; color: var(--ink-soft); margin-top: 4px; }
+        .bar-row { display: flex; align-items: center; gap: 6px; font-size: 10.5px; margin-top: 4px; }
+        .bar-row .bl { width: 38px; flex-shrink: 0; }
+        .bar-row .br { width: 62px; text-align: right; flex-shrink: 0; color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .bar { flex: 1; height: 12px; border: 2px solid var(--line); border-radius: 999px; background: #f6f0eb; overflow: hidden; position: relative; }
+        .bar > i { display: block; height: 100%; width: 0; border-radius: 999px; transition: width .3s; }
+        #expBar { background: repeating-linear-gradient(45deg, #ffd24d 0 7px, #ffe383 7px 14px); }
+        #caffeineBar { background: repeating-linear-gradient(45deg, #8fcaf7 0 7px, #b5dcfb 7px 14px); transition: width .15s linear; }
+        #caffeineBar.hot { background: repeating-linear-gradient(45deg, #ff8fb3 0 7px, #ffb8cf 7px 14px); }
+        .bar .zone { position: absolute; top: 0; bottom: 0; left: 80%; right: 0; border-left: 2px dashed var(--pink-d); background: rgba(255,134,173,.14); }
+
+        /* ---------- 교실 씬 ---------- */
+        #clickArea {
+            position: relative; flex: 0 0 auto; height: clamp(200px, 33dvh, 300px); margin: 10px 8px 0;
+            border: 2.5px solid var(--line); border-radius: 22px; overflow: hidden; box-shadow: 0 4px 0 var(--line);
+            touch-action: none; cursor: pointer; background: var(--wall); transition: background-color .6s;
+        }
+        .wall { position: absolute; inset: 0 0 26% 0; background-image: repeating-linear-gradient(90deg, rgba(255,255,255,.55) 0 18px, transparent 18px 36px); }
+        .wainscot { position: absolute; left: 0; right: 0; bottom: 26%; height: 12px; background: var(--accent-soft); border-top: 2px solid var(--line); border-bottom: 2px solid var(--line); transition: background-color .6s; }
+        .floor { position: absolute; left: 0; right: 0; bottom: 0; height: 26%; background: repeating-linear-gradient(90deg, #f6ddbd 0 34px, #f1d1a9 34px 68px); }
+        .window {
+            position: absolute; top: 12px; right: 12px; width: 62px; height: 54px; border: 2.5px solid var(--line); border-radius: 12px;
+            background: linear-gradient(#bfe3ff, #e8f5ff); overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 22px;
+        }
+        .window::before, .window::after { content: ''; position: absolute; background: var(--line); }
+        .window::before { left: 50%; top: 0; bottom: 0; width: 2.5px; transform: translateX(-50%); }
+        .window::after { top: 50%; left: 0; right: 0; height: 2.5px; transform: translateY(-50%); }
+        .window .cloud { position: absolute; font-size: 16px; top: 4px; animation: drift 9s linear infinite; }
+        .clock { position: absolute; top: 14px; left: 14px; width: 34px; height: 34px; border-radius: 50%; background: #fff; border: 2.5px solid var(--line); }
+        .clock::before, .clock::after { content: ''; position: absolute; left: 50%; bottom: 50%; background: var(--line); border-radius: 2px; transform-origin: bottom center; }
+        .clock::before { width: 2px; height: 11px; margin-left: -1px; animation: spin 6s linear infinite; }
+        .clock::after { width: 2.5px; height: 8px; margin-left: -1.25px; transform: rotate(110deg); }
+        .board {
+            position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 50%; max-width: 220px; height: 56px;
+            background: #4f9074; border: 2.5px solid var(--line); border-radius: 12px; box-shadow: inset 0 0 0 4px #f2b979, 0 3px 0 var(--line);
+            display: flex; align-items: center; justify-content: center; padding: 0 12px;
+        }
+        .board .tag { position: absolute; top: -9px; left: 10px; font-size: 10px; background: var(--butter); border: 1.5px solid var(--line); border-radius: 999px; padding: 0 6px; }
+        #boardText { color: #fff; font-size: 14px; text-align: center; word-break: keep-all; text-shadow: 0 1px 0 rgba(0,0,0,.15); }
+        .board .chalk { position: absolute; bottom: 5px; right: 12px; width: 14px; height: 4px; background: #fff; border-radius: 2px; }
+        #trophyShelf { position: absolute; top: 54px; left: 10px; font-size: 15px; letter-spacing: -2px; }
+        #buffChips { position: absolute; top: 74px; left: 8px; display: flex; flex-direction: column; gap: 3px; align-items: flex-start; z-index: 4; pointer-events: none; }
+        .buff { font-size: 10.5px; background: #fff; border: 1.5px solid var(--line); border-radius: 999px; padding: 1px 7px; animation: popIn .25s; }
+        .deco { position: absolute; bottom: 8%; font-size: 26px; pointer-events: none; }
+        .teacher {
+            position: absolute; left: 50%; bottom: 11%; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; z-index: 3; pointer-events: none;
+        }
+        .char-box { position: relative; }
+        #characterEmoji { font-size: 62px; line-height: 1; display: block; margin-bottom: -6px; animation: bob 2s ease-in-out infinite; filter: drop-shadow(0 3px 0 rgba(91,74,68,.15)); }
+        #characterEmoji.pop { animation: squash .14s ease-out; }
+        #ootdEmoji { position: absolute; top: -4px; right: -14px; font-size: 22px; }
+        .blush { position: absolute; top: 30px; width: 10px; height: 6px; border-radius: 50%; background: rgba(255,134,173,.55); }
+        .speech {
+            position: absolute; bottom: 100%; left: 50%; margin-bottom: 6px; transform: translate(-10%, 6px) scale(.8);
+            background: #fff; border: 2px solid var(--line); border-radius: 14px; padding: 4px 9px; font-size: 12px;
+            white-space: nowrap; opacity: 0; transition: opacity .2s, transform .2s;
+        }
+        .speech.show { opacity: 1; transform: translate(-10%, 0) scale(1); }
+        .speech::after { content: ''; position: absolute; left: 14px; bottom: -7px; width: 10px; height: 10px; background: #fff; border-right: 2px solid var(--line); border-bottom: 2px solid var(--line); transform: rotate(45deg); }
+        .desk {
+            width: 136px; height: 40px; background: #f5c48a; border: 2.5px solid var(--line); border-radius: 12px 12px 6px 6px;
+            box-shadow: inset 0 -6px 0 #e5a965; display: flex; align-items: center; justify-content: space-between; padding: 0 12px 4px; position: relative;
+        }
+        .desk span { font-size: 20px; }
+        .pot { position: relative; }
+        #succulentPct { position: absolute; bottom: -8px; right: -14px; font-size: 9px; background: #fff; border: 1.5px solid var(--line); border-radius: 999px; padding: 0 4px; color: #3a9a6e; }
+        .hint {
+            position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); z-index: 4; pointer-events: none;
+            font-size: 11px; background: rgba(255,255,255,.88); border: 1.5px solid var(--line); border-radius: 999px; padding: 2px 10px; white-space: nowrap;
+        }
+        #particles { position: absolute; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
+        .particle { position: absolute; top: -24px; font-size: 13px; opacity: .85; animation: fall linear infinite; }
+        .runner { position: absolute; bottom: 14%; font-size: 36px; z-index: 6; cursor: pointer; animation: run 3.2s linear forwards; }
+        .runner span { display: inline-block; transform: scaleX(-1); }
+        .runner::after { content: '잡아라!'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-size: 10px; background: var(--butter); border: 1.5px solid var(--line); border-radius: 999px; padding: 0 5px; white-space: nowrap; }
+
+        /* ---------- 탭 패널 ---------- */
+        .panel { flex: 1; min-height: 0; overflow-y: auto; padding: 12px 10px 8px; touch-action: pan-y; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+        .panel::-webkit-scrollbar { width: 5px; }
+        .panel::-webkit-scrollbar-thumb { background: #e6cfc4; border-radius: 10px; }
+        .tab-content { animation: fadeUp .22s ease-out; }
+        .row {
+            display: flex; align-items: center; gap: 10px; background: #fff; border: 2px solid var(--line); border-radius: 16px;
+            padding: 7px 9px; margin-bottom: 8px; box-shadow: 0 2px 0 var(--line);
+        }
+        .ib { width: 40px; height: 40px; flex-shrink: 0; border-radius: 13px; border: 2px solid var(--line); background: var(--accent-soft); display: flex; align-items: center; justify-content: center; font-size: 21px; transition: background-color .6s; }
+        .rinfo { flex: 1; min-width: 0; }
+        .rname { font-size: 13px; line-height: 1.25; word-break: keep-all; }
+        .lv { font-size: 10px; background: var(--lav); border: 1.5px solid var(--line); border-radius: 999px; padding: 0 5px; margin-left: 2px; white-space: nowrap; }
+        .rdesc { font-size: 11px; color: var(--ink-soft); margin-top: 1px; }
+        .buy { min-width: 76px; flex-shrink: 0; touch-action: manipulation; }
+        .two-btn { display: flex; gap: 5px; flex-shrink: 0; }
+        .up { color: #e8567f; } .down { color: #3d8fe0; }
+        .info-note { font-size: 12px; background: var(--lav-l); border: 2px dashed #b9a8f2; border-radius: 14px; padding: 8px 10px; margin-bottom: 10px; }
+        .act-head { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
+        .act-ic { font-size: 26px; width: 42px; height: 42px; flex-shrink: 0; border-radius: 14px; background: #fff; border: 2px solid var(--line); display: flex; align-items: center; justify-content: center; }
+        .act-title { font-size: 14px; }
+        .act-desc { font-size: 11px; color: var(--ink-soft); margin-top: 2px; word-break: keep-all; }
+        .ootd-row { display: flex; gap: 6px; }
+        .ootd-row .btn { flex: 1; font-size: 12px; padding: 8px 2px; }
+        .ootd-row .btn.sel { background: var(--accent-soft); outline: 2px dashed var(--line); outline-offset: 2px; }
+        .skill-btn { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; text-align: left; }
+        .dex { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+        .dex > div { background: #fff; border: 2px solid var(--line); border-radius: 14px; text-align: center; padding: 6px 2px; font-size: 10px; }
+        .dex > div .e { font-size: 22px; display: block; }
+        .dex > div.locked { background: var(--muted); color: #b3a29b; }
+        .dex > div.locked .e { filter: grayscale(1) brightness(1.4); opacity: .4; }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 12px; }
+        .stat-grid > div { background: #fff; border: 2px solid var(--line); border-radius: 12px; padding: 5px 8px; }
+        .stat-grid b { font-weight: normal; color: var(--pink-d); }
+        .panel-foot { text-align: center; font-size: 10px; color: #b8a69f; padding: 6px 0 2px; }
+
+        .nav {
+            display: flex; gap: 2px; background: #fff; border-top: 2.5px solid var(--line); flex-shrink: 0;
+            padding: 5px 4px calc(5px + env(safe-area-inset-bottom));
+        }
+        .nav button { flex: 1; background: none; border: none; border-radius: 14px; padding: 4px 0 3px; font-size: 11px; color: var(--ink-soft); display: flex; flex-direction: column; align-items: center; gap: 1px; cursor: pointer; transition: background-color .2s; }
+        .nav button .ni { font-size: 20px; line-height: 1.1; transition: transform .2s; }
+        .nav button.active { background: var(--accent-soft); color: var(--ink); }
+        .nav button.active .ni { transform: translateY(-2px) scale(1.12); animation: wiggle .4s; }
+
+        /* ---------- 모달 / 토스트 / 플로팅 ---------- */
+        #modal { position: fixed; inset: 0; background: rgba(91,74,68,.42); z-index: 100; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); }
+        #modal.show { display: flex; }
+        .modal-card {
+            width: 100%; max-width: 330px; max-height: 90dvh; overflow-y: auto; background: var(--cream); border: 3px solid var(--line); border-radius: 26px;
+            box-shadow: 0 6px 0 var(--line); padding: 20px 18px 16px; text-align: center; animation: popIn .25s ease-out;
+        }
+        #modalIcon { font-size: 50px; line-height: 1.1; animation: bob 1.6s ease-in-out infinite; display: inline-block; }
+        #modalTitle { font-size: 20px; margin: 6px 0 4px; }
+        #modalDesc { font-size: 14px; color: var(--ink-soft); white-space: pre-line; word-break: keep-all; line-height: 1.45; }
+        #modalTimer { font-size: 40px; color: var(--pink-d); margin-top: 6px; }
+        #modalTimer:empty { display: none; }
+        #modalActions { display: flex; flex-direction: column; gap: 9px; margin-top: 14px; }
+        #modalActions .note { font-size: 13px; color: #e8567f; animation: blink 1s ease-in-out infinite; }
+
+        #gameToast {
+            position: fixed; top: calc(14px + env(safe-area-inset-top)); left: 50%; transform: translate(-50%, -20px); z-index: 120;
+            background: #fff; border: 2.5px solid var(--line); border-radius: 999px; box-shadow: 0 3px 0 var(--line);
+            padding: 7px 16px; font-size: 13px; max-width: 90%; text-align: center; pointer-events: none;
+            opacity: 0; transition: opacity .25s, transform .25s; word-break: keep-all;
+        }
+        #gameToast.show { opacity: 1; transform: translate(-50%, 0); }
+        .float {
+            position: fixed; z-index: 90; pointer-events: none; font-size: 18px; color: #ff6f9f; white-space: nowrap;
+            text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff, 1.5px 1.5px #fff, -1.5px -1.5px #fff, 1.5px -1.5px #fff, -1.5px 1.5px #fff;
+            animation: floatUp .8s ease-out forwards;
+        }
+        .float small { color: #4f9fe6; font-size: 12px; }
+
+        @keyframes floatUp { 0% { opacity: 0; transform: translateY(6px) scale(.7); } 15% { opacity: 1; transform: translateY(0) scale(1.1); } 100% { opacity: 0; transform: translateY(-48px) scale(1); } }
+        @keyframes squash { 0% { transform: scale(1,1); } 40% { transform: scale(1.15,.85); } 100% { transform: scale(1,1); } }
+        @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+        @keyframes twinkle { 0%,100% { opacity: .3; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.15); } }
+        @keyframes glow { 0%,100% { box-shadow: 0 2px 0 var(--line), 0 0 0 0 rgba(255,194,51,.6); } 50% { box-shadow: 0 2px 0 var(--line), 0 0 0 5px rgba(255,194,51,.35); } }
+        @keyframes run { from { left: -15%; } to { left: 110%; } }
+        @keyframes fall { 0% { transform: translate(0, 0) rotate(0); } 50% { transform: translate(14px, 180px) rotate(180deg); } 100% { transform: translate(-6px, 380px) rotate(360deg); } }
+        @keyframes drift { from { left: -24px; } to { left: 70px; } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes popIn { 0% { transform: scale(.85); opacity: 0; } 70% { transform: scale(1.03); opacity: 1; } 100% { transform: scale(1); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+        @keyframes wiggle { 0%,100% { rotate: 0deg; } 30% { rotate: -12deg; } 70% { rotate: 10deg; } }
+        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .45; } }
+        @media (prefers-reduced-motion: reduce) { .particle, #characterEmoji, .logo-scene .t, .logo-scene .b, #modalIcon { animation: none !important; } }
     </style>
 </head>
-<body class="flex flex-col text-gray-800 relative items-center justify-center">
+<body class="season-0">
 
-    <!-- 전용 플로팅 토스트 메시지 팝업 -->
-    <div id="gameToast" class="fixed top-16 left-1/2 transform -translate-x-1/2 bg-gray-900 bg-opacity-95 text-yellow-300 px-4 py-2.5 rounded-2xl text-xs font-bold z-50 hidden shadow-2xl border border-yellow-400 text-center pointer-events-none transition-all duration-300 max-w-[90%]"></div>
+    <div id="gameToast"></div>
 
-    <!-- 시작 화면 (메인) -->
-    <div id="startScreen" class="absolute inset-0 bg-white z-50 flex flex-col items-center justify-between p-6">
-        <div></div>
-        <div class="flex flex-col items-center justify-center w-full max-w-xs">
-            <h1 class="text-3xl font-bold text-center text-blue-600 drop-shadow-md leading-tight mb-4">건물주가 되고 싶은<br>선생님</h1>
-            
-            <div class="text-xs font-bold text-gray-500 mb-1.5 self-start px-1">난이도 선택</div>
-            <div class="flex space-x-2 w-full mb-6">
-                <button onclick="setDifficulty('easy')" id="diff-easy" class="flex-1 py-2 bg-green-50 text-green-700 border-2 border-green-200 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm cursor-pointer">🌱 초보</button>
-                <button onclick="setDifficulty('normal')" id="diff-normal" class="flex-1 py-2 bg-blue-500 text-white border-2 border-blue-600 rounded-xl font-bold text-xs transition active:scale-95 shadow-md cursor-pointer">🌿 보통</button>
-                <button onclick="setDifficulty('hard')" id="diff-hard" class="flex-1 py-2 bg-red-50 text-red-700 border-2 border-red-200 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm cursor-pointer">🔥 어려움</button>
-            </div>
-
-            <div class="text-xs font-bold text-gray-500 mb-1.5 self-start px-1">아바타 선택</div>
-            <div class="flex space-x-3 w-full mb-4">
-                <button onclick="startGame('남교사', '🧑‍🏫')" class="flex-1 p-4 bg-blue-50 border-2 border-blue-200 rounded-2xl shadow-md hover:scale-105 active:scale-95 transition flex flex-col items-center cursor-pointer">
-                    <div class="text-4xl mb-1">🧑‍🏫</div>
-                    <div class="font-bold text-xs text-blue-700">남교사</div>
-                </button>
-                <button onclick="startGame('여교사', '👩‍🏫')" class="flex-1 p-4 bg-pink-50 border-2 border-pink-200 rounded-2xl shadow-md hover:scale-105 active:scale-95 transition flex flex-col items-center cursor-pointer">
-                    <div class="text-4xl mb-1">👩‍🏫</div>
-                    <div class="font-bold text-xs text-pink-700">여교사</div>
-                </button>
-            </div>
-        </div>
-        <div class="flex flex-col items-center space-y-2 pb-2">
-            <button onclick="clearData()" class="text-xs text-red-400 underline p-1 cursor-pointer">데이터 초기화 (버그 발생 시)</button>
-            <div class="text-center text-[10px] text-gray-400">
-                Copyright © 2026. 엽쌤 All rights reserved.
-            </div>
+    <!-- 공용 모달 (알림 / 확인 / 미니게임) -->
+    <div id="modal">
+        <div class="modal-card">
+            <div id="modalIcon"></div>
+            <div id="modalTitle"></div>
+            <div id="modalDesc"></div>
+            <div id="modalTimer"></div>
+            <div id="modalActions"></div>
         </div>
     </div>
 
-    <!-- 메인 게임 컨테이너 -->
-    <div id="gameScreen" class="hidden flex-col h-full w-full max-w-md mx-auto bg-white shadow-2xl relative justify-between">
-        
-        <!-- 상단 스탯창 -->
-        <div id="headerArea" class="bg-blue-600 text-white p-2.5 pb-2 shadow-md transition-colors duration-500 rounded-b-lg z-20">
-            <div class="flex justify-between items-center mb-1.5 px-0.5">
-                <button onclick="goHome()" class="bg-blue-800 bg-opacity-60 text-white px-2.5 py-1 rounded-full text-[10px] font-bold shadow flex items-center space-x-1 active:scale-95 transition cursor-pointer">🏠 홈으로</button>
-                <button onclick="activatePivotTime()" id="pivotBtn" class="bg-gray-700 text-gray-300 px-2.5 py-1 rounded-full text-[10px] font-bold shadow transition select-none cursor-pointer">🚀 피벗타임 (0%)</button>
-                <button onclick="openSnackBox()" class="bg-yellow-500 text-gray-900 px-2 py-0.5 rounded-full text-[10px] font-bold shadow active:scale-95 transition cursor-pointer">🍫 간식함</button>
-                <button onclick="toggleAudio()" id="audioBtn" class="bg-blue-800 bg-opacity-60 text-white px-2.5 py-1 rounded-full text-[10px] font-bold shadow active:scale-95 transition cursor-pointer">🔊 ON</button>
+    <!-- 시작 화면 -->
+    <div id="startScreen">
+        <div></div>
+        <div class="start-box">
+            <div class="logo-scene">
+                <span class="t">🧑‍🏫</span><span class="b">🏢</span>
+                <span class="sp" style="left:-18px;top:6px">✨</span>
+                <span class="sp" style="right:-16px;top:0;animation-delay:.6s">💰</span>
+                <span class="sp" style="right:40%;top:-14px;animation-delay:1.1s">⭐</span>
+            </div>
+            <div class="title-card">
+                <h1>건물주가 되고 싶은<br><em>선생님</em> 🌷</h1>
+                <p>오늘도 무사히 퇴근하고, 언젠가는 건물주!</p>
             </div>
 
-            <div class="flex justify-between items-end mb-1">
-                <div>
-                    <div class="text-[10px] text-yellow-300 font-bold tracking-tight" id="seasonDisplay">[봄학기] 🏆트로피: <span id="trophyDisplay">0</span> | 명예: <span id="honorDisplay">0</span></div>
-                    <div class="text-base font-bold">
-                        <span id="titleDisplay" class="text-blue-200 text-xs mr-1"></span><span id="levelDisplay"></span> 
-                        <span id="gradeDisplay" class="text-[9px] ml-1 bg-white text-blue-800 px-1 py-0.5 rounded-full align-middle shadow-sm"></span>
+            <div class="label">🎚️ 난이도 선택</div>
+            <div class="diff-row">
+                <button class="btn" id="diff-easy" onclick="setDifficulty('easy')">🌱 초보</button>
+                <button class="btn" id="diff-normal" onclick="setDifficulty('normal')">🌿 보통</button>
+                <button class="btn" id="diff-hard" onclick="setDifficulty('hard')">🔥 어려움</button>
+            </div>
+            <div class="diff-desc" id="diffDesc"></div>
+
+            <div class="label">🙋 아바타를 골라 시작하기</div>
+            <div class="avatar-row">
+                <button class="btn btn-sky" onclick="startGame('🧑‍🏫')"><span class="e">🧑‍🏫</span>남교사</button>
+                <button class="btn btn-pink" onclick="startGame('👩‍🏫')"><span class="e">👩‍🏫</span>여교사</button>
+            </div>
+            <div id="saveInfo" class="save-info hidden"></div>
+        </div>
+        <div class="start-foot">
+            <button class="link-btn" onclick="clearData()">🧹 데이터 초기화 (버그 발생 시)</button>
+            <div class="copyright">Copyright © 2026. 엽쌤 All rights reserved.</div>
+        </div>
+    </div>
+
+    <!-- 메인 게임 -->
+    <div id="gameScreen" class="hidden">
+        <div class="hud">
+            <div class="hud-top">
+                <button class="chip-btn" onclick="goHome()" aria-label="홈으로">🏠</button>
+                <button class="chip-btn" id="pivotBtn" onclick="activatePivotTime()">🚀 피벗타임 0%</button>
+                <button class="chip-btn" style="background:var(--butter)" onclick="openSnackBox()">🍫 간식</button>
+                <button class="chip-btn" id="audioBtn" onclick="toggleAudio()">🔊</button>
+            </div>
+            <div class="hud-mid">
+                <div style="min-width:0">
+                    <div class="season-line">
+                        <span class="season-chip" id="seasonChip">🌸 봄학기</span>
+                        <span>🏆 <span id="trophyDisplay">0</span></span>
+                        <span>🎖️ <span id="honorDisplay">0</span></span>
+                    </div>
+                    <div class="lv-line">
+                        <span class="ttl" id="titleDisplay"></span><span id="levelDisplay">Lv.1</span>
+                        <span class="grade-chip" id="gradeDisplay"></span>
                     </div>
                 </div>
-                <div class="text-right">
-                    <div id="moneyDisplay" class="text-xl font-bold text-yellow-300 drop-shadow">0원</div>
+                <div class="money-box">
+                    <div class="money-pill">🪙 <span id="moneyDisplay">0원</span></div>
+                    <div class="per-sec">초당 +<span id="autoMoneyText">0</span>원</div>
                 </div>
             </div>
-            
-            <div class="flex items-center space-x-2 text-[10px] font-bold">
-                <span class="w-7 whitespace-nowrap">EXP</span>
-                <div class="flex-1 bg-blue-900 rounded-full h-2 relative overflow-hidden shadow-inner">
-                    <div id="expBar" class="bg-yellow-400 h-2 transition-all duration-300" style="width: 0%"></div>
-                </div>
-                <span id="expText" class="w-14 text-right whitespace-nowrap">0/100</span>
+            <div class="bar-row">
+                <span class="bl">⭐ EXP</span>
+                <div class="bar"><i id="expBar"></i></div>
+                <span class="br" id="expText">0/100</span>
             </div>
-            <div class="flex items-center space-x-2 text-[10px] font-bold mt-1">
-                <span class="whitespace-nowrap flex-shrink-0 w-10">☕ 텐션</span>
-                <div class="flex-1 bg-gray-700 rounded-full h-2 relative overflow-hidden shadow-inner">
-                    <div id="caffeineBar" class="bg-blue-400 h-2 w-0"></div>
-                    <div class="absolute top-0 bottom-0 left-[80%] right-0 bg-white opacity-30 border-l border-yellow-300"></div>
-                </div>
-                <span class="w-14 text-right text-yellow-200 whitespace-nowrap">초당:<span id="autoMoneyText">0</span></span>
+            <div class="bar-row">
+                <span class="bl">☕ 텐션</span>
+                <div class="bar"><i id="caffeineBar"></i><div class="zone"></div></div>
+                <span class="br" id="tensionText">80%↑ 3배</span>
             </div>
         </div>
 
-        <!-- 중앙 클릭 영역 -->
-        <div id="clickArea" class="flex-1 relative flex flex-col items-center justify-center overflow-hidden bg-green-50 py-2 select-none" 
-             onpointerdown="startContinuousClick(event)" 
-             onpointerup="stopContinuousClick()" 
-             onpointerleave="stopContinuousClick()" 
-             onpointercancel="stopContinuousClick()">
-            <div id="trophyShelf" class="absolute top-1 left-2 text-lg flex space-x-1 opacity-50"></div>
-
-            <div id="blackboard" class="w-11/12 h-16 bg-[#2d6a4f] border-3 border-yellow-800 rounded-lg shadow-md flex flex-col items-center justify-center mb-3 relative">
-                <div class="text-yellow-200 text-[9px] absolute top-0.5 left-1.5 bg-black bg-opacity-30 px-1 rounded">급훈</div>
-                <span id="boardText" class="text-white text-sm font-bold w-[90%] text-center break-keep tracking-wide">무사히 퇴근하자</span>
-            </div>
-
-            <div class="relative flex flex-col items-center z-10 transition-all duration-300" id="characterWrapper">
-                <div id="ootdEmoji" class="absolute -top-3 right-0 text-2xl z-20"></div>
-                <div id="characterEmoji" class="text-6xl mb-[-4px] drop-shadow-md">👨‍🏫</div>
-                <div class="w-24 h-10 bg-yellow-700 rounded-t-sm shadow-lg flex items-center justify-between px-2.5 border-b-[5px] border-yellow-900 z-10 relative">
-                    <span class="text-lg drop-shadow">💻</span>
-                    <div class="relative" title="다육이">
-                        <span id="succulentEmoji" class="text-lg drop-shadow">🌱</span>
-                        <div class="absolute -bottom-2 -right-2 text-[8px] bg-white rounded-full px-1 shadow font-bold text-green-700" id="succulentPct">0%</div>
+        <!-- 교실 (클릭 영역) -->
+        <div id="clickArea">
+            <div class="wall"></div>
+            <div class="wainscot"></div>
+            <div class="floor"></div>
+            <div class="clock"></div>
+            <div class="window"><span class="cloud">☁️</span><span id="windowDeco">🌸</span></div>
+            <div class="board"><span class="tag">급훈</span><span id="boardText">무사히 퇴근하자</span><span class="chalk"></span></div>
+            <div id="trophyShelf"></div>
+            <div id="buffChips"></div>
+            <div id="particles"></div>
+            <span class="deco" style="left:10px">🪴</span>
+            <span class="deco" style="right:12px">🎒</span>
+            <div class="teacher">
+                <div class="char-box">
+                    <div class="speech" id="speech"></div>
+                    <span id="characterEmoji">🧑‍🏫</span>
+                    <span id="ootdEmoji"></span>
+                </div>
+                <div class="desk">
+                    <span>💻</span>
+                    <div class="pot" title="다육이">
+                        <span id="succulentEmoji">🌱</span>
+                        <span id="succulentPct">0%</span>
                     </div>
                 </div>
             </div>
-            
-            <div class="mt-3 text-gray-600 text-[10px] font-bold text-center pointer-events-none z-10 bg-white bg-opacity-70 px-3 py-1 rounded-full shadow-sm">
-                방치형 모드 작동 중! 꾹 누르고 있으면 자동 연타 발동!
-            </div>
+            <div class="hint">👆 톡톡! 꾹 누르면 자동 연타</div>
         </div>
 
-        <!-- 미니게임 오버레이 -->
-        <div id="eventOverlay" class="absolute inset-0 bg-black bg-opacity-90 z-50 hidden flex-col items-center justify-center text-white p-6 text-center">
-            <h2 id="eventTitle" class="text-2xl font-bold mb-3 text-yellow-300 drop-shadow">이벤트 발생</h2>
-            <p id="eventDesc" class="mb-5 text-sm w-[95%] break-keep leading-relaxed text-gray-100">설명</p>
-            <div class="text-4xl font-bold text-yellow-400 mb-6 drop-shadow-lg" id="eventTimer"></div>
-            <div id="eventActionArea" class="flex flex-col space-y-3 w-full max-w-[260px]"></div>
-        </div>
-
-        <!-- 하단 탭 메뉴 (6개) -->
-        <div class="flex bg-gray-100 border-t border-gray-200 shadow-sm flex-shrink-0">
-            <button onclick="changeTab('tab-up', this)" class="tab-btn flex-1 py-2.5 text-[10px] font-bold bg-white text-blue-600 border-t-2 border-blue-600 cursor-pointer">업무</button>
-            <button onclick="changeTab('tab-enforce', this)" class="tab-btn flex-1 py-2.5 text-[10px] font-bold text-gray-500 border-t-2 border-transparent cursor-pointer">강화</button>
-            <button onclick="changeTab('tab-asset', this)" class="tab-btn flex-1 py-2.5 text-[10px] font-bold text-gray-500 border-t-2 border-transparent cursor-pointer">자산</button>
-            <button onclick="changeTab('tab-act', this)" class="tab-btn flex-1 py-2.5 text-[10px] font-bold text-gray-500 border-t-2 border-transparent cursor-pointer">활동</button>
-            <button onclick="changeTab('tab-club', this)" class="tab-btn flex-1 py-2.5 text-[10px] font-bold text-gray-500 border-t-2 border-transparent cursor-pointer">동아리</button>
-            <button onclick="changeTab('tab-sp', this)" class="tab-btn flex-1 py-2.5 text-[10px] font-bold text-gray-500 border-t-2 border-transparent rounded-tr-lg cursor-pointer">특수</button>
-        </div>
-
-        <!-- 탭 컨텐츠 영역 -->
-        <div class="scrollable-tab bg-white pb-1 relative px-2 flex-shrink-0">
-            <div id="tab-up" class="tab-content p-2 space-y-3">
-                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">👆 클릭 강화 (꾹 누르면 연타 강화)</h3><div id="clickUpgrades" class="space-y-1"></div></div>
-                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">⏳ 자동 수익</h3><div id="autoUpgrades" class="space-y-1"></div></div>
+        <!-- 탭 콘텐츠 -->
+        <div class="panel" id="panel">
+            <div id="tab-up" class="tab-content">
+                <div class="sec-title">👆 클릭 강화 <small>꾹 누르면 연속 구매</small></div>
+                <div id="clickUpgrades"></div>
+                <div class="sec-title">⏳ 자동 수익</div>
+                <div id="autoUpgrades"></div>
             </div>
 
-            <div id="tab-enforce" class="tab-content p-2 space-y-3 hidden">
-                <div class="bg-indigo-50 p-2 rounded-lg border border-indigo-200 text-[11px] text-indigo-900 font-bold mb-1">
-                    🛠️ 장비 및 맞춤형복지 인테리어를 강화하여 영구 배율을 부여하세요!
-                </div>
-                <div id="enforceList" class="space-y-1.5"></div>
-            </div>
-            
-            <div id="tab-asset" class="tab-content p-2 space-y-3 hidden">
-                <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200 shadow-sm mb-3">
-                    <h3 class="font-bold text-xs mb-2 text-gray-800">📈 KOSPI 실전 우량주 테마시장</h3>
-                    <div id="stockMarketList" class="space-y-2 max-h-52 overflow-y-auto pr-1"></div>
-                </div>
-                <div class="bg-yellow-50 p-2.5 rounded-lg border border-yellow-200 flex justify-between items-center shadow-sm mb-3">
-                    <div><div class="text-xs font-bold text-yellow-700">행복 연금복권</div><div class="text-[10px] text-gray-500">장당 10만 원 (확률 극악)</div></div>
-                    <button onclick="buyLottery()" class="bg-yellow-500 text-white px-3 py-2 rounded-md text-[11px] font-bold active:bg-yellow-600 shadow cursor-pointer">구매 (10만 원)</button>
-                </div>
-                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1 mt-1">🏢 부동산</h3><div id="realEstateList" class="space-y-1"></div></div>
+            <div id="tab-enforce" class="tab-content hidden">
+                <div class="info-note">🛠️ 장비와 맞춤형복지 인테리어를 강화하면 <b>모든 수익에 영구 배율</b>이 붙어요!</div>
+                <div id="enforceList"></div>
             </div>
 
-            <!-- 활동 탭 (버튼 가시성 및 조건 피드백 완벽 강화) -->
-            <div id="tab-act" class="tab-content p-2 space-y-2.5 hidden">
-                <div class="bg-purple-50 p-3 rounded-lg border border-purple-100">
-                    <h3 class="font-bold text-purple-800 text-xs mb-0.5">📦 에듀테크 기자재 언박싱 가챠</h3>
-                    <p class="text-[10px] text-gray-600 mb-2">랜덤 박스로 최신 스마트기기 및 버프 획득</p>
-                    <button onclick="openGacha()" class="w-full bg-purple-600 text-white py-2.5 rounded-md text-xs font-bold shadow cursor-pointer">기자재 언박싱하기 (50만 원)</button>
+            <div id="tab-asset" class="tab-content hidden">
+                <div class="card c-sky">
+                    <div class="sec-title" style="margin-top:0">📈 KOSPI 우량주 테마시장</div>
+                    <div class="rdesc" style="margin:0 4px 8px">보유 평가액: <span id="stockValue">0</span>원</div>
+                    <div id="stockMarketList"></div>
                 </div>
-                <div class="bg-blue-50 p-3 rounded-lg border border-blue-100">
-                    <h3 class="font-bold text-blue-800 text-xs mb-0.5">🚗 순회교사 관외 출장 정산</h3>
-                    <p class="text-[10px] text-gray-600 mb-2">인근 학교 순회 근무 및 출장비 수령</p>
-                    <button onclick="runItinerantTrip()" class="w-full bg-blue-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">출장비 정산 신청 (즉시)</button>
+                <div class="card c-butter" style="display:flex;align-items:center;gap:10px">
+                    <div class="act-ic">🎟️</div>
+                    <div style="flex:1"><div class="act-title">행복 연금복권</div><div class="act-desc">장당 10만 원 · 1등 10억 (확률 극악)</div></div>
+                    <button class="btn btn-sm btn-butter" onclick="buyLottery()">구매</button>
                 </div>
-                <div class="bg-green-50 p-3 rounded-lg border border-green-100">
-                    <h3 class="font-bold text-green-800 text-xs mb-0.5">🍱 급식실 메뉴 청원 투표</h3>
-                    <p class="text-[10px] text-gray-600 mb-2">수요일 특식(돈가스/치킨) 청원 성사 버프</p>
-                    <button onclick="voteCafeteriaMenu()" class="w-full bg-green-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">급식 청원 지지하기 (30만 원)</button>
-                </div>
-                <div class="bg-amber-50 p-3 rounded-lg border border-amber-100">
-                    <h3 class="font-bold text-amber-800 text-xs mb-0.5">🧪 과학실 실험 폐기물 처리</h3>
-                    <p class="text-[10px] text-gray-600 mb-2">실험실 안전 점검 및 폐기물 적법 처리</p>
-                    <button onclick="manageLabWaste()" class="w-full bg-amber-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">안전 점검 및 폐기 처리 (명예 +5)</button>
-                </div>
-                <div class="bg-cyan-50 p-3 rounded-lg border border-cyan-100">
-                    <h3 class="font-bold text-cyan-800 text-xs mb-0.5">🏊‍♂️ 생존수영 & 체험학습 사전답사</h3>
-                    <p class="text-[10px] text-gray-600 mb-2">안전사고 예방을 위한 사전답사 및 안전교육 실시</p>
-                    <button onclick="doFieldTripInspection()" class="w-full bg-cyan-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">사전답사 완료 보고 (지원금)</button>
-                </div>
-                <div class="bg-rose-50 p-3 rounded-lg border border-rose-100">
-                    <h3 class="font-bold text-rose-800 text-xs mb-0.5">🌐 다문화학생 한국어 교실</h3>
-                    <p class="text-[10px] text-gray-600 mb-2">중도입국 학생 맞춤형 한국어 의사소통 지원</p>
-                    <button onclick="supportMulticultural()" class="w-full bg-rose-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">한국어 지도 수업 (EXP +1000)</button>
-                </div>
-                <div class="bg-emerald-50 p-3 rounded-lg border border-emerald-100">
-                    <h3 class="font-bold text-emerald-800 text-xs mb-0.5">🌱 탄소중립 텃밭 & 학교숲 가꾸기</h3>
-                    <p class="text-[10px] text-gray-600 mb-2">생태전환교육 실천 및 상추·방울토마토 수확</p>
-                    <button onclick="harvestGarden()" class="w-full bg-emerald-600 text-white py-2 rounded-md text-xs font-bold shadow cursor-pointer">텃밭 수확 및 생태 교육</button>
-                </div>
-                <div class="bg-blue-50 p-3 rounded-lg border border-blue-100">
-                    <h3 class="font-bold text-blue-800 text-xs mb-0.5">📱 익명 커뮤니티 (블라인드)</h3>
-                    <p class="text-[10px] text-gray-600 mb-2">교직 썰을 풀어 베스트글에 도전! (쿨타임 1분)</p>
-                    <button onclick="postBlind()" id="btn-blind" class="w-full bg-blue-500 text-white py-2.5 rounded-md text-xs font-bold shadow cursor-pointer">썰 풀기 (준비됨)</button>
-                </div>
-                <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-100">
-                    <h3 class="font-bold text-yellow-800 text-xs mb-0.5">🎨 이모티콘 작가 도전</h3>
-                    <p class="text-[10px] text-gray-600 mb-2">100만원 투자 후 1분 심사 (영구 수익 증가)</p>
-                    <button onclick="makeEmoticon()" id="btn-emo" class="w-full bg-yellow-500 text-white py-2.5 rounded-md text-xs font-bold shadow cursor-pointer">시안 제작하기 (100만원)</button>
-                </div>
-                <div class="bg-orange-50 p-3 rounded-lg border border-orange-100">
-                    <h3 class="font-bold text-orange-800 text-xs mb-0.5">🥕 당근마켓 벼룩시장</h3>
-                    <div class="text-[11px] font-bold mb-2 text-orange-900">보유 잉여템: <span id="carrotCount">0</span>개</div>
-                    <button onclick="sellCarrot()" class="w-full bg-orange-500 text-white py-2.5 rounded-md text-xs font-bold shadow cursor-pointer">잉여템 판매하기 (보유 템 필요)</button>
+                <div class="sec-title">🏢 부동산 <small>강남 랜드마크 매입 시 엔딩!</small></div>
+                <div id="realEstateList"></div>
+            </div>
+
+            <div id="tab-act" class="tab-content hidden">
+                <div id="actList"></div>
+                <div class="card c-peach">
+                    <div class="act-head"><div class="act-ic">🥕</div><div><div class="act-title">당근마켓 벼룩시장</div><div class="act-desc">중복 압수물품(잉여템)을 판매해요 · 보유 <b id="carrotCount">0</b>개</div></div></div>
+                    <button class="btn btn-block btn-peach" onclick="sellCarrot()">잉여템 판매하기</button>
                 </div>
             </div>
 
-            <div id="tab-club" class="tab-content p-2 space-y-3 hidden">
-                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">🎒 방과후 동아리 및 늘봄학교</h3><div id="clubList" class="space-y-1"></div></div>
-                <div class="bg-indigo-50 p-3 rounded-lg border border-indigo-200 text-center">
-                    <h3 class="font-bold text-indigo-800 text-xs mb-1">🎓 초빙교사 지원 및 교장공모제</h3>
-                    <p class="text-[10px] text-gray-600 mb-2">탁월한 업무 실적으로 초빙교사 및 공모교장 도전!</p>
-                    <button onclick="applyPrincipalOpen()" class="bg-indigo-600 text-white text-xs px-3 py-2.5 rounded-md shadow font-bold w-full cursor-pointer">초빙교사 서류 접수 (명예 50 필요)</button>
-                </div>
-                <div class="bg-violet-50 p-3 rounded-lg border border-violet-200 text-center">
-                    <h3 class="font-bold text-violet-800 text-xs mb-1">💬 Wee클래스 또래상담 운영</h3>
-                    <p class="text-[10px] text-gray-600 mb-2">학생 정서 지원 및 관계회복 프로그램</p>
-                    <button onclick="runWeeCounseling()" class="bg-violet-600 text-white text-xs px-3 py-2.5 rounded-md shadow font-bold w-full cursor-pointer">또래상담 프로그램 가동</button>
-                </div>
-                <div class="bg-sky-50 p-3 rounded-lg border border-sky-200 text-center">
-                    <h3 class="font-bold text-sky-800 text-xs mb-1">🏛️ 학생자치회 회의 & 1인 1역</h3>
-                    <p class="text-[10px] text-gray-600 mb-2">학생들이 주도하는 학급 운영 자치활동</p>
-                    <button onclick="runStudentCouncil()" class="bg-sky-600 text-white text-xs px-3 py-2.5 rounded-md shadow font-bold w-full cursor-pointer">학급 1인 1역 자치 배정</button>
-                </div>
-                <div class="bg-fuchsia-50 p-3 rounded-lg border border-fuchsia-200 text-center">
-                    <h3 class="font-bold text-fuchsia-800 text-xs mb-1">📚 전문적학습공동체 수업나눔</h3>
-                    <p class="text-[10px] text-gray-600 mb-2">교사 동료 간 수업 연구 및 나눔 활동</p>
-                    <button onclick="runLearningCommunity()" class="bg-fuchsia-600 text-white text-xs px-3 py-2.5 rounded-md shadow font-bold w-full cursor-pointer">수업나눔 세미나 개최</button>
-                </div>
-                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">⚽ 교직원 소모임</h3><div id="somoimList" class="space-y-1"></div></div>
-                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">🏆 학교 운동부 서포트</h3><div id="sportList" class="space-y-1"></div></div>
-                <div><h3 class="font-bold text-gray-700 text-xs mb-1.5 px-1">📜 직무 연수</h3><div id="certList" class="space-y-1"></div></div>
-                <div class="bg-teal-50 p-3 rounded-lg border border-teal-200 text-center">
-                    <h3 class="font-bold text-teal-800 text-xs mb-1">✈️ 방학 시즌 힐링 여행</h3>
-                    <p class="text-[10px] text-gray-600 mb-2">하와이 여행으로 영구 효율 +20%!</p>
-                    <button onclick="buyTravel()" class="bg-teal-600 text-white text-xs px-3 py-2.5 rounded-md shadow font-bold w-full cursor-pointer">하와이 여행 떠나기 (5천만 원)</button>
+            <div id="tab-club" class="tab-content hidden">
+                <div class="sec-title">🎒 방과후 동아리 · 늘봄학교</div>
+                <div id="clubList"></div>
+                <div id="clubActs"></div>
+                <div class="sec-title">⚽ 교직원 소모임</div>
+                <div id="somoimList"></div>
+                <div class="sec-title">🏆 학교 운동부 서포트</div>
+                <div id="sportList"></div>
+                <div class="sec-title">📜 직무 연수</div>
+                <div id="certList"></div>
+                <div class="card c-mint">
+                    <div class="act-head"><div class="act-ic">✈️</div><div><div class="act-title">방학 시즌 힐링 여행</div><div class="act-desc">하와이 여행으로 영구 수익 효율 +20%! (전근해도 유지)</div></div></div>
+                    <button class="btn btn-block btn-mint" id="travelBtn" onclick="buyTravel()">하와이 여행 떠나기 (5천만 원)</button>
                 </div>
             </div>
 
-            <div id="tab-sp" class="tab-content p-2 space-y-3 hidden">
-                <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200">
-                    <h3 class="font-bold text-xs mb-1.5 px-1">👕 OOTD (출근룩 장착)</h3>
-                    <div class="flex space-x-1.5 text-xs font-bold">
-                        <button onclick="setOOTD('none')" class="flex-1 py-2 bg-white border rounded-md cursor-pointer">기본</button>
-                        <button onclick="setOOTD('츄리닝')" class="flex-1 py-2 bg-white border rounded-md cursor-pointer">츄리닝🎽</button>
-                        <button onclick="setOOTD('정장')" class="flex-1 py-2 bg-white border rounded-md cursor-pointer">정장👔</button>
+            <div id="tab-sp" class="tab-content hidden">
+                <div class="card">
+                    <div class="sec-title" style="margin-top:0">👕 OOTD 출근룩</div>
+                    <div class="ootd-row">
+                        <button class="btn" data-ootd="none" onclick="setOOTD('none')">기본 🙂</button>
+                        <button class="btn" data-ootd="츄리닝" onclick="setOOTD('츄리닝')">츄리닝 🎽</button>
+                        <button class="btn" data-ootd="정장" onclick="setOOTD('정장')">정장 👔</button>
                     </div>
+                    <div class="rdesc" id="ootdDesc" style="margin-top:8px;text-align:center"></div>
                 </div>
-                <div class="space-y-1.5">
-                    <h3 class="font-bold text-xs mb-1 px-1">✨ 액티브 스킬</h3>
-                    <button onclick="useSkill('vacation')" id="btn-vacation" class="w-full bg-green-100 border border-green-300 p-2.5 rounded-lg flex justify-between items-center text-xs font-bold shadow-sm cursor-pointer">
-                        <span>연가 쿠폰 🎫 (1시간치 수익)</span><span id="cd-vacation" class="text-green-800">준비됨</span>
-                    </button>
-                    <button onclick="useSkill('silence')" id="btn-silence" class="w-full bg-purple-100 border border-purple-300 p-2.5 rounded-lg flex justify-between items-center text-xs font-bold shadow-sm cursor-pointer">
-                        <span>침묵의 응시 🤫 (30초 평화)</span><span id="cd-silence" class="text-purple-800">준비됨</span>
-                    </button>
+                <div class="sec-title">✨ 액티브 스킬</div>
+                <button class="btn btn-block btn-mint skill-btn" id="btn-vacation" onclick="useSkill('vacation')"><span>🎫 연가 쿠폰 <small>(1시간치 수익)</small></span><span id="cd-vacation">준비됨</span></button>
+                <button class="btn btn-block btn-lav skill-btn" id="btn-silence" onclick="useSkill('silence')"><span>🤫 침묵의 응시 <small>(30초 평화)</small></span><span id="cd-silence">준비됨</span></button>
+                <div class="card c-pink" style="margin-top:4px">
+                    <div class="act-head"><div class="act-ic">💼</div><div><div class="act-title">다른 학교로 전근 (호봉 승급)</div><div class="act-desc" id="rebirthInfo">자산을 초기화하고 호봉/수익 배율 상승</div></div></div>
+                    <button class="btn btn-block btn-pink" onclick="rebirth()">전근 서류 제출 📨</button>
                 </div>
-                <div class="bg-red-50 p-3 rounded-lg border border-red-200 text-center">
-                    <h3 class="font-bold text-red-700 text-sm mb-1">💼 다른 학교로 전근 (호봉 승급)</h3>
-                    <p class="text-[10px] text-gray-600 mb-2">자산 초기화 및 호봉/수익 배율 상승</p>
-                    <button onclick="rebirth()" class="bg-red-600 text-white text-xs px-4 py-2.5 rounded-md shadow font-bold w-full cursor-pointer">전근 서류 제출</button>
-                </div>
-                <div>
-                    <h3 class="font-bold text-xs mb-1.5 px-1">📦 압수물품 도감</h3>
-                    <div id="collectionList" class="grid grid-cols-4 gap-1.5"></div>
-                </div>
+                <div class="sec-title">📦 압수물품 도감 <small id="dexCount"></small></div>
+                <div class="dex" id="collectionList"></div>
+                <div class="sec-title" style="margin-top:14px">📊 나의 교직 생활</div>
+                <div class="stat-grid" id="statGrid"></div>
             </div>
+            <div class="panel-foot">Copyright © 2026. 엽쌤 All rights reserved.</div>
         </div>
 
-        <!-- 하단 저작권 표시 (엽쌤) -->
-        <div class="text-center text-[9px] text-gray-400 py-1 bg-gray-50 border-t border-gray-100 flex-shrink-0">
-            Copyright © 2026. 엽쌤 All rights reserved.
-        </div>
+        <nav class="nav">
+            <button class="active" data-tab="tab-up" onclick="changeTab('tab-up')"><span class="ni">💼</span>업무</button>
+            <button data-tab="tab-enforce" onclick="changeTab('tab-enforce')"><span class="ni">🔨</span>강화</button>
+            <button data-tab="tab-asset" onclick="changeTab('tab-asset')"><span class="ni">💰</span>자산</button>
+            <button data-tab="tab-act" onclick="changeTab('tab-act')"><span class="ni">🎈</span>활동</button>
+            <button data-tab="tab-club" onclick="changeTab('tab-club')"><span class="ni">🎒</span>동아리</button>
+            <button data-tab="tab-sp" onclick="changeTab('tab-sp')"><span class="ni">✨</span>특수</button>
+        </nav>
     </div>
 
 <script>
-    const defaultState = { 
-        character: '👨‍🏫', money: 0, exp: 0, level: 1, hobong: 1, grade: '전담교사', motto: '무사히 퇴근하자', 
-        caffeine: 0, succulentGrowth: 0, succulentBuff: 0, honor: 0, travelBuff: 1, difficulty: 'normal',
-        inventory: {}, collections: {}, spareItems: 0, emoticonIncome: 0, 
+    const SAVE_KEY = 'v8_9_ultimate_save';
+    const SOUND_KEY = 'tg_sound';
+
+    const store = {
+        get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+        set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+        remove(k) { try { localStorage.removeItem(k); } catch (e) {} }
+    };
+
+    // 매번 새 객체를 만들어 기본값이 오염되지 않도록 함수로 정의
+    const defaultState = () => ({
+        character: '🧑‍🏫', money: 0, exp: 0, level: 1, hobong: 1, grade: '전담교사', motto: '무사히 퇴근하자',
+        caffeine: 0, succulentGrowth: 0, succulentBuff: 0, honor: 0, travelBuff: 1, careerBuff: 0, difficulty: 'normal',
+        inventory: {}, collections: {}, spareItems: 0, emoticonIncome: 0,
         stocks: {
             samsung: { name: '삼성전자', price: 70000, count: 0 },
             skhynix: { name: 'SK하이닉스', price: 150000, count: 0 },
@@ -329,1116 +522,1433 @@
             kb: { name: 'KB금융', price: 70000, count: 0 },
             celltrion: { name: '셀트리온', price: 180000, count: 0 }
         },
-        clubs: { coding: 0, band: 0, nulbom: 0 }, 
-        somoims: { soccer: 0, food: 0 }, 
-        sports: { team: 0 },
-        certs: { counsel: 0, codingCert: 0, digital: 0 },
-        enforce: { laptop: 0, coffee: 0, mic: 0, stamp: 0, aircon: 0, plant: 0 },
-        reals: { r1: {own:0, price: 500000000}, r2: {own:0, price: 2000000000}, r3: {own:0, price: 10000000000}, r4: {own:0, price: 50000000000} }, 
-        skills: { vacation: 0, silence: 0, blind: 0, emo: 0 }, ootd: 'none', stats: { totalClicks: 0 }, endings: 0, lastSaveTime: Date.now() 
-    };
-    
-    let s = {}; 
-    let audioCtx = null; let isBgmPlaying = false; let bgmOscillator = null; 
-    let bgmGainNode = null; 
-    let loopInterval = null; let eventTimerObj = null; let globalAuditListener = null;
+        clubs: { coding: 0, band: 0, nulbom: 0, media: 0 },
+        somoims: { soccer: 0, food: 0, bandclub: 0 },
+        sports: { team: 0, league: 0 },
+        certs: { counsel: 0, codingCert: 0, digital: 0, master: 0 },
+        enforce: { laptop: 0, coffee: 0, mic: 0, stamp: 0, aircon: 0, plant: 0, voice: 0, smartsys: 0 },
+        reals: { r1: { own: 0, price: 5e8 }, r2: { own: 0, price: 2e9 }, r3: { own: 0, price: 1e10 }, r4: { own: 0, price: 5e10 } },
+        skills: { vacation: 0, silence: 0, blind: 0, emo: 0, trip: 0, lunch: 0, lab: 0, field: 0, multi: 0, garden: 0, wee: 0, council: 0, plc: 0 },
+        ootd: 'none', stats: { totalClicks: 0 }, endings: 0, lastSaveTime: Date.now()
+    });
+
+    let s = defaultState();
+    let gameRunning = false;
+    const timers = { loop: null, event: null, runner: null };
+    let eventTimerObj = null, globalAuditListener = null, auditArmTimeout = null;
     let currentClickProfit = 200, currentAutoProfit = 50, currentExpPerClick = 5, currentExpPerSec = 2;
-    let buffs = { isSilence: false, isFever: false, papsMult: 1, cafMult: 1, menuBuff: 1, isPivot: false };
-    
-    let continuousClickTimer = null;
-    let continuousUpgradeTimer = null;
-    let pivotCharge = 0;
-    let pivotTimer = null;
+    const buffs = { feverUntil: 0, pivotUntil: 0, menuUntil: 0, councilUntil: 0, silenceUntil: 0 };
+    let pivotCharge = 0, pivotEndTimer = null;
     let currentDifficulty = 'normal';
-    
-    const seasons = ['봄', '여름', '가을', '겨울']; let currentSeasonIdx = 0;
-    
+    let currentSeasonIdx = 0;
+    let modalOpen = false;
+    let clickCount = 0;
+    const stockPrev = {};
+
+    const seasons = [
+        { name: '봄', icon: '🌸', particle: '🌸' },
+        { name: '여름', icon: '☀️', particle: '✨' },
+        { name: '가을', icon: '🍁', particle: '🍁' },
+        { name: '겨울', icon: '⛄', particle: '❄️' }
+    ];
+
     const DB = {
-        clicks: [ 
-            { id: 'c1', name: '맞춤형복지 믹스커피', baseCost: 100, profit: 100, icon: '☕' }, 
-            { id: 'c2', name: '공문기안 무소음 키보드', baseCost: 700, profit: 500, icon: '⌨️' }, 
+        clicks: [
+            { id: 'c1', name: '맞춤형복지 믹스커피', baseCost: 100, profit: 100, icon: '☕' },
+            { id: 'c2', name: '공문기안 무소음 키보드', baseCost: 700, profit: 500, icon: '⌨️' },
             { id: 'c3', name: '교원연구비 스탠딩 책상', baseCost: 5000, profit: 3000, icon: '🪑' },
             { id: 'c4', name: 'NEIS 결재용 듀얼모니터', baseCost: 40000, profit: 20000, icon: '🖥️' },
             { id: 'c5', name: '스마트 레이저 포인터', baseCost: 300000, profit: 150000, icon: '🔦' },
             { id: 'c6', name: '초고속 무선 제본기', baseCost: 2000000, profit: 800000, icon: '📖' },
-            { id: 'c7', name: '교무실 네스프레소 머신', baseCost: 15000000, profit: 4500000, icon: '☕' },
+            { id: 'c7', name: '교무실 네스프레소 머신', baseCost: 15000000, profit: 4500000, icon: '🫖' },
             { id: 'c8', name: '전자칠판 스타일러스 펜', baseCost: 100000000, profit: 25000000, icon: '✒️' }
         ],
-        autos: [ 
-            { id: 'a1', name: 'K-에듀파인 연동 알림장', baseCost: 300, profit: 50, icon: '📱' }, 
-            { id: 'a2', name: '디지털 교과서 태블릿 보급', baseCost: 3500, profit: 600, icon: '📲' }, 
+        autos: [
+            { id: 'a1', name: 'K-에듀파인 연동 알림장', baseCost: 300, profit: 50, icon: '📱' },
+            { id: 'a2', name: '디지털 교과서 태블릿 보급', baseCost: 3500, profit: 600, icon: '📲' },
             { id: 'a3', name: 'AI 코스웨어 자동채점', baseCost: 30000, profit: 5000, icon: '🤖' },
             { id: 'a4', name: '늘봄학교 돌봄교실 운영', baseCost: 250000, profit: 35000, icon: '🚌' },
             { id: 'a5', name: '2022 개정 교육과정 허브', baseCost: 2000000, profit: 200000, icon: '🌐' },
             { id: 'a6', name: 'AI 튜터 맞춤학습 플랫폼', baseCost: 15000000, profit: 1200000, icon: '💡' },
-            { id: 'a7', name: '스마트 자율주행 스쿨버스', baseCost: 100000000, profit: 7500700, icon: '🚐' },
+            { id: 'a7', name: '스마트 자율주행 스쿨버스', baseCost: 100000000, profit: 7500000, icon: '🚐' },
             { id: 'a8', name: '메타버스 가상원격 교실', baseCost: 800000000, profit: 50000000, icon: '🪐' }
         ],
         enforce: [
             { id: 'laptop', name: '에듀테크 교실 노트북', baseCost: 1000, mult: 0.1, icon: '💻' },
-            { id: 'coffee', name: '맞춤형복지 텀블러', baseCost: 5000, mult: 0.15, icon: '🧊' },
-            { id: 'mic', name: 'Wee클래스 무선 마이크', baseCost: 30000, mult: 0.2, icon: '📢' },
+            { id: 'coffee', name: '맞춤형복지 텀블러', baseCost: 5000, mult: 0.15, icon: '🧋' },
+            { id: 'mic', name: 'Wee클래스 무선 마이크', baseCost: 30000, mult: 0.2, icon: '🎤' },
             { id: 'stamp', name: '나이스 전결 결재도장', baseCost: 200000, mult: 0.3, icon: '💮' },
             { id: 'aircon', name: '교실 대형 공기청정기', baseCost: 800000, mult: 0.4, icon: '🌬️' },
             { id: 'plant', name: '플랜테리어 화분 인테리어', baseCost: 3000000, mult: 0.6, icon: '🪴' },
             { id: 'voice', name: 'AI 음성인식 녹음기', baseCost: 15000000, mult: 0.8, icon: '🎙️' },
             { id: 'smartsys', name: '스마트 냉난방 중앙제어기', baseCost: 80000000, mult: 1.0, icon: '🌡️' }
         ],
-        clubs: [ 
-            { id: 'coding', name: 'AI·코딩 동아리 육성', baseCost: 5000, profit: 800, icon: '💻' }, 
-            { id: 'band', name: '창체 오케스트라부', baseCost: 30000, profit: 5000, icon: '🎸' },
+        clubs: [
+            { id: 'coding', name: 'AI·코딩 동아리 육성', baseCost: 5000, profit: 800, icon: '👾' },
+            { id: 'band', name: '창체 오케스트라부', baseCost: 30000, profit: 5000, icon: '🎻' },
             { id: 'nulbom', name: '늘봄학교 특기적성 프로그램', baseCost: 150000, profit: 25000, icon: '🎨' },
             { id: 'media', name: '학교 방송반(미디어크리에이터)', baseCost: 1000000, profit: 140000, icon: '🎥' }
         ],
-        somoims: [ 
-            { id: 'soccer', name: '교사 축구 동호회', baseCost: 20000, profit: 3000, icon: '⚽' }, 
+        somoims: [
+            { id: 'soccer', name: '교사 축구 동호회', baseCost: 20000, profit: 3000, icon: '⚽' },
             { id: 'food', name: '학교 맛집탐방 소모임', baseCost: 100000, profit: 18000, icon: '🍜' },
             { id: 'bandclub', name: '교사 밴드(악기연주) 소모임', baseCost: 700000, profit: 95000, icon: '🎷' }
         ],
         sports: [
             { id: 'team', name: '학교 운동부 및 스포츠클럽 지원', baseCost: 80000, profit: 12000, icon: '🏅' },
-            { id: 'league', name: '학교 스포츠클럽 뉴스포츠 리그', baseCost: 500000, profit: 70000, icon: '⚽' }
+            { id: 'league', name: '학교 스포츠클럽 뉴스포츠 리그', baseCost: 500000, profit: 70000, icon: '🥏' }
         ],
-        certs: [ 
-            { id: 'counsel', name: '상담심리사 직무연수', baseCost: 50000, profit: 7000, icon: '📜' }, 
-            { id: 'codingCert', name: '디지털 리터러시 자격연수', baseCost: 300000, profit: 45000, icon: '🏅' },
+        certs: [
+            { id: 'counsel', name: '상담심리사 직무연수', baseCost: 50000, profit: 7000, icon: '📜' },
+            { id: 'codingCert', name: '디지털 리터러시 자격연수', baseCost: 300000, profit: 45000, icon: '🏵️' },
             { id: 'digital', name: 'AI융합 교육대학원 파견 연수', baseCost: 1500000, profit: 250000, icon: '🎓' },
             { id: 'master', name: '초등 수석교사 심화 직무연수', baseCost: 10000000, profit: 1500000, icon: '👑' }
         ],
-        cols: [ { id: 'col1', name: '액체괴물', icon: '🟢' }, { id: 'col2', name: '포켓몬 띠부씰', icon: '🐢' }, { id: 'col3', name: '피젯스피너', icon: '🌀' }, { id: 'col4', name: '유희왕 카드', icon: '🃏' } ]
+        cols: [
+            { id: 'col1', name: '액체괴물', icon: '🟢' }, { id: 'col2', name: '포켓몬 띠부씰', icon: '🐢' },
+            { id: 'col3', name: '피젯스피너', icon: '🌀' }, { id: 'col4', name: '유희왕 카드', icon: '🃏' },
+            { id: 'col5', name: '요요', icon: '🪀' }, { id: 'col6', name: '몰래 가져온 게임기', icon: '🎮' },
+            { id: 'col7', name: '딱지', icon: '🎴' }, { id: 'col8', name: '비눗방울', icon: '🫧' }
+        ],
+        reals: [
+            { id: 'r1', name: '동네 상가', icon: '🏪', rent: 1e6, base: 5e8 },
+            { id: 'r2', name: '지식산업센터', icon: '🏭', rent: 5e6, base: 2e9 },
+            { id: 'r3', name: '한강뷰 아파트', icon: '🏙️', rent: 3e7, base: 1e10 },
+            { id: 'r4', name: '강남 랜드마크', icon: '🏰', rent: 2e8, base: 5e10 }
+        ]
     };
 
+    const SHOPS = [
+        { type: 'clicks', list: DB.clicks, key: 'inventory', el: 'clickUpgrades', desc: i => `클릭당 +${formatMoney(i.profit)}원`, color: 'pink' },
+        { type: 'autos', list: DB.autos, key: 'inventory', el: 'autoUpgrades', desc: i => `초당 +${formatMoney(i.profit)}원`, color: 'mint' },
+        { type: 'enforce', list: DB.enforce, key: 'enforce', el: 'enforceList', desc: i => `전체 수익 +${Math.round(i.mult * 100)}%`, color: 'lav' },
+        { type: 'clubs', list: DB.clubs, key: 'clubs', el: 'clubList', desc: i => `초당 +${formatMoney(i.profit)}원`, color: 'sky' },
+        { type: 'somoims', list: DB.somoims, key: 'somoims', el: 'somoimList', desc: i => `초당 +${formatMoney(i.profit)}원`, color: 'sky' },
+        { type: 'sports', list: DB.sports, key: 'sports', el: 'sportList', desc: i => `초당 +${formatMoney(i.profit)}원`, color: 'sky' },
+        { type: 'certs', list: DB.certs, key: 'certs', el: 'certList', desc: i => `초당 +${formatMoney(i.profit)}원`, color: 'sky' }
+    ];
+
+    const DIFF_DESC = {
+        easy: '수익 1.5배 · 경험치 1.5배 · 시작금 1만 원',
+        normal: '수익 0.8배 · 평범한 교직 생활',
+        hard: '수익 0.3배 · 물가 상승률 ↑ (고인물 전용)'
+    };
+    const GRADE_DESC = { '1학년': '클릭 수익 +50%', '6학년': '자동 수익 +50% · 사건사고 ↑', '전담교사': '모든 수익 -20%' };
+    const OOTD_DESC = { none: '평범한 출근룩이에요.', '츄리닝': '경험치 +30% · 대신 텐션이 2배 빨리 식어요.', '정장': '나쁜 이벤트 확률 절반 · 당근 네고 없음!' };
+    const SPEECH = ['오늘도 무사히 퇴근!', '공문이 또 왔네…', '얘들아 조용~ 🤫', '커피 한 잔 더 ☕', '건물주가 될 거야!', '방학까지 D-?', '급식 맛있겠다 🍱', '칠판 지우개 어딨지?', '나이스 결재 완료!', '다육이 물 줘야지 🌱'];
+
+    // ---------- 유틸 ----------
+    const $ = id => document.getElementById(id);
+    const setText = (id, v) => { const el = $(id); if (el && el.textContent !== String(v)) el.textContent = v; };
+    const isObj = v => v !== null && typeof v === 'object' && !Array.isArray(v);
+    const inflation = () => (s.difficulty === 'hard' ? 1.28 : 1.22);
+    const costOf = (item, cnt) => Math.floor(item.baseCost * Math.pow(inflation(), cnt));
+
+    function formatMoney(num) {
+        if (!isFinite(num)) num = 0;
+        const sign = num < 0 ? '-' : '';
+        num = Math.abs(num);
+        if (num >= 1e16) return sign + (num / 1e16).toFixed(2) + '경';
+        if (num >= 1e12) return sign + (num / 1e12).toFixed(2) + '조';
+        if (num >= 1e10) return sign + Math.floor(num / 1e8).toLocaleString() + '억';
+        if (num >= 1e8) return sign + (num / 1e8).toFixed(1) + '억';
+        if (num >= 1e4) return sign + Math.floor(num / 1e4).toLocaleString() + '만';
+        return sign + Math.floor(num).toLocaleString();
+    }
+
+    // 저장 데이터와 기본값을 깊게 병합 (누락 키 보충 + 잘못된 값 교정)
+    function mergeState(def, sav) {
+        if (!isObj(sav)) return def;
+        const out = {};
+        for (const k in def) {
+            const d = def[k], v = sav[k];
+            if (isObj(d)) out[k] = mergeState(d, v);
+            else if (typeof d === 'number') out[k] = (typeof v === 'number' && isFinite(v)) ? v : d;
+            else if (typeof d === 'string') out[k] = typeof v === 'string' ? v : d;
+            else out[k] = v !== undefined ? v : d;
+        }
+        if (Object.keys(def).length === 0) {
+            for (const k in sav) out[k] = sav[k];
+        }
+        return out;
+    }
+
+    function readSave() {
+        const raw = store.get(SAVE_KEY);
+        if (!raw) return null;
+        try { const p = JSON.parse(raw); return isObj(p) ? p : null; } catch (e) { return null; }
+    }
+
+    // ---------- 시작 화면 ----------
     function setDifficulty(diff) {
+        if (!DIFF_DESC[diff]) diff = 'normal';
         currentDifficulty = diff;
         ['easy', 'normal', 'hard'].forEach(d => {
-            const btn = document.getElementById(`diff-${d}`);
-            if (!btn) return;
-            if (d === diff) {
-                if (d === 'easy') btn.className = "flex-1 py-2 bg-green-500 text-white border-2 border-green-600 rounded-xl font-bold text-xs transition active:scale-95 shadow-md cursor-pointer";
-                else if (d === 'normal') btn.className = "flex-1 py-2 bg-blue-500 text-white border-2 border-blue-600 rounded-xl font-bold text-xs transition active:scale-95 shadow-md cursor-pointer";
-                else btn.className = "flex-1 py-2 bg-red-500 text-white border-2 border-red-600 rounded-xl font-bold text-xs transition active:scale-95 shadow-md cursor-pointer";
-            } else {
-                if (d === 'easy') btn.className = "flex-1 py-2 bg-green-50 text-green-700 border-2 border-green-200 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm cursor-pointer";
-                else if (d === 'normal') btn.className = "flex-1 py-2 bg-blue-50 text-blue-700 border-2 border-blue-200 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm cursor-pointer";
-                else btn.className = "flex-1 py-2 bg-red-50 text-red-700 border-2 border-red-200 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm cursor-pointer";
-            }
+            const btn = $(`diff-${d}`);
+            if (btn) btn.className = 'btn' + (d === diff ? ` sel-${d}` : '');
         });
+        setText('diffDesc', DIFF_DESC[diff]);
     }
 
-    function startGame(charName, emoji) {
-        document.getElementById('startScreen').classList.add('hidden');
-        document.getElementById('gameScreen').classList.remove('hidden'); 
-        document.getElementById('gameScreen').classList.add('flex');
-        initAudio(); 
-        loadGame(); 
-        s.character = emoji; 
-        s.difficulty = currentDifficulty;
-
-        if (s.money === 0) {
-            if (s.difficulty === 'easy') s.money = 10000;
-            else if (s.difficulty === 'hard') s.money = 0;
-        }
-
-        const charEl = document.getElementById('characterEmoji');
-        if (charEl) charEl.innerText = emoji;
-        calculateOfflineProgress(); 
-        applyOOTDVisual(); 
-        renderAll(); 
-        changeSeason();
-        if(loopInterval) clearInterval(loopInterval); 
-        loopInterval = setInterval(gameLoop, 1000);
-        setInterval(() => { changeSeason(); triggerRandomEvent(); }, 35000); 
-        setInterval(spawnRunner, 90000);
-    }
-    
-    function loadGame() {
-        const saved = localStorage.getItem('v8_9_ultimate_save');
-        if(saved) {
-            try { 
-                const p = JSON.parse(saved); 
-                s = Object.assign({}, defaultState, p);
-                s.reals = p.reals?.r4 ? p.reals : JSON.parse(JSON.stringify(defaultState.reals));
-                s.skills = p.skills || defaultState.skills; 
-                s.inventory = p.inventory || {}; 
-                s.collections = p.collections || {};
-                s.stocks = p.stocks || JSON.parse(JSON.stringify(defaultState.stocks));
-                s.clubs = p.clubs || { coding: 0, band: 0, nulbom: 0 };
-                s.somoims = p.somoims || { soccer: 0, food: 0 };
-                s.sports = p.sports || { team: 0 };
-                s.certs = p.certs || { counsel: 0, codingCert: 0, digital: 0 };
-                s.enforce = p.enforce || { laptop: 0, coffee: 0, mic: 0, stamp: 0, aircon: 0, plant: 0 };
-                s.spareItems = p.spareItems || 0; 
-                s.caffeine = s.caffeine || 0; 
-                s.honor = s.honor || 0; 
-                s.travelBuff = s.travelBuff || 1;
-                s.difficulty = s.difficulty || 'normal';
-                currentDifficulty = s.difficulty;
-                setDifficulty(currentDifficulty);
-            } catch(e) { 
-                s = JSON.parse(JSON.stringify(defaultState)); 
-            }
-        } else { 
-            s = JSON.parse(JSON.stringify(defaultState)); 
-            s.difficulty = currentDifficulty;
-        }
-    }
-    
-    function saveGame() { 
-        s.lastSaveTime = Date.now(); 
-        localStorage.setItem('v8_9_ultimate_save', JSON.stringify(s)); 
-    }
-    
-    function clearData() { 
-        if(confirm("모든 데이터를 지울까요?")) { 
-            localStorage.removeItem('v8_9_ultimate_save'); 
-            location.reload(); 
-        } 
-    }
-
-    function goHome() {
-        if(confirm("메인 타이틀 화면으로 돌아가시겠습니까? (현재 진행 상황은 자동 저장됩니다)")) {
-            saveGame();
-            if(loopInterval) clearInterval(loopInterval);
-            document.getElementById('gameScreen').classList.add('hidden');
-            document.getElementById('startScreen').classList.remove('hidden');
-        }
-    }
-
-    function startContinuousClick(e) {
-        handleMainClick(e);
-        if (continuousClickTimer) clearInterval(continuousClickTimer);
-        continuousClickTimer = setInterval(() => {
-            const dummyEvent = {
-                clientX: e.clientX || (window.innerWidth / 2),
-                clientY: e.clientY || (window.innerHeight / 2)
-            };
-            handleMainClick(dummyEvent);
-        }, 80);
-    }
-
-    function stopContinuousClick() {
-        if (continuousClickTimer) {
-            clearInterval(continuousClickTimer);
-            continuousClickTimer = null;
-        }
-    }
-
-    function startContinuousUpgrade(id, type) {
-        buySpecialItem(id, type);
-        if (continuousUpgradeTimer) clearInterval(continuousUpgradeTimer);
-        continuousUpgradeTimer = setInterval(() => {
-            buySpecialItem(id, type);
-        }, 120);
-    }
-
-    function stopContinuousUpgrade() {
-        if (continuousUpgradeTimer) {
-            clearInterval(continuousUpgradeTimer);
-            continuousUpgradeTimer = null;
-        }
-    }
-
-    function activatePivotTime() {
-        if (pivotCharge < 100) {
-            playAudio('error');
-            showToast(`🚀 피벗타임 게이지가 부족합니다! (${Math.floor(pivotCharge)}%)`);
-            return;
-        }
-        if (buffs.isPivot) return;
-        buffs.isPivot = true;
-        pivotCharge = 0;
-        playAudio('buy');
-        showToast("🚀 [피벗 타임] 업무 효율 10배 폭발 기간!");
-        updatePivotUI();
-        
-        if (pivotTimer) clearTimeout(pivotTimer);
-        pivotTimer = setTimeout(() => {
-            buffs.isPivot = false;
-            showToast("피벗 타임 종료! 원래 속도로 복귀합니다.");
-            updatePivotUI();
-        }, 15000);
-    }
-
-    function updatePivotUI() {
-        const btn = document.getElementById('pivotBtn');
-        if (!btn) return;
-        if (buffs.isPivot) {
-            btn.innerText = "🚀 피벗타임 중! (10배)";
-            btn.className = "bg-yellow-400 text-gray-900 px-2.5 py-1 rounded-full text-[10px] font-bold shadow pivot-glow transition select-none cursor-pointer";
-        } else if (pivotCharge >= 100) {
-            btn.innerText = "🚀 피벗타임 발동가능!";
-            btn.className = "bg-yellow-500 text-gray-900 px-2.5 py-1 rounded-full text-[10px] font-bold shadow pivot-glow transition select-none cursor-pointer";
+    function refreshStartScreen() {
+        const p = readSave();
+        const info = $('saveInfo');
+        if (p) {
+            const st = mergeState(defaultState(), p);
+            setDifficulty(st.difficulty);
+            info.innerHTML = `💾 저장된 기록: Lv.${st.level} · ${st.hobong}호봉 · ${formatMoney(st.money)}원<br>아바타를 누르면 이어서 시작해요!`;
+            info.classList.remove('hidden');
         } else {
-            btn.innerText = `🚀 피벗타임 (${Math.floor(pivotCharge)}%)`;
-            btn.className = "bg-gray-700 text-gray-300 px-2.5 py-1 rounded-full text-[10px] font-bold shadow transition select-none cursor-pointer";
+            setDifficulty(currentDifficulty);
+            info.classList.add('hidden');
         }
+    }
+
+    function loadGame() {
+        const p = readSave();
+        s = mergeState(defaultState(), p || {});
+        if (!['easy', 'normal', 'hard'].includes(s.difficulty)) s.difficulty = 'normal';
+        if (!GRADE_DESC[s.grade]) s.grade = '전담교사';
+        if (!OOTD_DESC[s.ootd]) s.ootd = 'none';
+        s.level = Math.max(1, Math.floor(s.level));
+        s.hobong = Math.max(1, Math.floor(s.hobong));
+        s.money = Math.max(0, s.money);
+        return !!p;
+    }
+
+    function saveGame() {
+        s.lastSaveTime = Date.now();
+        store.set(SAVE_KEY, JSON.stringify(s));
+    }
+
+    async function clearData() {
+        const ok = await confirmDialog('🧹', '데이터 초기화', '모든 진행 상황을 지울까요?\n되돌릴 수 없어요!', '지우기', '취소');
+        if (!ok) return;
+        gameRunning = false;
+        stopGameTimers();
+        store.remove(SAVE_KEY);
+        location.reload();
+    }
+
+    function startGame(emoji) {
+        const hadSave = loadGame();
+        s.character = emoji;
+        s.difficulty = currentDifficulty;
+        if (!hadSave) {
+            s.lastSaveTime = Date.now();
+            if (s.difficulty === 'easy') s.money = 10000;
+        }
+
+        $('startScreen').classList.add('hidden');
+        $('gameScreen').classList.remove('hidden');
+        gameRunning = true;
+        initAudio();
+
+        Object.keys(buffs).forEach(k => buffs[k] = 0);
+        pivotCharge = 0;
+        clickCount = 0;
+        $('characterEmoji').textContent = emoji;
+
+        buildStatic();
+        currentSeasonIdx = 0;
+        applySeason();
+        calculateMultipliers();
+        const offlineGain = calculateOfflineProgress();
+        applyOOTDVisual();
+        updateBoard();
+        changeTab('tab-up', true);
+        updateUI();
+
+        stopGameTimers();
+        timers.loop = setInterval(gameLoop, 1000);
+        timers.event = setInterval(() => { changeSeason(); triggerRandomEvent(); }, 35000);
+        timers.runner = setInterval(spawnRunner, 90000);
+        saveGame();
+
+        if (offlineGain > 0) {
+            infoDialog('🌙', '방치 보상 도착!', `선생님이 없는 동안에도\n학교는 열심히 돌아갔어요.\n\n+${formatMoney(offlineGain)}원`, '받기 💰');
+        }
+    }
+
+    function stopGameTimers() {
+        Object.keys(timers).forEach(k => { clearInterval(timers[k]); timers[k] = null; });
+        clearInterval(eventTimerObj); eventTimerObj = null;
+        clearTimeout(pivotEndTimer); pivotEndTimer = null;
+        disarmAudit();
+        stopContinuousClick();
+        stopHold();
+    }
+
+    async function goHome() {
+        const ok = await confirmDialog('🏠', '타이틀로 갈까요?', '현재 진행 상황은 자동 저장돼요.', '타이틀로', '계속하기');
+        if (!ok) return;
+        saveGame();
+        gameRunning = false;
+        stopGameTimers();
+        stopBGM();
+        $('gameScreen').classList.add('hidden');
+        $('startScreen').classList.remove('hidden');
+        refreshStartScreen();
     }
 
     function calculateOfflineProgress() {
-        const diff = Math.floor((Date.now() - s.lastSaveTime)/1000);
-        if(diff > 30) {
-            const baseGain = Math.max(currentAutoProfit, 50);
-            const gain = Math.min(diff, 86400) * baseGain * 0.8; 
+        const diff = Math.floor((Date.now() - s.lastSaveTime) / 1000);
+        if (diff > 30) {
+            const gain = Math.min(diff, 86400) * Math.max(currentAutoProfit, 50) * 0.8;
             s.money += gain;
-            setTimeout(()=>alert(`오프라인 보상 (방치형 누적): +${formatMoney(gain)}`), 500);
+            return gain;
+        }
+        return 0;
+    }
+
+    // ---------- 클릭 / 연타 ----------
+    let continuousClickTimer = null, continuousClickDelay = null;
+    const clickPos = { x: 0, y: 0 };
+
+    function startContinuousClick(e) {
+        if (!gameRunning || modalOpen) return;
+        if (e.target.closest('.runner')) return;
+        e.preventDefault();
+        clickPos.x = e.clientX; clickPos.y = e.clientY;
+        stopContinuousClick();
+        handleMainClick(clickPos);
+        continuousClickDelay = setTimeout(() => {
+            continuousClickTimer = setInterval(() => handleMainClick(clickPos), 80);
+        }, 250);
+    }
+
+    function stopContinuousClick() {
+        clearTimeout(continuousClickDelay); continuousClickDelay = null;
+        clearInterval(continuousClickTimer); continuousClickTimer = null;
+    }
+
+    function handleMainClick(pos) {
+        if (!gameRunning || modalOpen) { stopContinuousClick(); return; }
+        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+        s.caffeine = Math.min(100, s.caffeine + 10);
+        calculateMultipliers();
+        const gain = currentClickProfit * 2, expGain = currentExpPerClick * 2;
+        s.money += gain;
+        s.exp += expGain;
+        s.stats.totalClicks++;
+        clickCount++;
+
+        if (!isPivot() && pivotCharge < 100) pivotCharge = Math.min(100, pivotCharge + 1.5);
+
+        playAudio('coin');
+        showFloat(pos.x, pos.y, `+${formatMoney(gain)}`, `EXP+${Math.floor(expGain)}`);
+
+        const char = $('characterEmoji');
+        char.classList.remove('pop'); void char.offsetWidth; char.classList.add('pop');
+        if (clickCount % 30 === 0) say(SPEECH[Math.floor(Math.random() * SPEECH.length)]);
+
+        if (Math.random() < 0.01) dropItem();
+        checkLevelUp();
+        updateUI();
+    }
+
+    let speechTimer = null;
+    function say(text) {
+        const el = $('speech');
+        el.textContent = text;
+        el.classList.add('show');
+        clearTimeout(speechTimer);
+        speechTimer = setTimeout(() => el.classList.remove('show'), 1800);
+    }
+
+    // ---------- 꾹 눌러 연속 구매 (스크롤 중 오구매 방지) ----------
+    const hold = { btn: null, timer: null, repeat: null, fired: false };
+
+    function stopHold() {
+        clearTimeout(hold.timer); hold.timer = null;
+        clearInterval(hold.repeat); hold.repeat = null;
+    }
+
+    function buyFromBtn(btn) {
+        const [type, id] = btn.dataset.buy.split('|');
+        return buySpecialItem(id, type, true);
+    }
+
+    document.addEventListener('pointerdown', e => {
+        const b = e.target.closest('[data-buy]');
+        if (!b) return;
+        stopHold();
+        hold.btn = b; hold.fired = false;
+        hold.timer = setTimeout(() => {
+            hold.fired = true;
+            if (!buyFromBtn(b)) return;
+            hold.repeat = setInterval(() => { if (!buyFromBtn(b)) stopHold(); }, 110);
+        }, 400);
+    });
+    document.addEventListener('pointerout', e => {
+        if (hold.btn && e.target.closest('[data-buy]') === hold.btn && !hold.btn.contains(e.relatedTarget)) stopHold();
+    });
+    document.addEventListener('click', e => {
+        const b = e.target.closest('[data-buy]');
+        if (!b) return;
+        if (hold.fired) { hold.fired = false; return; }
+        buyFromBtn(b);
+    });
+    ['pointerup', 'pointercancel'].forEach(ev => document.addEventListener(ev, () => { stopHold(); stopContinuousClick(); }));
+    window.addEventListener('blur', () => { stopHold(); stopContinuousClick(); });
+    document.addEventListener('contextmenu', e => e.preventDefault());
+
+    // ---------- 피벗 타임 ----------
+    const isPivot = () => buffs.pivotUntil > Date.now();
+
+    function activatePivotTime() {
+        if (isPivot()) return;
+        if (pivotCharge < 100) {
+            playAudio('error');
+            showToast(`🚀 피벗타임 게이지가 부족해요! (${Math.floor(pivotCharge)}%)`);
+            return;
+        }
+        pivotCharge = 0;
+        buffs.pivotUntil = Date.now() + 15000;
+        playAudio('buy');
+        showToast('🚀 피벗 타임! 15초 동안 모든 수익 10배!');
+        clearTimeout(pivotEndTimer);
+        pivotEndTimer = setTimeout(() => { showToast('피벗 타임 종료! 원래 속도로 복귀해요.'); updateUI(); }, 15000);
+        calculateMultipliers();
+        updateUI();
+    }
+
+    function updatePivotUI() {
+        const btn = $('pivotBtn');
+        if (isPivot()) {
+            btn.className = 'chip-btn on';
+            btn.textContent = `🚀 피벗타임! ${Math.ceil((buffs.pivotUntil - Date.now()) / 1000)}s`;
+        } else if (pivotCharge >= 100) {
+            btn.className = 'chip-btn ready';
+            btn.textContent = '🚀 피벗타임 발동!';
+        } else {
+            btn.className = 'chip-btn';
+            btn.style.setProperty('--p', pivotCharge + '%');
+            btn.textContent = `🚀 피벗타임 ${Math.floor(pivotCharge)}%`;
         }
     }
 
+    // ---------- 메인 루프 ----------
     function gameLoop() {
+        if (!gameRunning) return;
         s.succulentGrowth += 1;
-        if(s.succulentGrowth >= 300) { 
-            s.succulentGrowth = 0; 
-            s.succulentBuff += 0.05; 
-            playAudio('buy'); 
-            showToast("다육이가 자라 마음의 평화 획득!"); 
+        if (s.succulentGrowth >= 300) {
+            s.succulentGrowth = 0;
+            s.succulentBuff += 0.05;
+            playAudio('buy');
+            showToast('🌿 다육이가 자라서 마음의 평화 획득! (수익 +5%)');
         }
-        const succPctEl = document.getElementById('succulentPct');
-        if (succPctEl) succPctEl.innerText = Math.floor((s.succulentGrowth/300)*100)+'%';
-        
-        s.caffeine = Math.max(0, Math.min(100, s.caffeine - ((s.ootd === '츄리닝') ? 4 : 2)));
-        buffs.cafMult = (s.caffeine >= 80) ? 3 : 1;
+        s.caffeine = Math.max(0, Math.min(100, s.caffeine - (s.ootd === '츄리닝' ? 4 : 2)));
 
         calculateMultipliers();
-        
-        const passiveIncome = Math.max(currentAutoProfit, 50);
-        const passiveExp = Math.max(currentExpPerSec, 2);
-        
-        s.money += passiveIncome; 
-        s.exp += passiveExp; 
+        s.money += Math.max(currentAutoProfit, 50);
+        s.exp += Math.max(currentExpPerSec, 2);
         checkLevelUp();
-        
-        if (s.stocks) {
-            Object.keys(s.stocks).forEach(k => {
-                const st = s.stocks[k];
-                st.price = Math.max(1000, Math.floor(st.price * (1 + (Math.random() * 0.08 - 0.04))));
-            });
-        }
 
-        s.stockPrice = Math.max(1000, s.stockPrice * (1 + (Math.random()*0.04 - 0.02)));
-        ['r1','r2','r3','r4'].forEach(k => {
-            const base = [5e8, 2e9, 1e10, 5e10][parseInt(k.replace('r',''))-1] * s.hobong;
-            s.reals[k].price = Math.max(base*0.5, s.reals[k].price * (1 + (Math.random()*0.015 - 0.007)));
+        Object.keys(s.stocks).forEach(k => {
+            const st = s.stocks[k];
+            stockPrev[k] = st.price;
+            st.price = Math.max(1000, Math.floor(st.price * Math.exp(Math.random() * 0.08 - 0.04)));
         });
-        updateUI(); 
-        renderStocks();
+        DB.reals.forEach(r => {
+            const base = r.base * s.hobong;
+            s.reals[r.id].price = Math.max(base * 0.5, s.reals[r.id].price * (1 + (Math.random() * 0.015 - 0.007)));
+        });
+
+        updateUI();
         saveGame();
     }
 
     function calculateMultipliers() {
-        let cv = 200, av = 50 + (s.emoticonIncome||0), ec = 5, ea = 2;
-        const sum = (list, obj) => list.reduce((acc, b) => acc + (b.profit * ((obj && obj[b.id]) || 0)), 0);
-        
-        if (s.inventory) cv += sum(DB.clicks, s.inventory);
-        if (s.inventory) av += sum(DB.autos, s.inventory);
-        if (s.clubs) av += sum(DB.clubs, s.clubs);
-        if (s.somoims) av += sum(DB.somoims, s.somoims);
-        if (s.sports) av += sum(DB.sports, s.sports);
-        if (s.certs) av += sum(DB.certs, s.certs);
-        
-        let enforceMult = 1;
-        DB.enforce.forEach(e => {
-            const lvl = (s.enforce && s.enforce[e.id]) || 0;
-            enforceMult += lvl * e.mult;
-        });
-        
-        let gradeM = 1; 
-        if(s.grade === '1학년') cv *= 1.5; 
-        else if(s.grade === '6학년') av *= 1.5; 
-        else if(s.grade === '전담교사') gradeM = 0.8;
-        
-        let mottoM = 1; 
-        if(s.motto === '부자가 되자') { cv *= 1.2; av *= 1.2; } 
-        if(s.motto === '배움이 먼저다') { ec *= 1.5; ea *= 1.5; }
-        
-        let diffMult = 0.8;
-        if (s.difficulty === 'easy') diffMult = 1.5;
-        else if (s.difficulty === 'normal') diffMult = 0.8;
-        else if (s.difficulty === 'hard') diffMult = 0.3;
+        const now = Date.now();
+        let cv = 200, av = 50 + (s.emoticonIncome || 0), ec = 5, ea = 2;
+        const sum = (list, obj) => list.reduce((acc, b) => acc + b.profit * ((obj && obj[b.id]) || 0), 0);
+        cv += sum(DB.clicks, s.inventory);
+        av += sum(DB.autos, s.inventory) + sum(DB.clubs, s.clubs) + sum(DB.somoims, s.somoims) + sum(DB.sports, s.sports) + sum(DB.certs, s.certs);
 
-        const pivotMult = buffs.isPivot ? 10 : 1;
-        const hM = (1 + ((s.hobong-1)*0.1) + s.succulentBuff) * s.travelBuff * enforceMult;
-        av += (s.reals.r1.own * 1e6) + (s.reals.r2.own * 5e6) + (s.reals.r3.own * 3e7) + (s.reals.r4.own * 2e8);
-        
-        currentClickProfit = cv * hM * buffs.cafMult * gradeM * mottoM * buffs.menuBuff * (buffs.isFever?3:1) * pivotMult * diffMult;
-        currentAutoProfit = av * hM * buffs.papsMult * gradeM * mottoM * buffs.menuBuff * pivotMult * diffMult;
-        currentExpPerClick = ec * hM * (s.difficulty === 'easy' ? 1.5 : 1.0); 
-        currentExpPerSec = ea * hM;
+        let enforceMult = 1;
+        DB.enforce.forEach(e => { enforceMult += ((s.enforce && s.enforce[e.id]) || 0) * e.mult; });
+
+        let gradeM = 1;
+        if (s.grade === '1학년') cv *= 1.5;
+        else if (s.grade === '6학년') av *= 1.5;
+        else if (s.grade === '전담교사') gradeM = 0.8;
+
+        if (s.motto === '부자가 되자') { cv *= 1.2; av *= 1.2; }
+        if (s.motto === '배움이 먼저다') { ec *= 1.5; ea *= 1.5; }
+
+        const diffMult = s.difficulty === 'easy' ? 1.5 : (s.difficulty === 'hard' ? 0.3 : 0.8);
+        const pivotMult = buffs.pivotUntil > now ? 10 : 1;
+        const menuMult = buffs.menuUntil > now ? 2 : 1;
+        const councilMult = buffs.councilUntil > now ? 2 : 1;
+        const feverMult = buffs.feverUntil > now ? 3 : 1;
+        const cafMult = s.caffeine >= 80 ? 3 : 1;
+        const ootdExp = s.ootd === '츄리닝' ? 1.3 : 1;
+
+        const hM = (1 + (s.hobong - 1) * 0.1 + s.succulentBuff + s.careerBuff) * s.travelBuff * enforceMult;
+        DB.reals.forEach(r => { av += s.reals[r.id].own * r.rent; });
+
+        currentClickProfit = cv * hM * cafMult * gradeM * menuMult * feverMult * pivotMult * diffMult;
+        currentAutoProfit = av * hM * councilMult * gradeM * menuMult * pivotMult * diffMult;
+        currentExpPerClick = ec * hM * (s.difficulty === 'easy' ? 1.5 : 1) * ootdExp;
+        currentExpPerSec = ea * hM * ootdExp;
     }
 
-    function handleMainClick(e) {
-        if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-        s.caffeine = Math.min(100, s.caffeine + 10);
-        s.money += currentClickProfit * 2; 
-        s.exp += currentExpPerClick * 2; 
-        s.stats.totalClicks++;
-        
-        if (!buffs.isPivot && pivotCharge < 100) {
-            pivotCharge = Math.min(100, pivotCharge + 1.5);
-            updatePivotUI();
-        }
-        
-        playAudio('coin'); 
-        showFloat(e.clientX, e.clientY, `+${formatMoney(currentClickProfit * 2)} (EXP+${Math.floor(currentExpPerClick * 2)})`);
-        
-        const char = document.getElementById('characterEmoji'); 
-        if (char) {
-            char.classList.remove('character-pop'); 
-            void char.offsetWidth; 
-            char.classList.add('character-pop');
-        }
-        
-        if(Math.random() < 0.01) dropItem(); 
-        checkLevelUp(); 
-        updateUI();
+    function titleFor(lv) {
+        if (lv >= 50) return '👑 교장';
+        if (lv >= 30) return '🎩 교감';
+        if (lv >= 20) return '📋 부장';
+        if (lv >= 10) return '⭐ 베테랑';
+        if (lv >= 5) return '🔥 열정';
+        return '🐣 새내기';
     }
 
     function checkLevelUp() {
-        if(s.exp >= s.level * 100) {
-            s.level++; 
-            s.exp = 0; 
-            playAudio('buy'); 
-            showToast(`레벨업! 평교사 Lv.${s.level}`);
-            if(s.level % 5 === 0) { 
-                const mottos = ['무사히 퇴근하자', '부자가 되자', '배움이 먼저다']; 
-                s.motto = mottos[Math.floor(Math.random()*mottos.length)]; 
-                const boardTextEl = document.getElementById('boardText');
-                if (boardTextEl) boardTextEl.innerText = s.motto; 
+        let ups = 0;
+        while (s.exp >= s.level * 100 && ups < 500) {
+            s.exp -= s.level * 100;
+            s.level++;
+            ups++;
+            if (s.level % 5 === 0) {
+                const mottos = ['무사히 퇴근하자', '부자가 되자', '배움이 먼저다'];
+                s.motto = mottos[Math.floor(Math.random() * mottos.length)];
+                updateBoard();
             }
+        }
+        if (ups > 0) {
+            playAudio('buy');
+            showToast(`🎉 레벨 업! Lv.${s.level} ${titleFor(s.level)}`);
+            say('레벨 업! 신난다 🎉');
         }
     }
 
-    function formatMoney(num) {
-        if(num >= 1e12) return (num/1e12).toFixed(2)+'조'; 
-        if(num >= 1e8) return (num/1e8).toFixed(1)+'억'; 
-        if(num >= 1e4) return Math.floor(num/1e4)+'만'; 
-        return Math.floor(num).toLocaleString();
-    }
-    
-    function showFloat(x, y, txt) {
-        const posX = x || (window.innerWidth / 2);
-        const posY = y || (window.innerHeight / 2);
-        const el = document.createElement('div'); el.className = 'floating-text'; el.innerText = txt;
-        el.style.left = `${posX-20 + (Math.random()*40-20)}px`; el.style.top = `${posY-30}px`; 
-        document.body.appendChild(el); 
-        el.addEventListener('animationend', ()=>el.remove());
+    function updateBoard() {
+        setText('boardText', s.motto);
     }
 
-    function showToast(msg) {
-        const toast = document.getElementById('gameToast');
-        if (!toast) return;
-        toast.innerText = msg;
-        toast.classList.remove('hidden');
-        toast.style.opacity = '1';
-        if (window.toastTimeout) clearTimeout(window.toastTimeout);
-        window.toastTimeout = setTimeout(() => {
-            toast.style.opacity = '0';
-            setTimeout(() => toast.classList.add('hidden'), 300);
-        }, 3000);
+    // ---------- 화면 ----------
+    function showFloat(x, y, txt, sub) {
+        const el = document.createElement('div');
+        el.className = 'float';
+        el.textContent = txt;
+        if (sub) { const sm = document.createElement('small'); sm.textContent = ' ' + sub; el.appendChild(sm); }
+        const px = (x || window.innerWidth / 2) - 30 + (Math.random() * 40 - 20);
+        el.style.left = `${Math.max(4, Math.min(window.innerWidth - 120, px))}px`;
+        el.style.top = `${(y || window.innerHeight / 2) - 34}px`;
+        document.body.appendChild(el);
+        el.addEventListener('animationend', () => el.remove());
     }
-    
-    function changeTab(id, btnEl) {
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden')); 
-        document.querySelectorAll('.tab-btn').forEach(b => { 
-            b.classList.remove('border-blue-600', 'text-blue-600', 'bg-white'); 
-            b.classList.add('border-transparent', 'text-gray-500'); 
+
+    let toastTimeout = null;
+    function showToast(msg) {
+        const toast = $('gameToast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => toast.classList.remove('show'), 2600);
+    }
+
+    function changeTab(id, silent) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.toggle('hidden', t.id !== id));
+        document.querySelectorAll('.nav button').forEach(b => b.classList.toggle('active', b.dataset.tab === id));
+        $('panel').scrollTop = 0;
+        if (!silent) playAudio('click');
+    }
+
+    function buildStatic() {
+        SHOPS.forEach(sh => {
+            const c = $(sh.el);
+            c.innerHTML = sh.list.map(item => `
+                <div class="row">
+                    <div class="ib">${item.icon}</div>
+                    <div class="rinfo"><div class="rname">${item.name} <span class="lv" id="lv-${sh.type}-${item.id}">Lv.0</span></div><div class="rdesc">${sh.desc(item)}</div></div>
+                    <button class="btn btn-sm btn-${sh.color} buy" data-buy="${sh.type}|${item.id}" id="buy-${sh.type}-${item.id}">-</button>
+                </div>`).join('');
         });
-        const targetTab = document.getElementById(id);
-        if (targetTab) targetTab.classList.remove('hidden'); 
-        if(btnEl) { 
-            btnEl.classList.remove('border-transparent','text-gray-500'); 
-            btnEl.classList.add('border-blue-600','text-blue-600', 'bg-white'); 
-        } 
-        playAudio('click');
+
+        $('stockMarketList').innerHTML = Object.keys(s.stocks).map(k => `
+            <div class="row">
+                <div class="rinfo"><div class="rname">${s.stocks[k].name}</div>
+                <div class="rdesc"><span id="st-price-${k}"></span> · 보유 <span id="st-cnt-${k}"></span>주</div></div>
+                <div class="two-btn"><button class="btn btn-sm btn-pink" onclick="tradeStockItem('${k}','buy')">풀매수</button><button class="btn btn-sm btn-sky" onclick="tradeStockItem('${k}','sell')">매도</button></div>
+            </div>`).join('');
+
+        $('realEstateList').innerHTML = DB.reals.map(r => `
+            <div class="row">
+                <div class="ib">${r.icon}</div>
+                <div class="rinfo"><div class="rname">${r.name} <span class="lv" id="re-own-${r.id}">0채</span></div>
+                <div class="rdesc">시세 <span id="re-price-${r.id}"></span>원 · 월세 초당 +${formatMoney(r.rent)}</div></div>
+                <div class="two-btn"><button class="btn btn-sm btn-pink" id="re-buy-${r.id}" onclick="buyReal('${r.id}')">매수</button><button class="btn btn-sm btn-sky" onclick="sellReal('${r.id}')">매도</button></div>
+            </div>`).join('');
+
+        const actCard = id => {
+            const a = ACTS[id];
+            return `<div class="card c-${a.color}">
+                <div class="act-head"><div class="act-ic">${a.icon}</div><div><div class="act-title">${a.title}</div><div class="act-desc">${a.desc}</div></div></div>
+                <button class="btn btn-block btn-${a.color}" id="act-${id}" onclick="runAct('${id}')"></button>
+            </div>`;
+        };
+        $('actList').innerHTML = ACT_ORDER.map(actCard).join('');
+        $('clubActs').innerHTML = CLUB_ORDER.map(actCard).join('');
+        renderCollections();
+    }
+
+    function renderCollections() {
+        const owned = DB.cols.filter(c => s.collections[c.id]).length;
+        setText('dexCount', `${owned}/${DB.cols.length}`);
+        $('collectionList').innerHTML = DB.cols.map(c => s.collections[c.id]
+            ? `<div><span class="e">${c.icon}</span>${c.name}</div>`
+            : `<div class="locked"><span class="e">${c.icon}</span>???</div>`).join('');
+        const shelf = $('trophyShelf');
+        shelf.textContent = '🏆'.repeat(Math.min(s.endings, 5));
     }
 
     function updateUI() {
-        const setElText = (id, val) => { const el = document.getElementById(id); if(el) el.innerText = val; };
-        
-        setElText('levelDisplay', `Lv.${s.level}`);
-        setElText('gradeDisplay', s.grade);
-        setElText('moneyDisplay', formatMoney(s.money) + '원');
-        setElText('honorDisplay', s.honor);
-        
-        const expBar = document.getElementById('expBar');
-        if(expBar) expBar.style.width = `${Math.min((s.exp/(s.level*100))*100,100)}%`;
-        setElText('expText', `${Math.floor(s.exp)}/${s.level*100}`);
-        setElText('autoMoneyText', formatMoney(currentAutoProfit));
-        
-        const cb = document.getElementById('caffeineBar'); 
-        if(cb) {
-            const cafPct = Math.min(Math.max(0, s.caffeine), 100);
-            cb.style.width = cafPct + '%';
-            cb.className = s.caffeine >= 80 ? 'bg-yellow-400 h-2 sweet-spot' : 'bg-blue-400 h-2';
-        }
-        
-        setElText('stockPrice', formatMoney(s.stockPrice));
-        setElText('stockCount', s.stockCount);
-        
-        ['r1','r2','r3','r4'].forEach(k => { 
-            setElText(`price-${k}`, formatMoney(s.reals[k].price));
-        });
-        
-        setElText('carrotCount', s.spareItems);
-        setElText('trophyDisplay', s.endings);
-        
+        if (!gameRunning) return;
         const now = Date.now();
-        ['vacation','silence','blind','emo'].forEach(k => {
-            const el = document.getElementById(`cd-${k}`); 
-            const btn = document.getElementById(`btn-${k}`);
-            if(el && btn) { 
-                if(s.skills[k] > now) { 
-                    el.innerText = Math.ceil((s.skills[k]-now)/1000)+'s'; 
-                    el.classList.add('text-red-500'); 
-                    btn.classList.add('opacity-50'); 
-                } else { 
-                    el.innerText = k==='emo'?'100만원':'준비됨'; 
-                    el.classList.remove('text-red-500'); 
-                    btn.classList.remove('opacity-50'); 
-                } 
-            }
-        });
-        
-        document.querySelectorAll('.buy-btn').forEach(btn => { 
-            const cost = parseFloat(btn.dataset.cost || 0);
-            if(s.money >= cost) {
-                btn.classList.remove('opacity-50');
-                btn.classList.add('hover:bg-blue-600');
-            } else {
-                btn.classList.add('opacity-50');
-                btn.classList.remove('hover:bg-blue-600');
-            }
-        });
-    }
 
-    function renderStocks() {
-        const listEl = document.getElementById('stockMarketList');
-        if (!listEl) return;
-        if (!s.stocks) s.stocks = JSON.parse(JSON.stringify(defaultState.stocks));
-        listEl.innerHTML = Object.keys(s.stocks).map(k => {
-            const st = s.stocks[k];
-            return `<div class="flex justify-between items-center bg-white p-2 rounded border border-gray-100 text-[11px]">
-                <div><div class="font-bold text-gray-800">${st.name}</div><div class="text-gray-500">시세: <span class="text-blue-600 font-bold">${formatMoney(st.price)}원</span> | 보유: <span class="text-purple-600 font-bold">${st.count}주</span></div></div>
-                <div class="space-x-1"><button onclick="tradeStockItem('${k}', 'buy')" class="bg-red-500 text-white px-2.5 py-1 rounded text-[10px] font-bold active:bg-red-600 cursor-pointer">매수</button><button onclick="tradeStockItem('${k}', 'sell')" class="bg-blue-500 text-white px-2.5 py-1 rounded text-[10px] font-bold active:bg-blue-600 cursor-pointer">매도</button></div>
-            </div>`;
-        }).join('');
-    }
+        setText('levelDisplay', `Lv.${s.level}`);
+        setText('titleDisplay', titleFor(s.level));
+        setText('gradeDisplay', s.grade);
+        setText('moneyDisplay', formatMoney(s.money) + '원');
+        setText('honorDisplay', s.honor);
+        setText('trophyDisplay', s.endings);
+        setText('autoMoneyText', formatMoney(currentAutoProfit));
 
-    function tradeStockItem(id, act) {
-        if (!s.stocks || !s.stocks[id]) return;
-        const st = s.stocks[id];
-        if (act === 'buy') {
-            if (s.money >= st.price) {
-                const count = Math.floor(s.money / st.price);
-                s.money -= count * st.price;
-                st.count += count;
-                playAudio('buy');
-                showToast(`📈 ${st.name} ${count}주 매수 완료!`);
-            } else {
-                playAudio('error');
-                showToast("❌ 소지금이 부족합니다!");
-            }
-        } else if (act === 'sell') {
-            if (st.count > 0) {
-                const total = st.count * st.price;
-                s.money += total;
-                showToast(`📉 ${st.name} ${st.count}주 전량 매도 (+${formatMoney(total)}원)`);
-                st.count = 0;
-                playAudio('coin');
-            } else {
-                playAudio('error');
-                showToast("❌ 보유 중인 주식이 없습니다!");
-            }
-        }
-        renderStocks();
-        updateUI();
-    }
+        const need = s.level * 100;
+        $('expBar').style.width = `${Math.min(s.exp / need * 100, 100)}%`;
+        setText('expText', `${formatMoney(s.exp)}/${formatMoney(need)}`);
 
-    function renderAll() {
-        const renderList = (dbList, targetId, stateObj, type) => {
-            const container = document.getElementById(targetId);
-            if (!container) return;
-            const inflation = s.difficulty === 'hard' ? 1.28 : 1.22;
-            container.innerHTML = dbList.map(item => {
-                const cnt = (stateObj && stateObj[item.id]) || 0; 
-                const cost = Math.floor(item.baseCost * Math.pow(inflation, cnt));
-                const profitText = item.profit ? `+${formatMoney(item.profit)}` : `전체 수익 +${(item.mult||0)*100}%`;
-                return `<div class="flex justify-between items-center p-2.5 bg-gray-50 rounded-lg border border-gray-200 shadow-sm text-xs font-bold">
-                    <div class="flex items-center space-x-2.5"><div class="text-xl drop-shadow-sm">${item.icon}</div><div><div class="text-gray-800">${item.name} <span class="text-blue-600">Lv.${cnt}</span></div><div class="text-gray-500 font-normal text-[11px]">${profitText}</div></div></div>
-                    <button class="buy-btn bg-blue-500 text-white px-3 py-2 rounded-md active:bg-blue-600 shadow-sm active:scale-95 transition select-none cursor-pointer" data-cost="${cost}" 
-                        onpointerdown="startContinuousUpgrade('${item.id}','${type}')" 
-                        onpointerup="stopContinuousUpgrade()" 
-                        onpointerleave="stopContinuousUpgrade()" 
-                        onpointercancel="stopContinuousUpgrade()">${formatMoney(cost)}원</button></div>`;
-            }).join('');
-        };
-        
-        renderList(DB.clicks, 'clickUpgrades', s.inventory, 'clicks');
-        renderList(DB.autos, 'autoUpgrades', s.inventory, 'autos');
-        renderList(DB.enforce, 'enforceList', s.enforce, 'enforce');
-        renderList(DB.clubs, 'clubList', s.clubs, 'clubs');
-        renderList(DB.somoims, 'somoimList', s.somoims, 'somoims');
-        renderList(DB.sports, 'sportList', s.sports, 'sports');
-        renderList(DB.certs, 'certList', s.certs, 'certs');
-        
-        renderStocks();
+        const cb = $('caffeineBar');
+        cb.style.width = Math.min(Math.max(0, s.caffeine), 100) + '%';
+        cb.classList.toggle('hot', s.caffeine >= 80);
+        setText('tensionText', s.caffeine >= 80 ? '🔥 클릭 3배!' : '80%↑ 3배');
 
-        const rEl = document.getElementById('realEstateList');
-        if (rEl) {
-            const rNames = ['동네 상가', '지식산업센터', '한강뷰 아파트', '강남 랜드마크'];
-            rEl.innerHTML = ['r1','r2','r3','r4'].map((k,i) => `
-                <div class="flex justify-between items-center p-2.5 bg-gray-50 rounded-lg border border-gray-200 shadow-sm text-xs font-bold">
-                <div><div class="text-gray-800">${rNames[i]} <span class="text-blue-600">${s.reals[k].own}채</span></div><div class="text-gray-500 font-normal text-[11px]">시세: <span id="price-${k}">${formatMoney(s.reals[k].price)}</span></div></div>
-                <div class="space-x-1"><button class="bg-red-500 text-white px-2.5 py-1.5 rounded-md active:bg-red-600 shadow-sm cursor-pointer" onclick="buyReal('${k}')">매수</button><button class="bg-blue-500 text-white px-2.5 py-1.5 rounded-md active:bg-blue-600 shadow-sm cursor-pointer" onclick="sellReal('${k}')">매도</button></div>
-                </div>`).join('');
-        }
-            
-        const tShelf = document.getElementById('trophyShelf');
-        if (tShelf) tShelf.innerHTML = '🏆'.repeat(Math.min(s.endings, 5));
+        const stage = Math.round(s.succulentBuff / 0.05);
+        const plants = ['🌱', '🌿', '☘️', '🪴', '🌵', '🌷', '🌸', '🌻'];
+        setText('succulentEmoji', plants[Math.min(stage, plants.length - 1)]);
+        setText('succulentPct', Math.floor(s.succulentGrowth / 300 * 100) + '%');
 
-        const cList = document.getElementById('collectionList');
-        if (cList) {
-            cList.innerHTML = DB.cols.map(c => `
-                <div class="flex flex-col items-center p-1.5 rounded-lg border border-gray-200 shadow-sm ${s.collections[c.id]?'bg-yellow-50':'bg-gray-100 grayscale'}">
-                <div class="text-xl mb-0.5">${c.icon}</div><div class="text-[9px] font-bold text-gray-700">${s.collections[c.id]?c.name:'???'}</div>
-                </div>`).join('');
-        }
-    }
+        updatePivotUI();
 
-    function buySpecialItem(id, type) {
-        let item, targetObj;
-        if(type === 'clicks' || type === 'autos') {
-            item = DB[type].find(i => i.id === id); 
-            targetObj = s.inventory;
-        } else if(type === 'enforce') {
-            item = DB.enforce.find(i => i.id === id); 
-            targetObj = s.enforce;
-        } else if(type === 'clubs') {
-            item = DB.clubs.find(i => i.id === id); 
-            targetObj = s.clubs;
-        } else if(type === 'somoims') {
-            item = DB.somoims.find(i => i.id === id); 
-            targetObj = s.somoims;
-        } else if(type === 'sports') {
-            item = DB.sports.find(i => i.id === id); 
-            targetObj = s.sports;
-        } else if(type === 'certs') {
-            item = DB.certs.find(i => i.id === id); 
-            targetObj = s.certs;
-        }
-        
-        if (!item || !targetObj) return;
-        const cnt = targetObj[id] || 0; 
-        const inflation = s.difficulty === 'hard' ? 1.28 : 1.22;
-        const cost = Math.floor(item.baseCost * Math.pow(inflation, cnt));
-        if(s.money >= cost) {
-            s.money -= cost; 
-            targetObj[id] = cnt + 1; 
-            playAudio('buy'); 
-            renderAll(); 
-            calculateMultipliers(); 
-            updateUI();
+        // 버프 표시
+        const chips = [];
+        if (buffs.pivotUntil > now) chips.push(`🚀 수익 10배 ${Math.ceil((buffs.pivotUntil - now) / 1000)}s`);
+        if (buffs.feverUntil > now) chips.push(`🔥 클릭 3배 ${Math.ceil((buffs.feverUntil - now) / 1000)}s`);
+        if (buffs.menuUntil > now) chips.push(`🍱 수익 2배 ${Math.ceil((buffs.menuUntil - now) / 1000)}s`);
+        if (buffs.councilUntil > now) chips.push(`🏛️ 자동 2배 ${Math.ceil((buffs.councilUntil - now) / 1000)}s`);
+        if (buffs.silenceUntil > now) chips.push(`🤫 평화 ${Math.ceil((buffs.silenceUntil - now) / 1000)}s`);
+        const chipHtml = chips.map(c => `<span class="buff">${c}</span>`).join('');
+        const chipBox = $('buffChips');
+        if (chipBox.dataset.k !== chips.map(c => c.replace(/\d+s$/, '')).join()) {
+            chipBox.innerHTML = chipHtml;
+            chipBox.dataset.k = chips.map(c => c.replace(/\d+s$/, '')).join();
         } else {
-            playAudio('error');
+            [...chipBox.children].forEach((el, i) => { if (el.textContent !== chips[i]) el.textContent = chips[i]; });
         }
+
+        // 상점
+        SHOPS.forEach(sh => {
+            const obj = s[sh.key];
+            sh.list.forEach(item => {
+                const cnt = obj[item.id] || 0;
+                const cost = costOf(item, cnt);
+                setText(`lv-${sh.type}-${item.id}`, `Lv.${cnt}`);
+                const btn = $(`buy-${sh.type}-${item.id}`);
+                setText(`buy-${sh.type}-${item.id}`, `${formatMoney(cost)}원`);
+                btn.classList.toggle('poor', s.money < cost);
+            });
+        });
+
+        // 주식
+        let stockValue = 0;
+        Object.keys(s.stocks).forEach(k => {
+            const st = s.stocks[k];
+            stockValue += st.price * st.count;
+            const prev = stockPrev[k];
+            const el = $(`st-price-${k}`);
+            if (!el) return;
+            const arrow = prev === undefined || prev === st.price ? '' : (st.price > prev ? ' ▲' : ' ▼');
+            el.textContent = `${formatMoney(st.price)}원${arrow}`;
+            el.className = arrow === ' ▲' ? 'up' : (arrow === ' ▼' ? 'down' : '');
+            setText(`st-cnt-${k}`, st.count.toLocaleString());
+        });
+        setText('stockValue', formatMoney(stockValue));
+
+        // 부동산
+        DB.reals.forEach(r => {
+            setText(`re-own-${r.id}`, `${s.reals[r.id].own}채`);
+            setText(`re-price-${r.id}`, formatMoney(s.reals[r.id].price));
+            const b = $(`re-buy-${r.id}`);
+            if (b) b.classList.toggle('poor', s.money < s.reals[r.id].price);
+        });
+
+        setText('carrotCount', s.spareItems);
+        const tb = $('travelBtn');
+        if (tb) tb.classList.toggle('poor', s.money < 50000000);
+
+        // 활동 쿨타임
+        Object.keys(ACTS).forEach(id => {
+            const a = ACTS[id], btn = $(`act-${id}`);
+            if (!btn) return;
+            const until = s.skills[id] || 0;
+            if (until > now) {
+                setText(`act-${id}`, `${a.coolLabel || '⏳ 쿨타임'} ${Math.ceil((until - now) / 1000)}초`);
+                btn.classList.add('cool');
+                btn.classList.remove('poor');
+            } else {
+                setText(`act-${id}`, typeof a.btn === 'function' ? a.btn() : a.btn);
+                btn.classList.remove('cool');
+                btn.classList.toggle('poor', !!((a.cost && s.money < a.cost) || (a.check && !a.check(true))));
+            }
+        });
+
+        // 스킬
+        ['vacation', 'silence'].forEach(k => {
+            const el = $(`cd-${k}`), btn = $(`btn-${k}`);
+            if (s.skills[k] > now) {
+                setText(`cd-${k}`, `⏳ ${Math.ceil((s.skills[k] - now) / 1000)}초`);
+                btn.classList.add('cool');
+            } else {
+                setText(`cd-${k}`, '준비됨 ✨');
+                btn.classList.remove('cool');
+            }
+        });
+
+        setText('rebirthInfo', `자산을 초기화하고 ${s.hobong + 1}호봉으로 승급 (호봉당 수익 +10%, 담임 학년 랜덤)`);
+        setText('ootdDesc', OOTD_DESC[s.ootd]);
+
+        const enforceMult = DB.enforce.reduce((a, e) => a + (s.enforce[e.id] || 0) * e.mult, 1);
+        const statHtml = [
+            ['호봉', `${s.hobong}호봉`], ['담임', `${s.grade}`],
+            ['담임 효과', GRADE_DESC[s.grade]], ['총 클릭', s.stats.totalClicks.toLocaleString()],
+            ['강화 배율', `x${enforceMult.toFixed(2)}`], ['여행·경력 보너스', `x${s.travelBuff.toFixed(1)} · +${Math.round(s.careerBuff * 100)}%`],
+            ['이모티콘 수익', `초당 +${formatMoney(s.emoticonIncome)}`], ['클릭당 수익', `${formatMoney(currentClickProfit * 2)}원`]
+        ].map(([k, v]) => `<div>${k}<br><b>${v}</b></div>`).join('');
+        const sg = $('statGrid');
+        if (sg.innerHTML !== statHtml) sg.innerHTML = statHtml;
+    }
+
+    // ---------- 구매 ----------
+    function buySpecialItem(id, type, quiet) {
+        const sh = SHOPS.find(x => x.type === type);
+        if (!sh) return false;
+        const item = sh.list.find(i => i.id === id);
+        const obj = s[sh.key];
+        if (!item || !obj) return false;
+        const cnt = obj[id] || 0;
+        const cost = costOf(item, cnt);
+        if (s.money >= cost) {
+            s.money -= cost;
+            obj[id] = cnt + 1;
+            playAudio('buy');
+            calculateMultipliers();
+            updateUI();
+            return true;
+        }
+        playAudio('error');
+        if (!quiet || !hold.repeat) showToast(`💸 ${formatMoney(cost - s.money)}원이 더 필요해요!`);
+        return false;
     }
 
     function buyTravel() {
         const cost = 50000000;
-        if(s.money >= cost) {
-            s.money -= cost; 
-            s.travelBuff += 0.2; 
+        if (s.money >= cost) {
+            s.money -= cost;
+            s.travelBuff = Math.round((s.travelBuff + 0.2) * 10) / 10;
             playAudio('buy');
-            showToast("✈️ 하와이 여행으로 힐링 완료! (영구 수익 효율 +20%)");
+            showToast('✈️ 하와이 여행으로 힐링 완료! (영구 수익 효율 +20%)');
+            calculateMultipliers();
             updateUI();
         } else {
             playAudio('error');
-            showToast("❌ 소지금이 부족합니다! (5천만 원 필요)");
+            showToast('💸 소지금이 부족해요! (5천만 원 필요)');
         }
     }
 
-    function tradeStock(act) { 
-        if(act==='buy' && s.money >= s.stockPrice) { 
-            const a = Math.floor(s.money/s.stockPrice); 
-            s.money -= a*s.stockPrice; 
-            s.stockCount += a; 
-            playAudio('buy'); 
-        } else if(act==='sell' && s.stockCount > 0) { 
-            s.money += s.stockCount*s.stockPrice; 
-            s.stockCount = 0; 
-            playAudio('coin'); 
+    function tradeStockItem(id, act) {
+        const st = s.stocks[id];
+        if (!st) return;
+        if (act === 'buy') {
+            const count = Math.floor(s.money / st.price);
+            if (count > 0) {
+                s.money -= count * st.price;
+                st.count += count;
+                playAudio('buy');
+                showToast(`📈 ${st.name} ${count.toLocaleString()}주 매수 완료!`);
+            } else {
+                playAudio('error');
+                showToast('💸 소지금이 부족해요!');
+            }
+        } else if (st.count > 0) {
+            const total = st.count * st.price;
+            s.money += total;
+            showToast(`📉 ${st.name} ${st.count.toLocaleString()}주 전량 매도 (+${formatMoney(total)}원)`);
+            st.count = 0;
+            playAudio('coin');
         } else {
             playAudio('error');
-        } 
-        updateUI(); 
-    }
-
-    function buyReal(k) { 
-        if(s.money >= s.reals[k].price) { 
-            s.money -= s.reals[k].price; 
-            s.reals[k].own++; 
-            playAudio('buy'); 
-            if(k==='r4') triggerEnding(); 
-            renderAll(); 
-        } else playAudio('error'); 
-    }
-
-    function sellReal(k) { 
-        if(s.reals[k].own > 0) { 
-            s.money += s.reals[k].price; 
-            s.reals[k].own--; 
-            playAudio('coin'); 
-            renderAll(); 
-        } else playAudio('error'); 
-    }
-
-    function useSkill(k) { 
-        if(s.skills[k] > Date.now()) { playAudio('error'); return; } 
-        if(k === 'vacation') { 
-            const earn = currentAutoProfit * 3600; 
-            s.money += earn; 
-            playAudio('buy'); 
-            showToast(`연가 1시간분! +${formatMoney(earn)}`); 
-            s.skills.vacation = Date.now() + 300000; 
-        } else if(k === 'silence') { 
-            buffs.isSilence = true; 
-            playAudio('buy'); 
-            showToast("침묵 발동! 30초 평화"); 
-            setTimeout(()=>buffs.isSilence=false, 30000); 
-            s.skills.silence = Date.now() + 120000; 
-        } 
-        updateUI(); 
-    }
-
-    function postBlind() { 
-        if(s.skills.blind > Date.now()) { playAudio('error'); return; } 
-        s.skills.blind = Date.now() + 60000; 
-        if(Math.random() < 0.2) { 
-            const earn = currentAutoProfit * 300; 
-            s.money += earn; 
-            showToast(`🔥블라인드 베스트! +${formatMoney(earn)}`); 
-            playAudio('buy'); 
-        } else { 
-            showToast("블라인드 묻힘..."); 
-            playAudio('error'); 
-        } 
-        updateUI(); 
-    }
-
-    function makeEmoticon() { 
-        if(s.skills.emo > Date.now() || s.money < 1000000) { playAudio('error'); return; } 
-        s.money -= 1000000; 
-        s.skills.emo = Date.now() + 60000; 
-        playAudio('buy'); 
-        showToast("이모티콘 심사 제출 (1분)"); 
-        setTimeout(() => { 
-            if(Math.random() < 0.3) { 
-                s.emoticonIncome += 5000; 
-                showToast("🎉 이모티콘 승인! 영구수익+5000"); 
-            } else { 
-                showToast("❌ 이모티콘 미승인 (대중성 부족)"); 
-                playAudio('error');
-            } 
-            calculateMultipliers(); 
-        }, 60000); 
-        updateUI(); 
-    }
-
-    function dropItem() { 
-        const item = DB.cols[Math.floor(Math.random()*DB.cols.length)]; 
-        if(s.collections[item.id]) s.spareItems++; 
-        else s.collections[item.id] = true; 
-        playAudio('buy'); 
-        showToast(`${item.name} 획득!`); 
-        renderAll(); 
-        updateUI(); 
-    }
-
-    function sellCarrot() { 
-        if(s.spareItems <= 0) { playAudio('error'); showToast("❌ 보유 중인 잉여템이 없습니다!"); return; } 
-        if(s.ootd !== '정장' && Math.random() < 0.5) { 
-            if(confirm("학생: '선생님 반값만 깎아주세요 ㅠㅠ'\n수락하시겠습니까?")) { 
-                s.money += 5000; 
-                s.spareItems--; 
-                playAudio('coin'); 
-                showToast("당근마켓 쿨거래 완료! (+5천 원)");
-            } else { playAudio('error'); showToast("거래가 취소되었습니다."); } 
-        } else { 
-            s.money += 10000; 
-            s.spareItems--; 
-            playAudio('buy'); 
-            showToast("당근마켓 정가 쿨거래 완료! (+1만 원)"); 
-        } 
-        updateUI(); 
-    }
-
-    function buyLottery() { 
-        if(s.money < 100000) { playAudio('error'); showToast("❌ 소지금이 부족합니다! (10만 원 필요)"); return; } 
-        s.money -= 100000; 
-        if(Math.random() < 0.005) { 
-            s.money += 1000000000; 
-            alert("🎉 1등 당첨! 10억 획득!"); 
-            playAudio('buy'); 
-        } else { 
-            showToast("복권 낙첨... 다음 기회에!"); 
-            playAudio('click'); 
-        } 
-        updateUI(); 
-    }
-
-    function setOOTD(style) { 
-        s.ootd = style; 
-        const e = document.getElementById('ootdEmoji'); 
-        if(e) {
-            if(style === '츄리닝') e.innerText = '🎽'; 
-            else if(style === '정장') e.innerText = '👔'; 
-            else e.innerText = ''; 
+            showToast('보유 중인 주식이 없어요!');
         }
-        playAudio('click'); 
-    }
-
-    function applyOOTDVisual() { setOOTD(s.ootd); }
-
-    function rebirth(force = false) { 
-        if(!force && !confirm("자산을 포기하고 전근하시겠습니까?\n호봉 및 수익 배율이 증가합니다.")) return; 
-        
-        const preservedHobong = (s.hobong || 1) + 1;
-        const preservedEndings = s.endings || 0;
-        const preservedHonor = s.honor || 0;
-        const preservedCollections = s.collections || {};
-        const preservedSpareItems = s.spareItems || 0;
-        const preservedTravelBuff = s.travelBuff || 1;
-        const preservedCharacter = s.character || '👨‍🏫';
-        const preservedDifficulty = s.difficulty || 'normal';
-        
-        s = JSON.parse(JSON.stringify(defaultState));
-        s.hobong = preservedHobong;
-        s.endings = preservedEndings;
-        s.honor = preservedHonor;
-        s.collections = preservedCollections;
-        s.spareItems = preservedSpareItems;
-        s.travelBuff = preservedTravelBuff;
-        s.character = preservedCharacter;
-        s.difficulty = preservedDifficulty;
-        
-        const grades = ['1학년', '6학년', '전담교사']; 
-        s.grade = grades[Math.floor(Math.random() * grades.length)]; 
-        
-        saveGame(); 
-        renderAll();
         updateUI();
-        showToast(`🎉 새로운 학교로 전근 완료! (${s.hobong}호봉 승급)`);
     }
-    
-    function triggerEnding() { 
-        clearInterval(loopInterval); 
-        s.endings++; 
-        s.honor += 50; 
-        saveGame(); 
-        if(s.endings >= 5 || s.honor >= 200) alert("🏆 [히든 엔딩] 교육감 당선! 대한민국 교육의 수장이 되었습니다!");
-        else if(s.endings >= 3) alert("🏆 [히든 엔딩] 전설의 교장선생님으로 명예롭게 정년퇴직하셨습니다!");
-        else alert("🎉 [엔딩] 갓물주 등극! 사직서를 던집니다."); 
-        rebirth(true); 
-    }
-    
-    function changeSeason() { 
-        currentSeasonIdx = (currentSeasonIdx + 1) % 4; 
-        const seasonEl = document.getElementById('seasonDisplay');
-        if (seasonEl) seasonEl.innerText = `[${seasons[currentSeasonIdx]}학기] 🏆트로피: ${s.endings} | 명예: ${s.honor}`; 
-        
-        const header = document.getElementById('headerArea'); 
-        if (header) {
-            header.className = 'text-white p-3 pb-2 shadow-md transition-colors duration-500 rounded-b-lg z-20 '; 
-            if(currentSeasonIdx === 0) header.classList.add('bg-green-600'); 
-            else if(currentSeasonIdx === 1) header.classList.add('bg-blue-600'); 
-            else if(currentSeasonIdx === 2) header.classList.add('bg-orange-600'); 
-            else header.classList.add('bg-gray-700'); 
+
+    function buyReal(k) {
+        const r = s.reals[k];
+        if (s.money >= r.price) {
+            s.money -= r.price;
+            r.own++;
+            playAudio('buy');
+            calculateMultipliers();
+            updateUI();
+            if (k === 'r4') triggerEnding();
+            else showToast(`🏢 ${DB.reals.find(x => x.id === k).name} 매입 완료! 월세가 들어와요.`);
+        } else {
+            playAudio('error');
+            showToast(`💸 ${formatMoney(r.price - s.money)}원이 더 필요해요!`);
         }
+    }
+
+    function sellReal(k) {
+        const r = s.reals[k];
+        if (r.own > 0) {
+            s.money += r.price;
+            r.own--;
+            playAudio('coin');
+            showToast(`💰 매도 완료! +${formatMoney(r.price)}원`);
+            calculateMultipliers();
+            updateUI();
+        } else {
+            playAudio('error');
+            showToast('보유 중인 부동산이 없어요!');
+        }
+    }
+
+    // ---------- 스킬 ----------
+    function useSkill(k) {
+        const now = Date.now();
+        if (s.skills[k] > now) {
+            playAudio('error');
+            showToast(`⏳ ${Math.ceil((s.skills[k] - now) / 1000)}초 후에 사용할 수 있어요`);
+            return;
+        }
+        if (k === 'vacation') {
+            const earn = currentAutoProfit * 3600;
+            s.money += earn;
+            playAudio('buy');
+            showToast(`🎫 연가 1시간분 수익! +${formatMoney(earn)}원`);
+            s.skills.vacation = now + 300000;
+        } else if (k === 'silence') {
+            buffs.silenceUntil = now + 30000;
+            playAudio('buy');
+            showToast('🤫 침묵의 응시! 30초 동안 사건사고 없음');
+            s.skills.silence = now + 120000;
+        }
+        updateUI();
+    }
+
+    // ---------- 활동 (활동/동아리 탭) ----------
+    const ACTS = {
+        gacha: { icon: '📦', color: 'lav', title: '에듀테크 기자재 언박싱 가챠', desc: '랜덤 박스로 최신 스마트기기·버프·압수물품 획득!', cost: 500000, btn: '기자재 언박싱하기 (50만 원)', run: openGacha },
+        trip: { icon: '🚗', color: 'sky', title: '순회교사 관외 출장 정산', desc: '인근 학교 순회 근무 후 출장비 수령 (초당 수익 × 60)', cd: 120, btn: '출장비 정산 신청 🧾', run: runItinerantTrip },
+        lunch: { icon: '🍱', color: 'mint', title: '급식실 메뉴 청원 투표', desc: '수요일 특식(돈가스/치킨) 성사! 60초 동안 모든 수익 2배', cost: 300000, cd: 180, btn: '급식 청원 지지하기 (30만 원)', run: voteCafeteriaMenu },
+        lab: { icon: '🧪', color: 'butter', title: '과학실 실험 폐기물 처리', desc: '실험실 안전 점검 및 폐기물 적법 처리', cd: 180, btn: '안전 점검 및 폐기 처리 (명예 +5)', run: manageLabWaste },
+        field: { icon: '🏊', color: 'sky', title: '생존수영 & 체험학습 사전답사', desc: '안전사고 예방을 위한 사전답사 (지원금: 초당 수익 × 120)', cd: 240, btn: '사전답사 완료 보고 📋', run: doFieldTripInspection },
+        multi: { icon: '🌏', color: 'pink', title: '다문화학생 한국어 교실', desc: '중도입국 학생 맞춤형 한국어 의사소통 지원', cd: 90, btn: '한국어 지도 수업 (EXP +1000)', run: supportMulticultural },
+        garden: { icon: '🥬', color: 'mint', title: '탄소중립 텃밭 & 학교숲 가꾸기', desc: '상추·방울토마토 수확! 텐션 MAX + 판매 수익 (초당 수익 × 30)', cd: 150, btn: '텃밭 수확 및 생태 교육 🍅', run: harvestGarden },
+        blind: { icon: '📱', color: 'sky', title: '익명 커뮤니티 (블라인드)', desc: '교직 썰을 풀어 베스트글에 도전! (20% 확률, 쿨타임 1분)', cd: 60, btn: '썰 풀기 ✍️', run: postBlind },
+        emo: { icon: '🎨', color: 'butter', title: '이모티콘 작가 도전', desc: '100만 원 투자 후 1분 심사 (30% 확률로 영구 수익 +5천)', cost: 1000000, cd: 60, coolLabel: '⏳ 심사 중', btn: '시안 제작하기 (100만 원)', run: makeEmoticon },
+        principal: { icon: '🎓', color: 'lav', title: '초빙교사 지원 및 교장공모제', desc: '명예 50을 소모해 영구 수익 효율 +30%! (전근해도 유지)', check: quiet => {
+            if (s.honor >= 50) return true;
+            if (!quiet) { playAudio('error'); showToast(`🎖️ 명예가 부족해요! (${s.honor}/50)`); }
+            return false;
+        }, btn: () => `초빙교사 서류 접수 (명예 ${s.honor}/50)`, run: applyPrincipalOpen },
+        wee: { icon: '💬', color: 'pink', title: 'Wee클래스 또래상담 운영', desc: '학생 정서 지원 및 관계회복 프로그램 (명예 +3, EXP)', cd: 120, btn: '또래상담 프로그램 가동', run: runWeeCounseling },
+        council: { icon: '🏛️', color: 'sky', title: '학생자치회 회의 & 1인 1역', desc: '학생들이 주도하는 학급 운영! 30초 동안 자동 수익 2배', cd: 180, btn: '학급 1인 1역 자치 배정', run: runStudentCouncil },
+        plc: { icon: '📚', color: 'lav', title: '전문적학습공동체 수업나눔', desc: '동료 교사와 수업 연구 (레벨업 경험치 50% + 명예 +2)', cd: 180, btn: '수업나눔 세미나 개최', run: runLearningCommunity }
+    };
+    const ACT_ORDER = ['gacha', 'trip', 'lunch', 'lab', 'field', 'multi', 'garden', 'blind', 'emo'];
+    const CLUB_ORDER = ['principal', 'wee', 'council', 'plc'];
+
+    function runAct(id) {
+        const a = ACTS[id];
+        if (!a || !gameRunning) return;
+        const now = Date.now();
+        if ((s.skills[id] || 0) > now) {
+            playAudio('error');
+            showToast(`⏳ ${Math.ceil((s.skills[id] - now) / 1000)}초 후에 다시 할 수 있어요`);
+            return;
+        }
+        if (a.cost && s.money < a.cost) {
+            playAudio('error');
+            showToast(`💸 ${formatMoney(a.cost)}원이 필요해요!`);
+            return;
+        }
+        if (a.check && !a.check(false)) return;
+        if (a.cost) s.money -= a.cost;
+        if (a.cd) s.skills[id] = now + a.cd * 1000;
+        a.run();
+        calculateMultipliers();
+        updateUI();
+    }
+
+    function openGacha() {
+        const r = Math.random();
+        playAudio('buy');
+        if (r < 0.3) {
+            dropItem();
+        } else if (r < 0.55) {
+            const earn = Math.max(600000, currentAutoProfit * 90);
+            s.money += earn;
+            infoDialog('📲', '스마트 태블릿 당첨!', `중고로 되팔아 +${formatMoney(earn)}원`);
+        } else if (r < 0.75) {
+            buffs.feverUntil = Math.max(buffs.feverUntil, Date.now()) + 20000;
+            infoDialog('🖥️', '전자칠판 풀옵션!', '20초 동안 클릭 수익 3배!');
+        } else if (r < 0.92) {
+            s.caffeine = 100;
+            pivotCharge = 100;
+            infoDialog('🥽', 'VR 헤드셋 획득!', '텐션 MAX + 피벗타임 게이지 100%!');
+        } else {
+            s.careerBuff = Math.round((s.careerBuff + 0.05) * 100) / 100;
+            infoDialog('🤖', '✨ 레어! AI 교육용 로봇 ✨', '영구 수익 효율 +5%!');
+        }
+    }
+
+    function runItinerantTrip() {
+        const earn = Math.max(currentAutoProfit, 50) * 60;
+        s.money += earn;
+        playAudio('buy');
+        showToast(`🚗 출장비 정산 완료! +${formatMoney(earn)}원`);
+    }
+
+    function voteCafeteriaMenu() {
+        buffs.menuUntil = Math.max(buffs.menuUntil, Date.now()) + 60000;
+        playAudio('buy');
+        showToast('🍱 청원 성사! 60초 동안 모든 수익 2배!');
+    }
+
+    function manageLabWaste() {
+        s.honor += 5;
+        playAudio('buy');
+        showToast('🧪 안전 점검 완료! 명예 +5');
+    }
+
+    function doFieldTripInspection() {
+        const earn = Math.max(currentAutoProfit, 50) * 120;
+        s.money += earn;
+        s.honor += 1;
+        playAudio('buy');
+        showToast(`🏊 사전답사 보고 완료! 지원금 +${formatMoney(earn)}원 · 명예 +1`);
+    }
+
+    function supportMulticultural() {
+        s.exp += 1000;
+        checkLevelUp();
+        playAudio('buy');
+        showToast('🌏 한국어 교실 대성공! EXP +1000');
+    }
+
+    function harvestGarden() {
+        const earn = Math.max(currentAutoProfit, 50) * 30;
+        s.caffeine = 100;
+        s.money += earn;
+        playAudio('buy');
+        showToast(`🍅 텃밭 수확! 텐션 MAX · 판매 수익 +${formatMoney(earn)}원`);
+    }
+
+    function postBlind() {
+        if (Math.random() < 0.2) {
+            const earn = Math.max(currentAutoProfit, 50) * 300;
+            s.money += earn;
+            showToast(`🔥 블라인드 베스트글 등극! +${formatMoney(earn)}원`);
+            playAudio('buy');
+        } else {
+            showToast('😶 조회수 3… 글이 묻혔어요');
+            playAudio('error');
+        }
+    }
+
+    function makeEmoticon() {
+        playAudio('buy');
+        showToast('🎨 이모티콘 심사 제출! (1분 후 결과 발표)');
+        setTimeout(() => {
+            if (!gameRunning) return;
+            if (Math.random() < 0.3) {
+                s.emoticonIncome += 5000;
+                playAudio('buy');
+                showToast('🎉 이모티콘 승인! 영구 수익 초당 +5천');
+            } else {
+                playAudio('error');
+                showToast('❌ 이모티콘 미승인 (대중성 부족)');
+            }
+            calculateMultipliers();
+            updateUI();
+        }, 60000);
+    }
+
+    function applyPrincipalOpen() {
+        s.honor -= 50;
+        s.careerBuff = Math.round((s.careerBuff + 0.3) * 100) / 100;
+        playAudio('buy');
+        infoDialog('🎓', '초빙교사 선정!', `탁월한 업무 실적을 인정받았어요.\n영구 수익 효율 +30%!\n(현재 경력 보너스 +${Math.round(s.careerBuff * 100)}%)`);
+    }
+
+    function runWeeCounseling() {
+        s.honor += 3;
+        s.exp += 500;
+        checkLevelUp();
+        playAudio('buy');
+        showToast('💬 또래상담 성공! 명예 +3 · EXP +500');
+    }
+
+    function runStudentCouncil() {
+        buffs.councilUntil = Math.max(buffs.councilUntil, Date.now()) + 30000;
+        playAudio('buy');
+        showToast('🏛️ 1인 1역 배정 완료! 30초 동안 자동 수익 2배');
+    }
+
+    function runLearningCommunity() {
+        const gain = Math.floor(s.level * 100 * 0.5);
+        s.exp += gain;
+        s.honor += 2;
+        checkLevelUp();
+        playAudio('buy');
+        showToast(`📚 수업나눔 대성공! EXP +${formatMoney(gain)} · 명예 +2`);
+    }
+
+    // ---------- 간식함 ----------
+    function openSnackBox() {
+        if (modalOpen) return;
+        const base = Math.max(currentAutoProfit, 50);
+        const snacks = [
+            { icon: '🍫', name: '초코바', effect: '텐션 +50', cost: Math.max(1000, Math.floor(base * 5)), apply: () => { s.caffeine = Math.min(100, s.caffeine + 50); } },
+            { icon: '🧋', name: '아이스 아메리카노', effect: '텐션 MAX + 피벗 게이지 +30%', cost: Math.max(5000, Math.floor(base * 15)), apply: () => { s.caffeine = 100; if (!isPivot()) pivotCharge = Math.min(100, pivotCharge + 30); } },
+            { icon: '🍩', name: '교무실 도넛 파티', effect: '20초 동안 클릭 수익 3배', cost: Math.max(20000, Math.floor(base * 40)), apply: () => { buffs.feverUntil = Math.max(buffs.feverUntil, Date.now()) + 20000; } }
+        ];
+        openModal({
+            icon: '🍬', title: '선생님 간식함', desc: '당 충전하고 힘내요!',
+            buttons: [
+                ...snacks.map(sn => ({
+                    label: `${sn.icon} ${sn.name} · ${formatMoney(sn.cost)}원\n(${sn.effect})`, color: 'butter',
+                    onClick: () => {
+                        if (s.money < sn.cost) { playAudio('error'); showToast(`💸 ${formatMoney(sn.cost - s.money)}원이 더 필요해요!`); return; }
+                        s.money -= sn.cost;
+                        sn.apply();
+                        playAudio('buy');
+                        showToast(`${sn.icon} 냠냠! ${sn.effect}`);
+                        closeModal();
+                        calculateMultipliers();
+                        updateUI();
+                    }
+                })),
+                { label: '닫기', color: '', onClick: () => closeModal() }
+            ]
+        });
+    }
+
+    // ---------- 도감 / 당근 / 복권 / OOTD ----------
+    function dropItem() {
+        const item = DB.cols[Math.floor(Math.random() * DB.cols.length)];
+        if (s.collections[item.id]) {
+            s.spareItems++;
+            showToast(`${item.icon} ${item.name} 또 압수! (잉여템 +1)`);
+        } else {
+            s.collections[item.id] = true;
+            showToast(`${item.icon} 새 압수물품 발견! ${item.name}`);
+        }
+        playAudio('buy');
+        renderCollections();
+        updateUI();
+    }
+
+    async function sellCarrot() {
+        if (s.spareItems <= 0) { playAudio('error'); showToast('🥕 보유 중인 잉여템이 없어요!'); return; }
+        if (modalOpen) return;
+        if (s.ootd !== '정장' && Math.random() < 0.5) {
+            const ok = await confirmDialog('🥺', '당근 네고 요청', "학생: '선생님 반값만 깎아주세요 ㅠㅠ'", '쿨하게 수락 (+5천 원)', '거절하기');
+            if (s.spareItems <= 0) return;
+            if (ok) {
+                s.money += 5000;
+                s.spareItems--;
+                playAudio('coin');
+                showToast('🥕 당근마켓 쿨거래 완료! (+5천 원)');
+            } else {
+                playAudio('error');
+                showToast('거래가 취소되었어요.');
+            }
+        } else {
+            s.money += 10000;
+            s.spareItems--;
+            playAudio('buy');
+            showToast('🥕 당근마켓 정가 거래 완료! (+1만 원)');
+        }
+        updateUI();
+    }
+
+    function buyLottery() {
+        if (s.money < 100000) { playAudio('error'); showToast('💸 소지금이 부족해요! (10만 원 필요)'); return; }
+        s.money -= 100000;
+        if (Math.random() < 0.005) {
+            s.money += 1000000000;
+            playAudio('buy');
+            infoDialog('🎊', '1등 당첨!!', '행복 연금복권 1등!\n+10억 원 획득!');
+        } else {
+            showToast('🎟️ 꽝… 다음 기회에!');
+            playAudio('click');
+        }
+        updateUI();
+    }
+
+    function setOOTD(style, silent) {
+        if (!OOTD_DESC[style]) style = 'none';
+        s.ootd = style;
+        $('ootdEmoji').textContent = style === '츄리닝' ? '🎽' : (style === '정장' ? '👔' : '');
+        document.querySelectorAll('[data-ootd]').forEach(b => b.classList.toggle('sel', b.dataset.ootd === style));
+        setText('ootdDesc', OOTD_DESC[style]);
+        if (!silent) { playAudio('click'); calculateMultipliers(); updateUI(); }
+    }
+
+    function applyOOTDVisual() { setOOTD(s.ootd, true); }
+
+    // ---------- 전근 / 엔딩 ----------
+    async function rebirth(force = false) {
+        if (!force) {
+            const ok = await confirmDialog('💼', '전근 서류 제출', `자산을 포기하고 전근할까요?\n${s.hobong + 1}호봉으로 승급하고 수익 배율이 올라가요.\n(명예·트로피·도감·여행/경력 보너스는 유지)`, '전근하기', '취소');
+            if (!ok) return;
+        }
+        const keep = {
+            hobong: (s.hobong || 1) + 1, endings: s.endings || 0, honor: s.honor || 0, collections: s.collections || {},
+            spareItems: s.spareItems || 0, travelBuff: s.travelBuff || 1, careerBuff: s.careerBuff || 0,
+            character: s.character, difficulty: s.difficulty, stats: s.stats
+        };
+        s = Object.assign(defaultState(), keep);
+        const grades = ['1학년', '6학년', '전담교사'];
+        s.grade = grades[Math.floor(Math.random() * grades.length)];
+        Object.keys(buffs).forEach(k => buffs[k] = 0);
+        pivotCharge = 0;
+
+        saveGame();
+        renderCollections();
+        applyOOTDVisual();
+        updateBoard();
+        calculateMultipliers();
+        updateUI();
+        playAudio('buy');
+        showToast(`🎉 새 학교로 전근 완료! ${s.hobong}호봉 · ${s.grade} 담임`);
+    }
+
+    async function triggerEnding() {
+        s.endings++;
+        s.honor += 50;
+        saveGame();
+        let icon = '🏢', title = '갓물주 등극!', msg = '강남 랜드마크의 주인이 되었어요.\n시원하게 사직서를 던집니다! 🎉';
+        if (s.endings >= 5 || s.honor >= 200) { icon = '🏛️'; title = '[히든 엔딩] 교육감 당선!'; msg = '대한민국 교육의 수장이 되었습니다!'; }
+        else if (s.endings >= 3) { icon = '👑'; title = '[히든 엔딩] 전설의 교장선생님'; msg = '명예롭게 정년퇴직하셨습니다!'; }
+        closeModal();
+        await infoDialog(icon, title, `${msg}\n\n🏆 트로피 +1 · 🎖️ 명예 +50\n다음 학교에서 새 이야기가 시작돼요!`, '새 학교로 출발! 🎒');
+        rebirth(true);
+    }
+
+    // ---------- 계절 / 이벤트 ----------
+    function applySeason() {
+        const se = seasons[currentSeasonIdx];
+        document.body.className = `season-${currentSeasonIdx}`;
+        setText('seasonChip', `${se.icon} ${se.name}학기`);
+        setText('windowDeco', se.icon);
+        const box = $('particles');
+        box.innerHTML = '';
+        for (let i = 0; i < 7; i++) {
+            const p = document.createElement('span');
+            p.className = 'particle';
+            p.textContent = se.particle;
+            p.style.left = `${5 + Math.random() * 90}%`;
+            p.style.animationDuration = `${6 + Math.random() * 5}s`;
+            p.style.animationDelay = `${-Math.random() * 10}s`;
+            p.style.fontSize = `${10 + Math.random() * 8}px`;
+            box.appendChild(p);
+        }
+    }
+
+    function changeSeason() {
+        currentSeasonIdx = (currentSeasonIdx + 1) % 4;
+        applySeason();
+        showToast(`${seasons[currentSeasonIdx].icon} ${seasons[currentSeasonIdx].name}학기가 시작됐어요!`);
     }
 
     function triggerRandomEvent() {
-        if(buffs.isSilence || document.getElementById('eventOverlay').classList.contains('flex')) return;
-        const r = Math.random(); 
-        const badMult = s.ootd === '정장' ? 0.5 : (s.grade === '6학년' ? 1.5 : 1); 
-        if(r < 0.1 * badMult) startMinigame('fight'); 
-        else if(r < 0.2 * badMult) startMinigame('audit'); 
-        else if(r < 0.3 * badMult) startMinigame('zoom'); 
-        else if(r < 0.35) startMinigame('counsel');
-        else if(r < 0.4) startMinigame('festival');
-        else if(r < 0.45) startMinigame('animal');
-        else if(r < 0.5) { 
-            buffs.isFever = true; 
-            showToast("🔥방학식 피버! 클릭 5배"); 
-            setTimeout(()=>buffs.isFever=false, 10000); 
+        if (!gameRunning || modalOpen || buffs.silenceUntil > Date.now()) return;
+        const bm = s.ootd === '정장' ? 0.5 : (s.grade === '6학년' ? 1.5 : 1);
+        const table = [['fight', 0.1 * bm], ['audit', 0.1 * bm], ['zoom', 0.1 * bm], ['counsel', 0.05], ['festival', 0.05], ['animal', 0.05], ['fever', 0.05]];
+        let r = Math.random();
+        for (const [k, w] of table) {
+            if (r < w) {
+                if (k === 'fever') {
+                    buffs.feverUntil = Math.max(buffs.feverUntil, Date.now()) + 10000;
+                    playAudio('buy');
+                    showToast('🔥 방학식 피버! 10초 동안 클릭 수익 3배');
+                } else startMinigame(k);
+                return;
+            }
+            r -= w;
+        }
+    }
+
+    function disarmAudit() {
+        clearTimeout(auditArmTimeout); auditArmTimeout = null;
+        if (globalAuditListener) {
+            document.removeEventListener('pointerdown', globalAuditListener, true);
+            globalAuditListener = null;
         }
     }
 
     function startMinigame(type) {
-        const overlay = document.getElementById('eventOverlay'); 
-        const act = document.getElementById('eventActionArea');
-        if (!overlay || !act) return;
-        
-        overlay.classList.remove('hidden'); 
-        overlay.classList.add('flex'); 
-        let timeLeft = 0; 
-        if(eventTimerObj) clearInterval(eventTimerObj); 
-        act.innerHTML = '';
-        if(globalAuditListener) { 
-            document.removeEventListener('pointerdown', globalAuditListener); 
-            globalAuditListener = null; 
-        }
+        if (modalOpen || !gameRunning) return;
+        clearInterval(eventTimerObj);
+        disarmAudit();
 
-        const closeEvent = (succ, msg, honorGain=0) => { 
-            clearInterval(eventTimerObj); 
-            overlay.classList.add('hidden'); 
-            overlay.classList.remove('flex'); 
-            if(globalAuditListener) { 
-                document.removeEventListener('pointerdown', globalAuditListener); 
-                globalAuditListener = null; 
-            } 
-            if(succ) { 
-                playAudio('buy'); 
-                showToast(msg); 
-                s.honor += honorGain; 
-            } else { 
-                playAudio('error'); 
-                showToast(msg); 
-                s.money = Math.max(0, s.money - currentAutoProfit*10); 
-            } 
-            updateUI(); 
+        const finish = (succ, msg, honorGain = 0) => {
+            clearInterval(eventTimerObj); eventTimerObj = null;
+            disarmAudit();
+            closeModal();
+            if (succ) {
+                playAudio('buy');
+                s.honor += honorGain;
+            } else {
+                playAudio('error');
+                const loss = Math.min(s.money, currentAutoProfit * 10);
+                s.money -= loss;
+                if (loss > 0) msg += ` (-${formatMoney(loss)}원)`;
+            }
+            showToast(msg);
+            calculateMultipliers();
+            updateUI();
         };
 
-        const createEventBtn = (txt, bgColor, onClick) => { 
-            const b = document.createElement('button'); 
-            b.className = `${bgColor} py-3 mb-2 rounded-xl w-full text-white font-bold shadow-md active:scale-95 transition text-sm cursor-pointer`; 
-            b.innerText = txt; 
-            b.onclick = onClick; 
-            act.appendChild(b); 
-        };
+        const setTimer = v => setText('modalTimer', v);
 
-        if(type === 'counsel') {
-            const titleEl = document.getElementById('eventTitle');
-            const descEl = document.getElementById('eventDesc');
-            if(titleEl) titleEl.innerText = "📞 학부모 상담 주간"; 
-            if(descEl) descEl.innerText = "학부모의 까다로운 질문: '우리 아이 학교생활 어때요?'"; 
-            const timerEl = document.getElementById('eventTimer');
-            if(timerEl) timerEl.innerText = "";
-            createEventBtn('폭풍 칭찬과 공감', 'bg-green-600 hover:bg-green-700', () => { s.money += currentAutoProfit*20; closeEvent(true, "학부모 대만족! 후원금 획득", 5); });
-            createEventBtn('객관적인 사실 전달', 'bg-blue-600 hover:bg-blue-700', () => { s.exp += 800; closeEvent(true, "신뢰도 상승! 명예 +3", 3); });
-        }
-        else if(type === 'festival') {
-            const titleEl = document.getElementById('eventTitle');
-            const descEl = document.getElementById('eventDesc');
-            if(titleEl) titleEl.innerText = "🎵 공개수업 시연 페스티벌"; 
-            if(descEl) descEl.innerText = "방문 교사들 앞에서 성공적으로 수업을 시연하세요!";
-            timeLeft = 5; 
-            const timerEl = document.getElementById('eventTimer');
-            if(timerEl) timerEl.innerText = timeLeft;
-            let taps = 0;
-            createEventBtn('열정 수업 시연 광클!! (0/15)', 'bg-yellow-500 hover:bg-yellow-600 text-gray-900', () => {
-                taps++; 
-                if(act.children[0]) act.children[0].innerText = `열정 수업 시연 광클!! (${taps}/15)`;
-                if(taps >= 15) { 
-                    clearInterval(eventTimerObj); 
-                    s.money += currentAutoProfit*50; 
-                    closeEvent(true, "공개수업 대성공! 방문 교사 환호 + 트로피", 10); 
+        if (type === 'counsel') {
+            openModal({ icon: '📞', title: '학부모 상담 주간', desc: "학부모님의 질문:\n'우리 아이 학교생활 어때요?'", buttons: [
+                { label: '폭풍 칭찬과 공감 🥰', color: 'mint', onClick: () => { s.money += currentAutoProfit * 20; finish(true, '학부모 대만족! 후원금 획득 · 명예 +5', 5); } },
+                { label: '객관적인 사실 전달 📝', color: 'sky', onClick: () => { s.exp += 800; checkLevelUp(); finish(true, '신뢰도 상승! EXP +800 · 명예 +3', 3); } }
+            ] });
+        } else if (type === 'festival') {
+            let timeLeft = 5, taps = 0;
+            openModal({ icon: '🎵', title: '공개수업 시연 페스티벌', desc: '5초 안에 버튼을 15번 눌러\n수업 시연을 성공시키세요!', timer: timeLeft, buttons: [
+                { label: '열정 수업 시연 광클!! (0/15)', color: 'butter', onClick: el => {
+                    taps++;
+                    el.textContent = `열정 수업 시연 광클!! (${taps}/15)`;
+                    playAudio('coin');
+                    if (taps >= 15) { s.money += currentAutoProfit * 50; finish(true, '공개수업 대성공! 방문 교사 환호 · 명예 +10', 10); }
+                } }
+            ] });
+            eventTimerObj = setInterval(() => {
+                timeLeft--;
+                setTimer(timeLeft);
+                if (timeLeft <= 0) finish(false, '수업 시연이 다소 산만했어요…');
+            }, 1000);
+        } else if (type === 'fight') {
+            openModal({ icon: '⚔️', title: '학생 다툼 발생!', desc: '쉬는 시간에 다툼이 일어났어요.\n어떻게 해결할까요?', buttons: [
+                { label: '양쪽 이야기 들어주기 🤝', color: 'sky', onClick: () => { s.exp += 500; checkLevelUp(); finish(true, '원만한 해결! EXP +500 · 명예 +2', 2); } },
+                { label: '원칙대로 규정 적용 📏', color: 'pink', onClick: () => { s.exp += 500; checkLevelUp(); finish(true, '깔끔한 처리! EXP +500 · 명예 +3', 3); } }
+            ] });
+        } else if (type === 'animal') {
+            openModal({ icon: '🐱', title: '교정에 길고양이 출몰!', desc: '아이들과 함께 안전하게 구조해요!', buttons: [
+                { label: '간식으로 유인해 구조하기 🐟', color: 'mint', onClick: () => finish(true, '모두가 행복한 동물 보호 성공! 명예 +5', 5) }
+            ] });
+        } else if (type === 'audit') {
+            let timeLeft = 10;
+            openModal({ icon: '🕵️', title: '교육청 감사 (NEIS 긴급 결재)', desc: '10초 동안 절대 아무것도\n만지지 마세요!', timer: timeLeft, buttons: [] });
+            $('modalActions').innerHTML = '<div class="note">화면을 터치하면 즉시 적발!</div>';
+            globalAuditListener = e => { e.preventDefault(); e.stopPropagation(); finish(false, '감사 적발! 시말서 작성…'); };
+            auditArmTimeout = setTimeout(() => { if (globalAuditListener) document.addEventListener('pointerdown', globalAuditListener, true); }, 600);
+            eventTimerObj = setInterval(() => {
+                timeLeft--;
+                setTimer(timeLeft);
+                if (timeLeft <= 0) {
+                    const rew = currentAutoProfit * 100;
+                    s.money += rew;
+                    finish(true, `감사 통과! 격려금 +${formatMoney(rew)}원 · 명예 +5`, 5);
                 }
-            });
-            eventTimerObj = setInterval(() => { 
-                timeLeft--; 
-                if(timerEl) timerEl.innerText = timeLeft; 
-                if(timeLeft<=0) closeEvent(false, "수업 시연이 다소 산만했습니다..."); 
             }, 1000);
-        }
-        else if(type === 'fight') {
-            const titleEl = document.getElementById('eventTitle');
-            const descEl = document.getElementById('eventDesc');
-            if(titleEl) titleEl.innerText = "⚔️ 학생 다툼 발생!"; 
-            if(descEl) descEl.innerText = "누구 편을 드시겠습니까?"; 
-            const timerEl = document.getElementById('eventTimer');
-            if(timerEl) timerEl.innerText = "";
-            createEventBtn('A 학생 공감하기', 'bg-blue-600 hover:bg-blue-700', () => { s.exp += 500; closeEvent(true, "원만한 해결! 명예 +2", 2); });
-            createEventBtn('원칙대로 규정 적용', 'bg-red-600 hover:bg-red-700', () => { s.exp += 500; closeEvent(true, "깔끔한 처리! 명예 +3", 3); });
-        }
-        else if(type === 'animal') {
-            const titleEl = document.getElementById('eventTitle');
-            const descEl = document.getElementById('eventDesc');
-            if(titleEl) titleEl.innerText = "🐱 교정에 길고양이 출몰!"; 
-            if(descEl) descEl.innerText = "아이들과 함께 안전하게 구조하세요!"; 
-            const timerEl = document.getElementById('eventTimer');
-            if(timerEl) timerEl.innerText = "";
-            createEventBtn('간식으로 유인해 구조하기', 'bg-teal-600 hover:bg-teal-700', () => { s.honor += 5; closeEvent(true, "모두가 행복한 동물 보호 성공! 명예 +5", 5); });
-        }
-        else if(type === 'lunch') {
-            const titleEl = document.getElementById('eventTitle');
-            const descEl = document.getElementById('eventDesc');
-            if(titleEl) titleEl.innerText = "🍱 급식실 메뉴 청원"; 
-            if(descEl) descEl.innerText = "'수요일은 돈가스' 투표 성사!"; 
-            const timerEl = document.getElementById('eventTimer');
-            if(timerEl) timerEl.innerText = "";
-            createEventBtn('청원 수락하기', 'bg-yellow-500 hover:bg-yellow-600 text-gray-900', () => { 
-                buffs.menuBuff = 2; 
-                closeEvent(true, "급식 대만족! 1시간 동안 수익 2배!", 2); 
-                setTimeout(()=>buffs.menuBuff=1, 60000); 
-            });
-        }
-        else if(type === 'audit') {
-            const titleEl = document.getElementById('eventTitle');
-            const descEl = document.getElementById('eventDesc');
-            if(titleEl) titleEl.innerText = "🕵️ 교육청 감사 (NEIS 긴급 결재)"; 
-            if(descEl) descEl.innerText = "10초간 절대 아무것도 만지지 마세요!";
-            timeLeft = 10; 
-            const timerEl = document.getElementById('eventTimer');
-            if(timerEl) timerEl.innerText = timeLeft;
-            act.innerHTML = `<div class="text-sm text-red-300 font-bold mb-4 animate-pulse">화면 터치 시 즉시 적발 실패</div>`;
-            globalAuditListener = () => { closeEvent(false, "감사 적발! 시말서 작성..."); }; 
-            setTimeout(() => document.addEventListener('pointerdown', globalAuditListener), 500); 
-            eventTimerObj = setInterval(() => { 
-                timeLeft--; 
-                if(timerEl) timerEl.innerText = timeLeft; 
-                if(timeLeft <= 0) { 
-                    const rew = currentAutoProfit * 100; 
-                    s.money += rew; 
-                    closeEvent(true, `감사 통과! 격려금 +${formatMoney(rew)}`, 5); 
-                } 
-            }, 1000);
-        }
-        else if(type === 'zoom') {
-            const titleEl = document.getElementById('eventTitle');
-            const descEl = document.getElementById('eventDesc');
-            if(titleEl) titleEl.innerText = "💻 원격수업 줌(Zoom) 접속 오류!"; 
-            if(descEl) descEl.innerText = "아이들의 화상 수업 마이크가 안 됩니다. 어떻게 해결하시겠습니까?"; 
-            const timerEl = document.getElementById('eventTimer');
-            if(timerEl) timerEl.innerText = "";
-            createEventBtn('오디오 설정 재부팅 안내', 'bg-blue-600 hover:bg-blue-700', () => { s.exp += 600; closeEvent(true, "줌 수업 정상화! 경험치 획득", 3); });
-            createEventBtn('링크 다시 보내기', 'bg-green-600 hover:bg-green-700', () => { s.money += currentAutoProfit*15; closeEvent(true, "신속한 조치 완료!", 2); });
+        } else if (type === 'zoom') {
+            openModal({ icon: '💻', title: '원격수업 줌 접속 오류!', desc: '아이들 마이크가 안 들려요.\n어떻게 해결할까요?', buttons: [
+                { label: '오디오 설정 재부팅 안내 🔧', color: 'sky', onClick: () => { s.exp += 600; checkLevelUp(); finish(true, '줌 수업 정상화! EXP +600 · 명예 +3', 3); } },
+                { label: '링크 다시 보내기 🔗', color: 'mint', onClick: () => { s.money += currentAutoProfit * 15; finish(true, '신속한 조치 완료! · 명예 +2', 2); } }
+            ] });
         }
     }
 
     function spawnRunner() {
-        const clickArea = document.getElementById('clickArea');
-        if(!clickArea || document.getElementById('eventOverlay').classList.contains('flex')) return;
-        const el = document.createElement('div'); 
-        el.className = 'runner'; 
-        el.innerText = '🏃‍♂️';
-        el.onpointerdown = (e) => { 
-            e.stopPropagation(); 
-            const rew = s.money * 0.1; 
-            s.money += rew; 
-            playAudio('buy'); 
-            showFloat(e.clientX, e.clientY, `+${formatMoney(rew)}`); 
-            el.remove(); 
-            updateUI(); 
-        };
-        clickArea.appendChild(el); 
-        setTimeout(() => { if(el.parentNode) el.remove(); }, 3000);
+        if (!gameRunning || modalOpen) return;
+        const area = $('clickArea');
+        const el = document.createElement('div');
+        el.className = 'runner';
+        el.innerHTML = '<span>🏃</span>';
+        el.addEventListener('pointerdown', e => {
+            e.stopPropagation();
+            e.preventDefault();
+            const rew = Math.max(s.money * 0.1, Math.max(currentAutoProfit, 50) * 30);
+            s.money += rew;
+            playAudio('buy');
+            showFloat(e.clientX, e.clientY, `+${formatMoney(rew)}`);
+            showToast('🏃 복도에서 뛰면 안 돼요! 칭찬 스티커 보상 획득');
+            el.remove();
+            updateUI();
+        });
+        area.appendChild(el);
+        setTimeout(() => el.remove(), 3300);
     }
 
-    function initAudio() { 
-        if(!audioCtx) { 
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            audioCtx = new AudioContext(); 
-            bgmGainNode = audioCtx.createGain();
-            bgmGainNode.gain.value = 0.05;
-            bgmGainNode.connect(audioCtx.destination);
+    // ---------- 모달 ----------
+    function openModal({ icon = '', title = '', desc = '', timer = '', buttons = [] }) {
+        stopContinuousClick();
+        stopHold();
+        setText('modalIcon', icon);
+        setText('modalTitle', title);
+        setText('modalDesc', desc);
+        setText('modalTimer', timer);
+        const act = $('modalActions');
+        act.innerHTML = '';
+        buttons.forEach(b => {
+            const el = document.createElement('button');
+            el.className = `btn btn-block${b.color ? ' btn-' + b.color : ''}`;
+            el.style.whiteSpace = 'pre-line';
+            el.textContent = b.label;
+            el.onclick = () => b.onClick && b.onClick(el);
+            act.appendChild(el);
+        });
+        $('modal').classList.add('show');
+        modalOpen = true;
+    }
 
-            const osc = audioCtx.createOscillator(); 
-            osc.connect(audioCtx.destination); 
-            osc.start(0); 
-            osc.stop(0.01); 
-            if(!isBgmPlaying) toggleAudio(); 
-        } else if(audioCtx.state === 'suspended') {
+    function closeModal() {
+        $('modal').classList.remove('show');
+        modalOpen = false;
+    }
+
+    function confirmDialog(icon, title, desc, okLabel = '확인', cancelLabel = '취소') {
+        return new Promise(res => openModal({ icon, title, desc, buttons: [
+            { label: okLabel, color: 'pink', onClick: () => { closeModal(); res(true); } },
+            { label: cancelLabel, color: '', onClick: () => { closeModal(); res(false); } }
+        ] }));
+    }
+
+    function infoDialog(icon, title, desc, okLabel = '좋아요!') {
+        return new Promise(res => openModal({ icon, title, desc, buttons: [
+            { label: okLabel, color: 'mint', onClick: () => { closeModal(); res(true); } }
+        ] }));
+    }
+
+    // ---------- 사운드 ----------
+    let audioCtx = null, bgmGainNode = null, bgmTimer = null;
+    let soundOn = store.get(SOUND_KEY) !== 'off';
+
+    function initAudio() {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return;
+        if (!audioCtx) {
+            audioCtx = new AC();
+            bgmGainNode = audioCtx.createGain();
+            bgmGainNode.gain.value = 0;
+            bgmGainNode.connect(audioCtx.destination);
+        } else if (audioCtx.state === 'suspended') {
             audioCtx.resume();
         }
+        updateAudioBtn();
+        if (soundOn) playBGM();
     }
 
-    function playAudio(type) {
-        if(!audioCtx) return;
-        const now = audioCtx.currentTime;
-        const osc = audioCtx.createOscillator(); 
-        const gain = audioCtx.createGain(); 
-        osc.connect(gain); 
-        gain.connect(audioCtx.destination);
+    function updateAudioBtn() { setText('audioBtn', soundOn ? '🔊' : '🔇'); }
 
-        if(type === 'click' || type === 'coin') { 
-            osc.type = 'sine'; 
-            osc.frequency.setValueAtTime(587.33, now); 
-            osc.frequency.exponentialRampToValueAtTime(880, now + 0.08); 
-            gain.gain.setValueAtTime(0.08, now); 
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08); 
-            osc.start(now); 
-            osc.stop(now + 0.08); 
-        } 
-        else if(type === 'buy') { 
-            osc.type = 'sine'; 
-            osc.frequency.setValueAtTime(523.25, now); 
-            osc.frequency.setValueAtTime(659.25, now + 0.1); 
-            osc.frequency.setValueAtTime(783.99, now + 0.2); 
-            gain.gain.setValueAtTime(0.06, now); 
-            gain.gain.linearRampToValueAtTime(0, now + 0.35); 
-            osc.start(now); 
-            osc.stop(now + 0.35); 
-        } 
-        else if(type === 'error') { 
-            osc.type = 'sine'; 
-            osc.frequency.setValueAtTime(220, now); 
-            osc.frequency.exponentialRampToValueAtTime(165, now + 0.15); 
-            gain.gain.setValueAtTime(0.08, now); 
-            gain.gain.linearRampToValueAtTime(0, now + 0.15); 
-            osc.start(now); 
-            osc.stop(now + 0.15); 
+    function playAudio(type) {
+        if (!audioCtx || !soundOn) return;
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        if (type === 'click' || type === 'coin') {
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(880, now);
+            osc.frequency.exponentialRampToValueAtTime(1320, now + 0.07);
+            gain.gain.setValueAtTime(0.06, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+            osc.start(now); osc.stop(now + 0.08);
+        } else if (type === 'buy') {
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(523.25, now);
+            osc.frequency.setValueAtTime(659.25, now + 0.08);
+            osc.frequency.setValueAtTime(783.99, now + 0.16);
+            osc.frequency.setValueAtTime(1046.5, now + 0.24);
+            gain.gain.setValueAtTime(0.06, now);
+            gain.gain.linearRampToValueAtTime(0, now + 0.36);
+            osc.start(now); osc.stop(now + 0.36);
+        } else if (type === 'error') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(330, now);
+            osc.frequency.exponentialRampToValueAtTime(196, now + 0.15);
+            gain.gain.setValueAtTime(0.07, now);
+            gain.gain.linearRampToValueAtTime(0, now + 0.16);
+            osc.start(now); osc.stop(now + 0.16);
         }
     }
 
-    function toggleAudio() { 
-        isBgmPlaying = !isBgmPlaying; 
-        const btn = document.getElementById('audioBtn');
-        if (btn) btn.innerText = isBgmPlaying ? '🔊 ON' : '🔇 OFF'; 
-        
-        if(isBgmPlaying) { 
-            if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); 
-            if(bgmGainNode && audioCtx) bgmGainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            playBGM(); 
-        } else { 
-            if(bgmGainNode && audioCtx) bgmGainNode.gain.setValueAtTime(0, audioCtx.currentTime); 
-            if(bgmOscillator) {
-                clearTimeout(bgmOscillator);
-                bgmOscillator = null;
-            }
+    function toggleAudio() {
+        soundOn = !soundOn;
+        store.set(SOUND_KEY, soundOn ? 'on' : 'off');
+        updateAudioBtn();
+        if (soundOn) { initAudio(); playAudio('click'); } else stopBGM();
+    }
+
+    function stopBGM() {
+        clearTimeout(bgmTimer); bgmTimer = null;
+        if (bgmGainNode && audioCtx) {
+            bgmGainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+            bgmGainNode.gain.setValueAtTime(0, audioCtx.currentTime);
         }
     }
 
     function playBGM() {
-        if(!audioCtx || !isBgmPlaying) return; 
+        if (!audioCtx || !soundOn) return;
+        stopBGM();
+        bgmGainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
         const melody = [
-            [523.25, 0.3], [659.25, 0.3], [783.99, 0.6], 
-            [659.25, 0.3], [523.25, 0.3], [440.00, 0.6], 
+            [523.25, 0.3], [659.25, 0.3], [783.99, 0.6],
+            [659.25, 0.3], [523.25, 0.3], [440.00, 0.6],
             [392.00, 0.3], [440.00, 0.3], [523.25, 0.3], [587.33, 0.3], [659.25, 0.6]
-        ]; 
+        ];
         let t = audioCtx.currentTime + 0.05;
-        
-        const loop = () => { 
-            if(!isBgmPlaying) return; 
-            melody.forEach(n => { 
-                if(!isBgmPlaying) return;
-                const o = audioCtx.createOscillator(); 
-                const g = audioCtx.createGain(); 
-                o.type = 'sine'; 
-                o.frequency.value = n[0]; 
-                
-                g.gain.setValueAtTime(0.04, t); 
-                g.gain.exponentialRampToValueAtTime(0.0001, t + n[1] - 0.03); 
-                
-                o.connect(g); 
-                g.connect(bgmGainNode); 
-                
-                o.start(t); 
-                o.stop(t + n[1]); 
-                t += n[1]; 
-            }); 
-            bgmOscillator = setTimeout(loop, (t - audioCtx.currentTime) * 1000 - 80); 
-        }; 
+        const loop = () => {
+            if (!soundOn || !gameRunning) return;
+            // 탭이 백그라운드였다가 돌아오면 과거 시점에 음이 몰려 재생되지 않도록 보정
+            t = Math.max(t, audioCtx.currentTime + 0.05);
+            melody.forEach(([f, d]) => {
+                const o = audioCtx.createOscillator();
+                const g = audioCtx.createGain();
+                o.type = 'triangle';
+                o.frequency.value = f;
+                g.gain.setValueAtTime(0.04, t);
+                g.gain.exponentialRampToValueAtTime(0.0001, t + d - 0.03);
+                o.connect(g); g.connect(bgmGainNode);
+                o.start(t); o.stop(t + d);
+                t += d;
+            });
+            bgmTimer = setTimeout(loop, Math.max(200, (t - audioCtx.currentTime) * 1000 - 200));
+        };
         loop();
     }
+
+    // ---------- 초기화 ----------
+    $('clickArea').addEventListener('pointerdown', startContinuousClick);
+    $('clickArea').addEventListener('pointermove', e => { clickPos.x = e.clientX; clickPos.y = e.clientY; });
+    $('clickArea').addEventListener('pointerleave', stopContinuousClick);
+
+    const saveIfRunning = () => { if (gameRunning) saveGame(); };
+    document.addEventListener('visibilitychange', () => { if (document.hidden) { saveIfRunning(); stopContinuousClick(); stopHold(); } });
+    window.addEventListener('pagehide', saveIfRunning);
+
+    refreshStartScreen();
 </script>
 </body>
 </html>
