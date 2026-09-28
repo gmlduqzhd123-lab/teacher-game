@@ -52,6 +52,7 @@
             overscroll-behavior: none; letter-spacing: -0.3px;
         }
         button { font-family: inherit; color: inherit; }
+        input, select, textarea { user-select: text; -webkit-user-select: text; }
         .hidden { display: none !important; }
 
         /* ---------- 공용 버튼 / 카드 ---------- */
@@ -106,6 +107,20 @@
         .avatar-row .btn .e { font-size: 44px; line-height: 1; transition: transform .2s; }
         .avatar-row .btn:hover .e { transform: rotate(-8deg) scale(1.08); }
         .save-info { margin-top: 12px; font-size: 12px; background: var(--butter-l); border: 2px dashed #e5c65e; border-radius: 12px; padding: 6px 10px; text-align: center; }
+        .txt { width: 100%; font-family: inherit; font-size: 14px; color: var(--ink); background: #fff; border: 2.5px solid var(--line); border-radius: 14px; padding: 9px 12px; box-shadow: 0 3px 0 var(--line); outline: none; margin-bottom: 14px; }
+        .txt:focus { background: var(--butter-l); }
+        .txt-sm { font-size: 13px; padding: 7px 10px; border-width: 2px; box-shadow: 0 2px 0 var(--line); margin: 0; min-width: 0; }
+        .teacher-set { width: 100%; margin-top: 14px; background: #fff; border: 2.5px solid var(--line); border-radius: 18px; box-shadow: 0 3px 0 var(--line); padding: 8px 12px; }
+        .teacher-set summary { font-size: 14px; cursor: pointer; list-style: none; display: flex; justify-content: space-between; }
+        .teacher-set summary::-webkit-details-marker { display: none; }
+        .teacher-set summary::after { content: '▾'; transition: transform .2s; }
+        .teacher-set[open] summary::after { transform: rotate(180deg); }
+        .opt { display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 7px 2px; border-top: 1.5px dashed #eadbd3; cursor: pointer; }
+        .opt:first-of-type { margin-top: 6px; }
+        .opt small { color: var(--ink-soft); font-size: 11px; }
+        .opt input[type=checkbox] { width: 20px; height: 20px; accent-color: var(--pink-d); flex-shrink: 0; }
+        .opt select { font-family: inherit; font-size: 13px; color: var(--ink); border: 2px solid var(--line); border-radius: 10px; padding: 3px 6px; background: var(--butter-l); margin-left: auto; }
+        .board-btn { margin-top: 12px; }
         .start-foot { display: flex; flex-direction: column; align-items: center; gap: 6px; }
         .link-btn { background: none; border: none; color: #e07b9c; font-size: 12px; text-decoration: underline; cursor: pointer; padding: 4px; }
         .copyright { font-size: 10px; color: #b8a69f; text-align: center; }
@@ -268,6 +283,30 @@
         #modalIcon { font-size: 50px; line-height: 1.1; animation: bob 1.6s ease-in-out infinite; display: inline-block; }
         #modalTitle { font-size: 20px; margin: 6px 0 4px; }
         #modalDesc { font-size: 14px; color: var(--ink-soft); white-space: pre-line; word-break: keep-all; line-height: 1.45; }
+        .modal-card.wide { max-width: 440px; }
+        #modalBody:empty { display: none; }
+        #modalBody { margin-top: 10px; text-align: left; font-size: 13px; }
+        .sum-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        .sum-grid > div { background: #fff; border: 2px solid var(--line); border-radius: 12px; padding: 6px 8px; font-size: 11px; color: var(--ink-soft); }
+        .sum-grid > div b { display: block; font-weight: normal; font-size: 15px; color: var(--ink); }
+        .sum-grid > div.big { grid-column: span 2; background: var(--butter-l); text-align: center; }
+        .sum-grid > div.big b { font-size: 24px; color: var(--pink-d); }
+        .log-wrap { max-height: 46dvh; overflow: auto; border: 2px solid var(--line); border-radius: 12px; background: #fff; }
+        .log-table { width: 100%; border-collapse: collapse; font-size: 11px; white-space: nowrap; }
+        .log-table th { position: sticky; top: 0; background: var(--lav); font-weight: normal; padding: 5px 6px; border-bottom: 2px solid var(--line); }
+        .log-table td { padding: 4px 6px; border-bottom: 1px dashed #eadbd3; text-align: right; }
+        .log-table td:nth-child(-n+4) { text-align: left; }
+        .log-empty { padding: 18px; text-align: center; color: var(--ink-soft); }
+        .board-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+        .board-row { display: flex; align-items: center; gap: 8px; background: #fff; border: 2px solid var(--line); border-radius: 14px; padding: 7px 10px; }
+        .board-row .rk { font-size: 20px; width: 30px; text-align: center; }
+        .board-row .nm { flex: 1; font-size: 14px; }
+        .board-row .as { font-size: 15px; color: var(--pink-d); }
+        .board-row .x { background: none; border: none; font-size: 14px; cursor: pointer; color: var(--ink-soft); }
+        .board-row.r1 { background: var(--butter); } .board-row.r2 { background: var(--sky-l); } .board-row.r3 { background: var(--peach-l); }
+        .board-add { display: flex; gap: 6px; }
+        .time-chip { background: var(--pink) !important; }
+        .time-chip.urgent { animation: blink .6s ease-in-out infinite; background: var(--pink-d) !important; color: #fff; }
         #modalTimer { font-size: 40px; color: var(--pink-d); margin-top: 6px; }
         #modalTimer:empty { display: none; }
         #modalActions { display: flex; flex-direction: column; gap: 9px; margin-top: 14px; }
@@ -314,6 +353,7 @@
             <div id="modalTitle"></div>
             <div id="modalDesc"></div>
             <div id="modalTimer"></div>
+            <div id="modalBody"></div>
             <div id="modalActions"></div>
         </div>
     </div>
@@ -341,12 +381,26 @@
             </div>
             <div class="diff-desc" id="diffDesc"></div>
 
+            <div class="label">👥 모둠 / 이름 <small style="color:var(--ink-soft)">(결과 보고·순위판에 표시)</small></div>
+            <input id="teamInput" class="txt" maxlength="12" placeholder="예) 3모둠, 홍길동" autocomplete="off">
+
             <div class="label">🙋 아바타를 골라 시작하기</div>
             <div class="avatar-row">
                 <button class="btn btn-sky" onclick="startGame('🧑‍🏫')"><span class="e">🧑‍🏫</span>남교사</button>
                 <button class="btn btn-pink" onclick="startGame('👩‍🏫')"><span class="e">👩‍🏫</span>여교사</button>
             </div>
             <div id="saveInfo" class="save-info hidden"></div>
+
+            <details class="teacher-set" id="teacherSet">
+                <summary>👩‍🏫 선생님 수업 설정</summary>
+                <label class="opt"><input type="checkbox" id="optClass"><span>수업 모드<br><small>복권·가챠 숨기기 (사행성 요소 끄기)</small></span></label>
+                <label class="opt"><input type="checkbox" id="optRealLotto"><span>현실형 복권<br><small>실제 복권처럼 기대값이 손해가 되도록 조정</small></span></label>
+                <label class="opt"><input type="checkbox" id="optFake"><span>가상 종목명 사용<br><small>실제 기업명 대신 가상 이름 (별빛전자 등)</small></span></label>
+                <div class="opt"><span>⏱️ 시간 제한 모드<br><small>시간이 끝나면 결과 요약 화면 표시</small></span>
+                    <select id="optTime"><option value="0">제한 없음</option><option value="5">5분</option><option value="10">10분</option><option value="15">15분</option><option value="20">20분</option><option value="30">30분</option><option value="40">40분</option></select>
+                </div>
+            </details>
+            <button class="btn btn-lav btn-block board-btn" onclick="openBoard()">📊 모둠 대항 순위판 (선생님용)</button>
         </div>
         <div class="start-foot">
             <button class="link-btn" onclick="clearData()">🧹 데이터 초기화 (버그 발생 시)</button>
@@ -367,6 +421,7 @@
                 <div style="min-width:0">
                     <div class="season-line">
                         <span class="season-chip" id="seasonChip">🌸 봄학기</span>
+                        <span class="season-chip time-chip hidden" id="timeChip">⏱️ 00:00</span>
                         <span>🏆 <span id="trophyDisplay">0</span></span>
                         <span>🎖️ <span id="honorDisplay">0</span></span>
                     </div>
@@ -438,17 +493,18 @@
 
             <div id="tab-asset" class="tab-content hidden">
                 <div class="card c-sky">
-                    <div class="sec-title" style="margin-top:0">📈 KOSPI 우량주 테마시장</div>
-                    <div class="rdesc" style="margin:0 4px 8px">보유 평가액: <span id="stockValue">0</span>원</div>
+                    <div class="sec-title" style="margin-top:0" id="stockTitle">📈 KOSPI 우량주 테마시장</div>
+                    <div class="rdesc" style="margin:0 4px 8px">보유 평가액: <span id="stockValue">0</span>원 · 실현 손익: <span id="realizedPL">0</span>원<br>※ 게임 속 가격은 가상이며 실제 주가와 무관해요.</div>
                     <div id="stockMarketList"></div>
                 </div>
-                <div class="card c-butter" style="display:flex;align-items:center;gap:10px">
+                <div class="card c-butter" id="lottoCard" style="display:flex;align-items:center;gap:10px">
                     <div class="act-ic">🎟️</div>
-                    <div style="flex:1"><div class="act-title">행복 연금복권</div><div class="act-desc">장당 10만 원 · 1등 10억 (확률 극악)</div></div>
+                    <div style="flex:1"><div class="act-title">행복 연금복권</div><div class="act-desc" id="lottoDesc" style="white-space:pre-line"></div></div>
                     <button class="btn btn-sm btn-butter" onclick="buyLottery()">구매</button>
                 </div>
                 <div class="sec-title">🏢 부동산 <small>강남 랜드마크 매입 시 엔딩!</small></div>
                 <div id="realEstateList"></div>
+                <button class="btn btn-block btn-lav" style="margin-top:4px" onclick="showTradeLog()">📒 투자 기록 보기 · 내보내기</button>
             </div>
 
             <div id="tab-act" class="tab-content hidden">
@@ -494,6 +550,11 @@
                 </div>
                 <div class="sec-title">📦 압수물품 도감 <small id="dexCount"></small></div>
                 <div class="dex" id="collectionList"></div>
+                <div class="sec-title" style="margin-top:14px">📋 수업 결과 보고</div>
+                <div style="display:flex;gap:8px;margin-bottom:12px">
+                    <button class="btn btn-butter" style="flex:1" onclick="showSummary(false)">📊 결과 요약</button>
+                    <button class="btn btn-lav" style="flex:1" onclick="showTradeLog()">📒 투자 기록</button>
+                </div>
                 <div class="sec-title" style="margin-top:14px">📊 나의 교직 생활</div>
                 <div class="stat-grid" id="statGrid"></div>
             </div>
@@ -526,16 +587,16 @@
         caffeine: 0, succulentGrowth: 0, succulentBuff: 0, honor: 0, travelBuff: 1, careerBuff: 0, difficulty: 'normal',
         inventory: {}, collections: {}, spareItems: 0, emoticonIncome: 0,
         stocks: {
-            samsung: { name: '삼성전자', price: 70000, count: 0 },
-            skhynix: { name: 'SK하이닉스', price: 150000, count: 0 },
-            lgensol: { name: 'LG에너지솔루션', price: 400000, count: 0 },
-            hyundai: { name: '현대차', price: 200000, count: 0 },
-            kia: { name: '기아', price: 100000, count: 0 },
-            naver: { name: 'NAVER', price: 200000, count: 0 },
-            kakao: { name: '카카오', price: 50000, count: 0 },
-            posco: { name: 'POSCO홀딩스', price: 400000, count: 0 },
-            kb: { name: 'KB금융', price: 70000, count: 0 },
-            celltrion: { name: '셀트리온', price: 180000, count: 0 }
+            samsung: { name: '삼성전자', price: 70000, count: 0, costBasis: 0 },
+            skhynix: { name: 'SK하이닉스', price: 150000, count: 0, costBasis: 0 },
+            lgensol: { name: 'LG에너지솔루션', price: 400000, count: 0, costBasis: 0 },
+            hyundai: { name: '현대차', price: 200000, count: 0, costBasis: 0 },
+            kia: { name: '기아', price: 100000, count: 0, costBasis: 0 },
+            naver: { name: 'NAVER', price: 200000, count: 0, costBasis: 0 },
+            kakao: { name: '카카오', price: 50000, count: 0, costBasis: 0 },
+            posco: { name: 'POSCO홀딩스', price: 400000, count: 0, costBasis: 0 },
+            kb: { name: 'KB금융', price: 70000, count: 0, costBasis: 0 },
+            celltrion: { name: '셀트리온', price: 180000, count: 0, costBasis: 0 }
         },
         clubs: { coding: 0, band: 0, nulbom: 0, media: 0 },
         somoims: { soccer: 0, food: 0, bandclub: 0 },
@@ -544,7 +605,7 @@
         enforce: { laptop: 0, coffee: 0, mic: 0, stamp: 0, aircon: 0, plant: 0, voice: 0, smartsys: 0 },
         reals: { r1: { own: 0, price: 5e8 }, r2: { own: 0, price: 2e9 }, r3: { own: 0, price: 1e10 }, r4: { own: 0, price: 5e10 } },
         skills: { vacation: 0, silence: 0, blind: 0, emo: 0, trip: 0, lunch: 0, lab: 0, field: 0, multi: 0, garden: 0, wee: 0, council: 0, plc: 0 },
-        ootd: 'none', stats: { totalClicks: 0 }, endings: 0, lastSaveTime: Date.now()
+        ootd: 'none', stats: { totalClicks: 0 }, endings: 0, tradeLog: [], lastSaveTime: Date.now()
     });
 
     let s = defaultState();
@@ -678,6 +739,7 @@
         for (const k in def) {
             const d = def[k], v = sav[k];
             if (isObj(d)) out[k] = mergeState(d, v);
+            else if (Array.isArray(d)) out[k] = Array.isArray(v) ? v : d;
             else if (typeof d === 'number') out[k] = (typeof v === 'number' && isFinite(v)) ? v : d;
             else if (typeof d === 'string') out[k] = typeof v === 'string' ? v : d;
             else out[k] = v !== undefined ? v : d;
@@ -692,6 +754,74 @@
         const raw = store.get(SAVE_KEY);
         if (!raw) return null;
         try { const p = JSON.parse(raw); return isObj(p) ? p : null; } catch (e) { return null; }
+    }
+
+    // ---------- 선생님 수업 설정 ----------
+    const SETTINGS_KEY = 'tg_settings';
+    const BOARD_KEY = 'tg_board';
+    const settings = { classMode: false, realLotto: false, fakeNames: false, timeLimit: 0, team: '' };
+    try { Object.assign(settings, JSON.parse(store.get(SETTINGS_KEY) || '{}')); } catch (e) {}
+    const saveSettings = () => store.set(SETTINGS_KEY, JSON.stringify(settings));
+
+    const FAKE_STOCKS = {
+        samsung: '별빛전자', skhynix: '새싹반도체', lgensol: '번개배터리', hyundai: '씽씽자동차', kia: '바람모터스',
+        naver: '초록포털', kakao: '노랑톡', posco: '튼튼철강', kb: '든든금융', celltrion: '쑥쑥바이오'
+    };
+    const stockName = k => (settings.fakeNames && FAKE_STOCKS[k]) || s.stocks[k].name;
+
+    const LOTTO_PRICE = 100000, LOTTO_PRIZE = 1000000000;
+    const lottoProb = () => (settings.realLotto ? 0.00005 : 0.005);
+    const lottoEV = () => lottoProb() * LOTTO_PRIZE - LOTTO_PRICE;
+
+    function bindSettingsUI() {
+        const bindCheck = (id, key) => {
+            const el = $(id);
+            el.checked = !!settings[key];
+            el.addEventListener('change', () => { settings[key] = el.checked; saveSettings(); });
+        };
+        bindCheck('optClass', 'classMode');
+        bindCheck('optRealLotto', 'realLotto');
+        bindCheck('optFake', 'fakeNames');
+        const time = $('optTime');
+        time.value = String(settings.timeLimit || 0);
+        if (time.value === '') time.value = '0';
+        time.addEventListener('change', () => { settings.timeLimit = parseInt(time.value, 10) || 0; saveSettings(); });
+        const team = $('teamInput');
+        team.value = settings.team || '';
+        team.addEventListener('input', () => { settings.team = team.value.trim().slice(0, 12); saveSettings(); });
+        if (settings.classMode || settings.realLotto || settings.fakeNames || settings.timeLimit) $('teacherSet').open = true;
+    }
+
+    // ---------- 자산 / 수업 세션 ----------
+    let session = null;
+    const newSession = () => ({
+        start: Date.now(), deadline: settings.timeLimit ? Date.now() + settings.timeLimit * 60000 : 0,
+        startAssets: 0, clicks: 0, trades: 0, realized: 0, lotto: 0, lottoWin: 0, gacha: 0, ended: false
+    });
+    const stockAssets = () => Object.values(s.stocks).reduce((a, st) => a + st.price * st.count, 0);
+    const realAssets = () => DB.reals.reduce((a, r) => a + s.reals[r.id].price * s.reals[r.id].own, 0);
+    const totalAssets = () => s.money + stockAssets() + realAssets();
+    const teamName = () => settings.team || '이름 없는 모둠';
+    const fmtClock = ms => { const sec = Math.max(0, Math.ceil(ms / 1000)); return `${String(Math.floor(sec / 60)).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`; };
+    const signed = v => (v >= 0 ? '+' : '-') + formatMoney(Math.abs(v));
+
+    function logTrade(kind, name, action, qty, price, total, profit = null) {
+        if (!Array.isArray(s.tradeLog)) s.tradeLog = [];
+        s.tradeLog.push({ t: Date.now(), kind, name, action, qty, price: Math.round(price), total: Math.round(total), profit: profit === null ? null : Math.round(profit), money: Math.round(s.money) });
+        if (s.tradeLog.length > 500) s.tradeLog.splice(0, s.tradeLog.length - 500);
+        if (session && (kind === '주식' || kind === '부동산')) session.trades++;
+    }
+
+    // 문자열 금액("3.5억", "1조 2000억", "25,000,000") → 숫자
+    function parseMoney(str) {
+        str = String(str || '').replace(/[,\s원]/g, '');
+        if (!str) return NaN;
+        let total = 0, matched = false;
+        const re = /(\d+(?:\.\d+)?)(경|조|억|만)?/g;
+        const unit = { '경': 1e16, '조': 1e12, '억': 1e8, '만': 1e4 };
+        let m;
+        while ((m = re.exec(str))) { if (!m[0]) break; matched = true; total += parseFloat(m[1]) * (unit[m[2]] || 1); }
+        return matched ? total : NaN;
     }
 
     // ---------- 시작 화면 ----------
@@ -757,6 +887,7 @@
         $('startScreen').classList.add('hidden');
         $('gameScreen').classList.remove('hidden');
         gameRunning = true;
+        session = newSession();
         initAudio();
 
         Object.keys(buffs).forEach(k => buffs[k] = 0);
@@ -769,6 +900,7 @@
         applySeason();
         calculateMultipliers();
         const offlineGain = calculateOfflineProgress();
+        session.startAssets = totalAssets();
         applyOOTDVisual();
         updateBoard();
         changeTab('tab-up', true);
@@ -780,6 +912,7 @@
         timers.runner = setInterval(spawnRunner, 90000);
         saveGame();
 
+        if (session.deadline) showToast(`⏱️ ${settings.timeLimit}분 수업 시작! ${teamName()} 화이팅!`);
         if (offlineGain > 0) {
             infoDialog('🌙', '방치 보상 도착!', `선생님이 없는 동안에도\n학교는 열심히 돌아갔어요.\n\n+${formatMoney(offlineGain)}원`, '받기 💰');
         }
@@ -797,7 +930,12 @@
     async function goHome() {
         const ok = await confirmDialog('🏠', '타이틀로 갈까요?', '현재 진행 상황은 자동 저장돼요.', '타이틀로', '계속하기');
         if (!ok) return;
-        saveGame();
+        returnToTitle();
+    }
+
+    function returnToTitle() {
+        closeModal();
+        if (gameRunning) saveGame();
         gameRunning = false;
         stopGameTimers();
         stopBGM();
@@ -847,6 +985,7 @@
         s.exp += expGain;
         s.stats.totalClicks++;
         clickCount++;
+        if (session) session.clicks++;
 
         if (!isPivot() && pivotCharge < 100) pivotCharge = Math.min(100, pivotCharge + 1.5);
 
@@ -946,6 +1085,7 @@
     // ---------- 메인 루프 ----------
     function gameLoop() {
         if (!gameRunning) return;
+        if (session && session.deadline && Date.now() >= session.deadline) { endSession(); return; }
         s.succulentGrowth += 1;
         if (s.succulentGrowth >= 300) {
             s.succulentGrowth = 0;
@@ -1083,8 +1223,8 @@
 
         $('stockMarketList').innerHTML = Object.keys(s.stocks).map(k => `
             <div class="row">
-                <div class="rinfo"><div class="rname">${s.stocks[k].name}</div>
-                <div class="rdesc"><span id="st-price-${k}"></span> · 보유 <span id="st-cnt-${k}"></span>주</div></div>
+                <div class="rinfo"><div class="rname">${stockName(k)}</div>
+                <div class="rdesc"><span id="st-price-${k}"></span> · 보유 <span id="st-cnt-${k}"></span>주 <span id="st-pl-${k}"></span></div></div>
                 <div class="two-btn"><button class="btn btn-sm btn-pink" onclick="tradeStockItem('${k}','buy')">풀매수</button><button class="btn btn-sm btn-sky" onclick="tradeStockItem('${k}','sell')">매도</button></div>
             </div>`).join('');
 
@@ -1103,7 +1243,11 @@
                 <button class="btn btn-block btn-${a.color}" id="act-${id}" onclick="runAct('${id}')"></button>
             </div>`;
         };
-        $('actList').innerHTML = ACT_ORDER.map(actCard).join('');
+        $('actList').innerHTML = ACT_ORDER.filter(id => !(settings.classMode && id === 'gacha')).map(actCard).join('');
+        $('lottoCard').classList.toggle('hidden', settings.classMode);
+        setText('lottoDesc', `장당 10만 원 · 1등 10억 · 확률 ${+(lottoProb() * 100).toFixed(3)}%
+1장당 기대값: ${signed(lottoEV())}원`);
+        setText('stockTitle', settings.fakeNames ? '🐥 새싹 가상 주식시장' : '📈 KOSPI 우량주 테마시장');
         $('clubActs').innerHTML = CLUB_ORDER.map(actCard).join('');
         renderCollections();
     }
@@ -1187,8 +1331,24 @@
             el.textContent = `${formatMoney(st.price)}원${arrow}`;
             el.className = arrow === ' ▲' ? 'up' : (arrow === ' ▼' ? 'down' : '');
             setText(`st-cnt-${k}`, st.count.toLocaleString());
+            const plEl = $(`st-pl-${k}`);
+            if (st.count > 0 && st.costBasis > 0) {
+                const pct = (st.price * st.count / st.costBasis - 1) * 100;
+                plEl.textContent = `(${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%)`;
+                plEl.className = pct >= 0 ? 'up' : 'down';
+            } else plEl.textContent = '';
         });
         setText('stockValue', formatMoney(stockValue));
+        if (session) {
+            setText('realizedPL', signed(session.realized));
+            const tc = $('timeChip');
+            tc.classList.toggle('hidden', !session.deadline);
+            if (session.deadline) {
+                const left = session.deadline - now;
+                setText('timeChip', `⏱️ ${fmtClock(left)}`);
+                tc.classList.toggle('urgent', left <= 60000);
+            }
+        }
 
         // 부동산
         DB.reals.forEach(r => {
@@ -1289,17 +1449,23 @@
             if (count > 0) {
                 s.money -= count * st.price;
                 st.count += count;
+                st.costBasis += count * st.price;
+                logTrade('주식', stockName(id), '매수', count, st.price, count * st.price);
                 playAudio('buy');
-                showToast(`📈 ${st.name} ${count.toLocaleString()}주 매수 완료!`);
+                showToast(`📈 ${stockName(id)} ${count.toLocaleString()}주 매수 완료!`);
             } else {
                 playAudio('error');
                 showToast('💸 소지금이 부족해요!');
             }
         } else if (st.count > 0) {
             const total = st.count * st.price;
+            const profit = total - (st.costBasis || 0);
             s.money += total;
-            showToast(`📉 ${st.name} ${st.count.toLocaleString()}주 전량 매도 (+${formatMoney(total)}원)`);
+            logTrade('주식', stockName(id), '매도', st.count, st.price, total, profit);
+            if (session) session.realized += profit;
+            showToast(`📉 ${stockName(id)} ${st.count.toLocaleString()}주 전량 매도 · 손익 ${signed(profit)}원`);
             st.count = 0;
+            st.costBasis = 0;
             playAudio('coin');
         } else {
             playAudio('error');
@@ -1313,6 +1479,7 @@
         if (s.money >= r.price) {
             s.money -= r.price;
             r.own++;
+            logTrade('부동산', DB.reals.find(x => x.id === k).name, '매수', 1, r.price, r.price);
             playAudio('buy');
             calculateMultipliers();
             updateUI();
@@ -1329,6 +1496,7 @@
         if (r.own > 0) {
             s.money += r.price;
             r.own--;
+            logTrade('부동산', DB.reals.find(x => x.id === k).name, '매도', 1, r.price, r.price);
             playAudio('coin');
             showToast(`💰 매도 완료! +${formatMoney(r.price)}원`);
             calculateMultipliers();
@@ -1400,6 +1568,7 @@
             return;
         }
         if (a.check && !a.check(false)) return;
+        if (settings.classMode && id === 'gacha') return;
         if (a.cost) s.money -= a.cost;
         if (a.cd) s.skills[id] = now + a.cd * 1000;
         a.run();
@@ -1410,6 +1579,9 @@
     function openGacha() {
         const r = Math.random();
         playAudio('buy');
+        if (session) session.gacha++;
+        const res = r < 0.3 ? '압수물품' : r < 0.55 ? '스마트 태블릿' : r < 0.75 ? '전자칠판' : r < 0.92 ? 'VR 헤드셋' : 'AI 로봇(레어)';
+        logTrade('가챠', '기자재 언박싱', res, 1, 500000, 500000);
         if (r < 0.3) {
             dropItem();
         } else if (r < 0.55) {
@@ -1601,13 +1773,18 @@
     }
 
     function buyLottery() {
-        if (s.money < 100000) { playAudio('error'); showToast('💸 소지금이 부족해요! (10만 원 필요)'); return; }
-        s.money -= 100000;
-        if (Math.random() < 0.005) {
-            s.money += 1000000000;
+        if (settings.classMode) { showToast('🏫 수업 모드에서는 복권을 살 수 없어요'); return; }
+        if (s.money < LOTTO_PRICE) { playAudio('error'); showToast('💸 소지금이 부족해요! (10만 원 필요)'); return; }
+        s.money -= LOTTO_PRICE;
+        if (session) session.lotto++;
+        if (Math.random() < lottoProb()) {
+            s.money += LOTTO_PRIZE;
+            if (session) session.lottoWin++;
+            logTrade('복권', '행복 연금복권', '1등 당첨', 1, LOTTO_PRICE, LOTTO_PRIZE, LOTTO_PRIZE - LOTTO_PRICE);
             playAudio('buy');
             infoDialog('🎊', '1등 당첨!!', '행복 연금복권 1등!\n+10억 원 획득!');
         } else {
+            logTrade('복권', '행복 연금복권', '낙첨', 1, LOTTO_PRICE, 0, -LOTTO_PRICE);
             showToast('🎟️ 꽝… 다음 기회에!');
             playAudio('click');
         }
@@ -1634,7 +1811,7 @@
         const keep = {
             hobong: (s.hobong || 1) + 1, endings: s.endings || 0, honor: s.honor || 0, collections: s.collections || {},
             spareItems: s.spareItems || 0, travelBuff: s.travelBuff || 1, careerBuff: s.careerBuff || 0,
-            character: s.character, difficulty: s.difficulty, stats: s.stats
+            character: s.character, difficulty: s.difficulty, stats: s.stats, tradeLog: s.tradeLog
         };
         s = Object.assign(defaultState(), keep);
         const grades = ['1학년', '6학년', '전담교사'];
@@ -1814,10 +1991,177 @@
         setTimeout(() => el.remove(), 3300);
     }
 
+    // ---------- 수업: 결과 요약 / 투자 기록 / 순위판 ----------
+    const esc = v => String(v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    function endSession() {
+        if (!session || session.ended) return;
+        session.ended = true;
+        session.endedAt = Date.now();
+        closeModal();
+        saveGame();
+        gameRunning = false;
+        stopGameTimers();
+        stopBGM();
+        playAudio('buy');
+        showSummary(true);
+    }
+
+    function summaryHtml() {
+        const total = totalAssets();
+        const gain = total - (session ? session.startAssets : 0);
+        const played = session ? (session.endedAt || Date.now()) - session.start : 0;
+        const cells = [
+            `<div class="big">💎 ${esc(teamName())}의 총 자산<b>${formatMoney(total)}원</b></div>`,
+            `<div>💵 현금<b>${formatMoney(s.money)}원</b></div>`,
+            `<div>📈 주식 평가액<b>${formatMoney(stockAssets())}원</b></div>`,
+            `<div>🏢 부동산<b>${formatMoney(realAssets())}원</b></div>`,
+            `<div>🌱 이번 수업 증가<b>${signed(gain)}원</b></div>`,
+            `<div>⏱️ 플레이 시간<b>${fmtClock(played)}</b></div>`,
+            `<div>⭐ 레벨 · 호봉<b>Lv.${s.level} · ${s.hobong}호봉</b></div>`,
+            `<div>👆 클릭 수<b>${(session ? session.clicks : 0).toLocaleString()}번</b></div>`,
+            `<div>🔁 투자 거래<b>${session ? session.trades : 0}회</b></div>`,
+            `<div>💹 주식 실현 손익<b>${signed(session ? session.realized : 0)}원</b></div>`
+        ];
+        if (!settings.classMode) {
+            cells.push(`<div>🎟️ 복권<b>${session ? session.lotto : 0}장 (당첨 ${session ? session.lottoWin : 0})</b></div>`);
+            cells.push(`<div>📦 가챠<b>${session ? session.gacha : 0}회</b></div>`);
+        }
+        return `<div class="sum-grid">${cells.join('')}</div>`;
+    }
+
+    function showSummary(ended) {
+        const buttons = [
+            { label: '📊 순위판에 등록하기', color: 'butter', onClick: () => { addBoardEntry(teamName(), totalAssets()); showToast(`📊 ${teamName()} 결과를 순위판에 등록했어요!`); } },
+            { label: '📒 투자 기록 보기', color: 'lav', onClick: () => showTradeLog(() => showSummary(ended)) }
+        ];
+        if (ended) buttons.push({ label: '🏠 타이틀로', color: 'pink', onClick: () => returnToTitle() });
+        else buttons.push({ label: '닫기', color: '', onClick: () => closeModal() });
+        openModal({
+            icon: ended ? '🔔' : '📋',
+            title: ended ? '수업 시간 종료!' : '결과 요약',
+            desc: ended ? '수고했어요! 이번 시간의 결과예요.' : '지금까지의 결과예요.',
+            html: summaryHtml(), buttons
+        });
+    }
+
+    function logRows() {
+        return (s.tradeLog || []).map(e => {
+            const d = new Date(e.t);
+            const time = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}:${String(d.getSeconds()).padStart(2, '0')}`;
+            return { ...e, time };
+        });
+    }
+
+    function showTradeLog(onBack) {
+        const rows = logRows();
+        const realized = rows.reduce((a, r) => a + (r.profit || 0), 0);
+        const table = rows.length
+            ? `<div class="log-wrap"><table class="log-table"><thead><tr><th>시간</th><th>구분</th><th>종목</th><th>거래</th><th>수량</th><th>단가</th><th>금액</th><th>손익</th></tr></thead><tbody>${
+                rows.slice().reverse().slice(0, 200).map(r => `<tr><td>${r.time}</td><td>${esc(r.kind)}</td><td>${esc(r.name)}</td><td>${esc(r.action)}</td><td>${r.qty.toLocaleString()}</td><td>${formatMoney(r.price)}</td><td>${formatMoney(r.total)}</td><td class="${r.profit > 0 ? 'up' : r.profit < 0 ? 'down' : ''}">${r.profit === null ? '-' : signed(r.profit)}</td></tr>`).join('')
+            }</tbody></table></div>`
+            : '<div class="log-wrap"><div class="log-empty">아직 투자 기록이 없어요.<br>주식·부동산을 사고팔면 여기에 기록돼요!</div></div>';
+        openModal({
+            icon: '📒', title: '투자 기록',
+            desc: `총 ${rows.length}건 · 손익 합계 ${signed(realized)}원${rows.length > 200 ? '\n(화면에는 최근 200건, 내보내기는 전체)' : ''}`,
+            html: table, wide: true,
+            buttons: [
+                { label: '📋 표 복사 (엑셀·시트에 붙여넣기)', color: 'mint', onClick: () => copyTradeLog() },
+                { label: '💾 CSV 파일로 저장', color: 'sky', onClick: () => downloadTradeLog() },
+                { label: onBack ? '← 돌아가기' : '닫기', color: '', onClick: () => (onBack ? onBack() : closeModal()) }
+            ]
+        });
+    }
+
+    function tradeLogMatrix() {
+        const head = ['모둠', '시간', '구분', '종목', '거래', '수량', '단가(원)', '금액(원)', '손익(원)', '거래 후 현금(원)'];
+        return [head, ...logRows().map(r => [teamName(), r.time, r.kind, r.name, r.action, r.qty, r.price, r.total, r.profit === null ? '' : r.profit, r.money])];
+    }
+
+    function copyTradeLog() {
+        const tsv = tradeLogMatrix().map(row => row.join('\t')).join('\n');
+        const fallback = () => {
+            const ta = document.createElement('textarea');
+            ta.value = tsv; document.body.appendChild(ta); ta.select();
+            try { document.execCommand('copy'); showToast('📋 복사 완료! 엑셀이나 시트에 붙여넣으세요'); } catch (e) { showToast('복사에 실패했어요. CSV 저장을 이용해 주세요'); }
+            ta.remove();
+        };
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(tsv).then(() => showToast('📋 복사 완료! 엑셀이나 시트에 붙여넣으세요'), fallback);
+        } else fallback();
+    }
+
+    function downloadTradeLog() {
+        const csv = tradeLogMatrix().map(row => row.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+        const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
+        const a = document.createElement('a');
+        const d = new Date();
+        a.href = URL.createObjectURL(blob);
+        a.download = `투자기록_${teamName()}_${d.getMonth() + 1}월${d.getDate()}일.csv`;
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+        showToast('💾 CSV 파일을 저장했어요');
+    }
+
+    // 순위판 (선생님 기기에 저장, 모둠별 결과를 입력·등록)
+    function loadBoard() {
+        try { const b = JSON.parse(store.get(BOARD_KEY) || '[]'); return Array.isArray(b) ? b.filter(x => x && typeof x.name === 'string' && isFinite(x.assets)) : []; } catch (e) { return []; }
+    }
+    const saveBoard = b => store.set(BOARD_KEY, JSON.stringify(b));
+
+    function addBoardEntry(name, assets) {
+        const b = loadBoard();
+        const i = b.findIndex(x => x.name === name);
+        if (i >= 0) b[i].assets = assets; else b.push({ name, assets });
+        saveBoard(b);
+    }
+
+    function boardHtml() {
+        const b = loadBoard().sort((x, y) => y.assets - x.assets);
+        const medal = i => ['🥇', '🥈', '🥉'][i] || `${i + 1}`;
+        const list = b.length
+            ? b.map((x, i) => `<div class="board-row${i < 3 ? ' r' + (i + 1) : ''}"><span class="rk">${medal(i)}</span><span class="nm">${esc(x.name)}</span><span class="as">${formatMoney(x.assets)}원</span><button class="x" data-del="${esc(x.name)}" aria-label="삭제">✕</button></div>`).join('')
+            : '<div class="log-empty">아직 등록된 모둠이 없어요.<br>모둠별 총 자산을 입력하거나<br>게임의 결과 요약에서 등록하세요!</div>';
+        return `<div class="board-list">${list}</div>
+            <div class="board-add"><input class="txt txt-sm" id="bName" placeholder="모둠명" maxlength="12" style="flex:1"><input class="txt txt-sm" id="bAssets" placeholder="자산 (예: 3.5억)" style="flex:1.2"><button class="btn btn-sm btn-mint" id="bAdd">추가</button></div>`;
+    }
+
+    function openBoard() {
+        openModal({
+            icon: '🏆', title: '모둠 대항 순위판', wide: true,
+            desc: '모둠별 결과 요약 화면의 총 자산을 입력하면\n자동으로 순위가 정렬돼요. (이 기기에 저장)',
+            html: boardHtml(),
+            buttons: [
+                { label: '🗑️ 순위판 비우기', color: 'peach', onClick: async () => {
+                    const ok = await confirmDialog('🗑️', '순위판 비우기', '등록된 모든 모둠 기록을 지울까요?', '비우기', '취소');
+                    if (ok) saveBoard([]);
+                    openBoard();
+                } },
+                { label: '닫기', color: '', onClick: () => closeModal() }
+            ]
+        });
+        const body = $('modalBody');
+        body.querySelectorAll('[data-del]').forEach(btn => btn.onclick = () => { saveBoard(loadBoard().filter(x => x.name !== btn.dataset.del)); openBoard(); });
+        const add = () => {
+            const name = $('bName').value.trim();
+            const assets = parseMoney($('bAssets').value);
+            if (!name) { showToast('모둠명을 입력해 주세요'); $('bName').focus(); return; }
+            if (!isFinite(assets)) { showToast('자산을 숫자로 입력해 주세요 (예: 3.5억, 12000000)'); $('bAssets').focus(); return; }
+            addBoardEntry(name, assets);
+            openBoard();
+            $('bName').focus();
+        };
+        $('bAdd').onclick = add;
+        $('bAssets').onkeydown = e => { if (e.key === 'Enter') add(); };
+        $('bName').onkeydown = e => { if (e.key === 'Enter') $('bAssets').focus(); };
+    }
+
     // ---------- 모달 ----------
-    function openModal({ icon = '', title = '', desc = '', timer = '', buttons = [] }) {
+    function openModal({ icon = '', title = '', desc = '', timer = '', buttons = [], html = '', wide = false }) {
         stopContinuousClick();
         stopHold();
+        $('modalBody').innerHTML = html;
+        document.querySelector('.modal-card').classList.toggle('wide', wide);
         setText('modalIcon', icon);
         setText('modalTitle', title);
         setText('modalDesc', desc);
@@ -1963,6 +2307,7 @@
     document.addEventListener('visibilitychange', () => { if (document.hidden) { saveIfRunning(); stopContinuousClick(); stopHold(); } });
     window.addEventListener('pagehide', saveIfRunning);
 
+    bindSettingsUI();
     refreshStartScreen();
 </script>
 </body>
