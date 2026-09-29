@@ -121,6 +121,8 @@
         .opt input[type=checkbox] { width: 20px; height: 20px; accent-color: var(--pink-d); flex-shrink: 0; }
         .opt select { font-family: inherit; font-size: 13px; color: var(--ink); border: 2px solid var(--line); border-radius: 10px; padding: 3px 6px; background: var(--butter-l); margin-left: auto; }
         .board-btn { margin-top: 12px; }
+        .dl-btn { text-decoration: none; text-align: center; }
+        .dl-btn small { display: block; font-size: 11px; color: var(--ink-soft); margin-top: 2px; }
         .session-info { background: var(--pink-l); border-color: #f2a3bd; }
         .session-info.ended { background: var(--sky-l); border-color: #8fc2ee; }
         .start-foot { display: flex; flex-direction: column; align-items: center; gap: 6px; }
@@ -417,6 +419,7 @@
                 </div>
             </details>
             <button class="btn btn-lav btn-block board-btn" onclick="openBoard()">📊 모둠 대항 순위판 (선생님용)</button>
+            <a class="btn btn-sky btn-block board-btn dl-btn" href="수업자료/건물주선생님_금융교육_지도안_활동지.docx" download="건물주선생님_금융교육_지도안_활동지.docx">📘 수업 지도안·활동지 받기 <small>(Word · 초등 5~6학년 2차시)</small></a>
         </div>
         <div class="start-foot">
             <button class="link-btn" onclick="clearData()">🧹 데이터 초기화 (버그 발생 시)</button>
