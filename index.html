@@ -121,6 +121,8 @@
         .opt input[type=checkbox] { width: 20px; height: 20px; accent-color: var(--pink-d); flex-shrink: 0; }
         .opt select { font-family: inherit; font-size: 13px; color: var(--ink); border: 2px solid var(--line); border-radius: 10px; padding: 3px 6px; background: var(--butter-l); margin-left: auto; }
         .board-btn { margin-top: 12px; }
+        .session-info { background: var(--pink-l); border-color: #f2a3bd; }
+        .session-info.ended { background: var(--sky-l); border-color: #8fc2ee; }
         .start-foot { display: flex; flex-direction: column; align-items: center; gap: 6px; }
         .link-btn { background: none; border: none; color: #e07b9c; font-size: 12px; text-decoration: underline; cursor: pointer; padding: 4px; }
         .copyright { font-size: 10px; color: #b8a69f; text-align: center; }
@@ -400,6 +402,7 @@
                 <button class="btn btn-pink" onclick="startGame('👩‍🏫')"><span class="e">👩‍🏫</span>여교사</button>
             </div>
             <div id="saveInfo" class="save-info hidden"></div>
+            <div id="sessionInfo" class="save-info session-info hidden"></div>
 
             <details class="teacher-set" id="teacherSet">
                 <summary>👩‍🏫 선생님 수업 설정</summary>
@@ -408,6 +411,9 @@
                 <label class="opt"><input type="checkbox" id="optFake"><span>가상 종목명 사용<br><small>실제 기업명 대신 가상 이름 (별빛전자 등)</small></span></label>
                 <div class="opt"><span>⏱️ 시간 제한 모드<br><small>시간이 끝나면 결과 요약 화면 표시</small></span>
                     <select id="optTime"><option value="0">제한 없음</option><option value="5">5분</option><option value="10">10분</option><option value="15">15분</option><option value="20">20분</option><option value="30">30분</option><option value="40">40분</option></select>
+                </div>
+                <div class="opt" style="cursor:default"><span>🔁 새 수업 시작<br><small>수업 타이머를 처음부터 다시 시작 (게임 기록은 유지)</small></span>
+                    <button class="btn btn-sm btn-peach" style="margin-left:auto;flex-shrink:0" onclick="resetClassTimer()">타이머 초기화</button>
                 </div>
             </details>
             <button class="btn btn-lav btn-block board-btn" onclick="openBoard()">📊 모둠 대항 순위판 (선생님용)</button>
@@ -796,7 +802,7 @@
         const time = $('optTime');
         time.value = String(settings.timeLimit || 0);
         if (time.value === '') time.value = '0';
-        time.addEventListener('change', () => { settings.timeLimit = parseInt(time.value, 10) || 0; saveSettings(); });
+        time.addEventListener('change', () => { settings.timeLimit = parseInt(time.value, 10) || 0; saveSettings(); clearSession(); refreshSessionInfo(); });
         const team = $('teamInput');
         team.value = settings.team || '';
         team.addEventListener('input', () => { settings.team = team.value.trim().slice(0, 12); saveSettings(); });
@@ -805,10 +811,44 @@
 
     // ---------- 자산 / 수업 세션 ----------
     let session = null;
+    const SESSION_KEY = 'tg_session';
     const newSession = () => ({
-        start: Date.now(), deadline: settings.timeLimit ? Date.now() + settings.timeLimit * 60000 : 0,
+        start: Date.now(), deadline: settings.timeLimit ? Date.now() + settings.timeLimit * 60000 : 0, timeLimit: settings.timeLimit,
         startAssets: 0, clicks: 0, trades: 0, realized: 0, lotto: 0, lottoWin: 0, gacha: 0, ended: false
     });
+    // 시간 제한 수업은 기기에 저장 → 타이틀로 나갔다 다시 시작해도 남은 시간이 이어짐
+    function loadSession() {
+        if (!settings.timeLimit) return null;
+        try {
+            const x = JSON.parse(store.get(SESSION_KEY) || 'null');
+            if (!isObj(x) || !isFinite(x.deadline) || !isFinite(x.start) || x.timeLimit !== settings.timeLimit) return null;
+            return Object.assign(newSession(), x);
+        } catch (e) { return null; }
+    }
+    const saveSession = () => { if (session && session.deadline) store.set(SESSION_KEY, JSON.stringify(session)); };
+    const clearSession = () => store.remove(SESSION_KEY);
+    const sessionOver = x => !!x && (x.ended || Date.now() >= x.deadline);
+
+    async function resetClassTimer() {
+        const ok = await confirmDialog('🔁', '새 수업 시작', '수업 타이머를 초기화할까요?\n다음에 시작할 때 시간이 처음부터 흘러요.\n(게임 기록은 그대로예요. 기록까지 지우려면\n아래의 [데이터 초기화]를 이용하세요)', '초기화', '취소');
+        if (!ok) return;
+        clearSession();
+        refreshSessionInfo();
+        showToast('⏱️ 수업 타이머를 초기화했어요');
+    }
+
+    function refreshSessionInfo() {
+        const el = $('sessionInfo');
+        if (!el) return;
+        const x = loadSession();
+        if (!x) { el.classList.add('hidden'); return; }
+        el.classList.remove('hidden');
+        el.classList.toggle('ended', sessionOver(x));
+        el.innerHTML = sessionOver(x)
+            ? '🔔 이번 수업 시간이 끝났어요.<br>아바타를 누르면 결과를 볼 수 있어요.'
+            : `⏱️ 수업 진행 중 · 남은 시간 <b>${fmtClock(x.deadline - Date.now())}</b><br>나가 있어도 시간은 계속 흘러요!`;
+    }
+    setInterval(() => { if (!gameRunning && !$('startScreen').classList.contains('hidden')) refreshSessionInfo(); }, 1000);
     const stockAssets = () => Object.values(s.stocks).reduce((a, st) => a + st.price * st.count, 0);
     const realAssets = () => DB.reals.reduce((a, r) => a + s.reals[r.id].price * s.reals[r.id].own, 0);
     const totalAssets = () => s.money + stockAssets() + realAssets();
@@ -862,6 +902,7 @@
             setDifficulty(currentDifficulty);
             info.classList.add('hidden');
         }
+        refreshSessionInfo();
     }
 
     function loadGame() {
@@ -884,6 +925,7 @@
     function saveGame() {
         s.lastSaveTime = Date.now();
         store.set(SAVE_KEY, JSON.stringify(s));
+        saveSession();
     }
 
     async function clearData() {
@@ -892,10 +934,23 @@
         gameRunning = false;
         stopGameTimers();
         store.remove(SAVE_KEY);
+        clearSession();
         location.reload();
     }
 
     function startGame(emoji) {
+        if (!settings.timeLimit) clearSession();
+        const stored = loadSession();
+        if (sessionOver(stored)) {
+            // 시간이 끝난 수업: 게임은 시작하지 않고 결과 요약만 보여 줌
+            loadGame();
+            session = stored;
+            session.ended = true;
+            if (!session.endedAt) session.endedAt = Math.min(Date.now(), session.deadline);
+            saveSession();
+            showSummary(true);
+            return;
+        }
         const hadSave = loadGame();
         s.character = emoji;
         s.difficulty = currentDifficulty;
@@ -907,7 +962,8 @@
         $('startScreen').classList.add('hidden');
         $('gameScreen').classList.remove('hidden');
         gameRunning = true;
-        session = newSession();
+        const resumed = !!stored;
+        session = stored || newSession();
         initAudio();
 
         Object.keys(buffs).forEach(k => buffs[k] = 0);
@@ -920,7 +976,7 @@
         applySeason();
         calculateMultipliers();
         const offlineGain = calculateOfflineProgress();
-        session.startAssets = totalAssets();
+        if (!resumed) session.startAssets = totalAssets();
         applyOOTDVisual();
         updateBoard();
         changeTab('tab-up', true);
@@ -932,7 +988,9 @@
         timers.runner = setInterval(spawnRunner, 90000);
         saveGame();
 
-        if (session.deadline) showToast(`⏱️ ${settings.timeLimit}분 수업 시작! ${teamName()} 화이팅!`);
+        if (session.deadline) showToast(resumed
+            ? `⏱️ 수업 이어하기! 남은 시간 ${fmtClock(session.deadline - Date.now())}`
+            : `⏱️ ${settings.timeLimit}분 수업 시작! ${teamName()} 화이팅!`);
         if (offlineGain > 0) {
             infoDialog('🌙', '방치 보상 도착!', `선생님이 없는 동안에도\n학교는 열심히 돌아갔어요.\n\n+${formatMoney(offlineGain)}원`, '받기 💰');
         }
