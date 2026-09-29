@@ -339,6 +339,16 @@
         @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
         @keyframes wiggle { 0%,100% { rotate: 0deg; } 30% { rotate: -12deg; } 70% { rotate: 10deg; } }
         @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .45; } }
+        /* 세로가 짧은 화면(작은 휴대폰·가로 크롬북)에서 탭 영역 확보 */
+        @media (max-height: 700px) {
+            #clickArea { height: clamp(160px, 30dvh, 210px); margin-top: 8px; }
+            .hud { padding: 6px 10px 7px; }
+            .hud-top { margin-bottom: 5px; }
+            .hud-mid { margin-bottom: 3px; }
+            .bar-row { margin-top: 2px; }
+            .board { height: 48px; top: 10px; }
+            #characterEmoji { font-size: 52px; }
+        }
         @media (prefers-reduced-motion: reduce) { .particle, #characterEmoji, .logo-scene .t, .logo-scene .b, #modalIcon { animation: none !important; } }
     </style>
 </head>
@@ -363,7 +373,7 @@
         <div></div>
         <div class="start-box">
             <div class="logo-scene">
-                <span class="t">🧑‍🏫</span><span class="b">🏢</span>
+                <span class="t">👨‍🏫</span><span class="b">🏢</span>
                 <span class="sp" style="left:-18px;top:6px">✨</span>
                 <span class="sp" style="right:-16px;top:0;animation-delay:.6s">💰</span>
                 <span class="sp" style="right:40%;top:-14px;animation-delay:1.1s">⭐</span>
@@ -386,7 +396,7 @@
 
             <div class="label">🙋 아바타를 골라 시작하기</div>
             <div class="avatar-row">
-                <button class="btn btn-sky" onclick="startGame('🧑‍🏫')"><span class="e">🧑‍🏫</span>남교사</button>
+                <button class="btn btn-sky" onclick="startGame('👨‍🏫')"><span class="e">👨‍🏫</span>남교사</button>
                 <button class="btn btn-pink" onclick="startGame('👩‍🏫')"><span class="e">👩‍🏫</span>여교사</button>
             </div>
             <div id="saveInfo" class="save-info hidden"></div>
@@ -431,7 +441,7 @@
                     </div>
                 </div>
                 <div class="money-box">
-                    <div class="money-pill">🪙 <span id="moneyDisplay">0원</span></div>
+                    <div class="money-pill">💰 <span id="moneyDisplay">0원</span></div>
                     <div class="per-sec">초당 +<span id="autoMoneyText">0</span>원</div>
                 </div>
             </div>
@@ -458,12 +468,12 @@
             <div id="trophyShelf"></div>
             <div id="buffChips"></div>
             <div id="particles"></div>
-            <span class="deco" style="left:10px">🪴</span>
+            <span class="deco" style="left:10px">🌵</span>
             <span class="deco" style="right:12px">🎒</span>
             <div class="teacher">
                 <div class="char-box">
                     <div class="speech" id="speech"></div>
-                    <span id="characterEmoji">🧑‍🏫</span>
+                    <span id="characterEmoji">👨‍🏫</span>
                     <span id="ootdEmoji"></span>
                 </div>
                 <div class="desk">
@@ -583,7 +593,7 @@
 
     // 매번 새 객체를 만들어 기본값이 오염되지 않도록 함수로 정의
     const defaultState = () => ({
-        character: '🧑‍🏫', money: 0, exp: 0, level: 1, hobong: 1, grade: '전담교사', motto: '무사히 퇴근하자',
+        character: '👨‍🏫', money: 0, exp: 0, level: 1, hobong: 1, grade: '전담교사', motto: '무사히 퇴근하자',
         caffeine: 0, succulentGrowth: 0, succulentBuff: 0, honor: 0, travelBuff: 1, careerBuff: 0, difficulty: 'normal',
         inventory: {}, collections: {}, spareItems: 0, emoticonIncome: 0,
         stocks: {
@@ -605,7 +615,7 @@
         enforce: { laptop: 0, coffee: 0, mic: 0, stamp: 0, aircon: 0, plant: 0, voice: 0, smartsys: 0 },
         reals: { r1: { own: 0, price: 5e8 }, r2: { own: 0, price: 2e9 }, r3: { own: 0, price: 1e10 }, r4: { own: 0, price: 5e10 } },
         skills: { vacation: 0, silence: 0, blind: 0, emo: 0, trip: 0, lunch: 0, lab: 0, field: 0, multi: 0, garden: 0, wee: 0, council: 0, plc: 0 },
-        ootd: 'none', stats: { totalClicks: 0 }, endings: 0, tradeLog: [], lastSaveTime: Date.now()
+        ootd: 'none', stats: { totalClicks: 0 }, endings: 0, tradeLog: [], emoPendingUntil: 0, lastSaveTime: Date.now()
     });
 
     let s = defaultState();
@@ -613,6 +623,7 @@
     const timers = { loop: null, event: null, runner: null };
     let eventTimerObj = null, globalAuditListener = null, auditArmTimeout = null;
     let currentClickProfit = 200, currentAutoProfit = 50, currentExpPerClick = 5, currentExpPerSec = 2;
+    let baseAutoProfit = 50; // 일시 버프를 뺀 초당 수익 (목돈 보상·비용 계산용)
     const buffs = { feverUntil: 0, pivotUntil: 0, menuUntil: 0, councilUntil: 0, silenceUntil: 0 };
     let pivotCharge = 0, pivotEndTimer = null;
     let currentDifficulty = 'normal';
@@ -636,7 +647,7 @@
             { id: 'c4', name: 'NEIS 결재용 듀얼모니터', baseCost: 40000, profit: 20000, icon: '🖥️' },
             { id: 'c5', name: '스마트 레이저 포인터', baseCost: 300000, profit: 150000, icon: '🔦' },
             { id: 'c6', name: '초고속 무선 제본기', baseCost: 2000000, profit: 800000, icon: '📖' },
-            { id: 'c7', name: '교무실 네스프레소 머신', baseCost: 15000000, profit: 4500000, icon: '🫖' },
+            { id: 'c7', name: '교무실 네스프레소 머신', baseCost: 15000000, profit: 4500000, icon: '🍵' },
             { id: 'c8', name: '전자칠판 스타일러스 펜', baseCost: 100000000, profit: 25000000, icon: '✒️' }
         ],
         autos: [
@@ -651,11 +662,11 @@
         ],
         enforce: [
             { id: 'laptop', name: '에듀테크 교실 노트북', baseCost: 1000, mult: 0.1, icon: '💻' },
-            { id: 'coffee', name: '맞춤형복지 텀블러', baseCost: 5000, mult: 0.15, icon: '🧋' },
+            { id: 'coffee', name: '맞춤형복지 텀블러', baseCost: 5000, mult: 0.15, icon: '🥤' },
             { id: 'mic', name: 'Wee클래스 무선 마이크', baseCost: 30000, mult: 0.2, icon: '🎤' },
             { id: 'stamp', name: '나이스 전결 결재도장', baseCost: 200000, mult: 0.3, icon: '💮' },
             { id: 'aircon', name: '교실 대형 공기청정기', baseCost: 800000, mult: 0.4, icon: '🌬️' },
-            { id: 'plant', name: '플랜테리어 화분 인테리어', baseCost: 3000000, mult: 0.6, icon: '🪴' },
+            { id: 'plant', name: '플랜테리어 화분 인테리어', baseCost: 3000000, mult: 0.6, icon: '🌿' },
             { id: 'voice', name: 'AI 음성인식 녹음기', baseCost: 15000000, mult: 0.8, icon: '🎙️' },
             { id: 'smartsys', name: '스마트 냉난방 중앙제어기', baseCost: 80000000, mult: 1.0, icon: '🌡️' }
         ],
@@ -684,7 +695,7 @@
             { id: 'col1', name: '액체괴물', icon: '🟢' }, { id: 'col2', name: '포켓몬 띠부씰', icon: '🐢' },
             { id: 'col3', name: '피젯스피너', icon: '🌀' }, { id: 'col4', name: '유희왕 카드', icon: '🃏' },
             { id: 'col5', name: '요요', icon: '🪀' }, { id: 'col6', name: '몰래 가져온 게임기', icon: '🎮' },
-            { id: 'col7', name: '딱지', icon: '🎴' }, { id: 'col8', name: '비눗방울', icon: '🫧' }
+            { id: 'col7', name: '딱지', icon: '🎴' }, { id: 'col8', name: '고무풍선', icon: '🎈' }
         ],
         reals: [
             { id: 'r1', name: '동네 상가', icon: '🏪', rent: 1e6, base: 5e8 },
@@ -816,12 +827,16 @@
     function parseMoney(str) {
         str = String(str || '').replace(/[,\s원]/g, '');
         if (!str) return NaN;
-        let total = 0, matched = false;
-        const re = /(\d+(?:\.\d+)?)(경|조|억|만)?/g;
-        const unit = { '경': 1e16, '조': 1e12, '억': 1e8, '만': 1e4 };
-        let m;
-        while ((m = re.exec(str))) { if (!m[0]) break; matched = true; total += parseFloat(m[1]) * (unit[m[2]] || 1); }
-        return matched ? total : NaN;
+        const big = { '경': 1e16, '조': 1e12, '억': 1e8, '만': 1e4 }, small = { '천': 1e3, '백': 1e2, '십': 10 };
+        const re = /(\d+(?:\.\d+)?)|([경조억만])|([천백십])|(.)/g;
+        let total = 0, group = 0, num = null, m;
+        while ((m = re.exec(str))) {
+            if (m[1]) { if (num !== null) return NaN; num = parseFloat(m[1]); }
+            else if (m[3]) { group += (num === null ? 1 : num) * small[m[3]]; num = null; }
+            else if (m[2]) { group += num === null ? 0 : num; total += (group || 1) * big[m[2]]; group = 0; num = null; }
+            else return NaN;
+        }
+        return total + group + (num === null ? 0 : num);
     }
 
     // ---------- 시작 화면 ----------
@@ -858,6 +873,11 @@
         s.level = Math.max(1, Math.floor(s.level));
         s.hobong = Math.max(1, Math.floor(s.hobong));
         s.money = Math.max(0, s.money);
+        Object.values(s.stocks).forEach(st => {
+            st.count = Math.max(0, Math.floor(st.count));
+            if (st.count > 0 && !(st.costBasis > 0)) st.costBasis = st.price * st.count;
+            if (st.count === 0) st.costBasis = 0;
+        });
         return !!p;
     }
 
@@ -947,7 +967,7 @@
     function calculateOfflineProgress() {
         const diff = Math.floor((Date.now() - s.lastSaveTime) / 1000);
         if (diff > 30) {
-            const gain = Math.min(diff, 86400) * Math.max(currentAutoProfit, 50) * 0.8;
+            const gain = Math.min(diff, 86400) * baseAutoProfit * 0.8;
             s.money += gain;
             return gain;
         }
@@ -1051,6 +1071,7 @@
     const isPivot = () => buffs.pivotUntil > Date.now();
 
     function activatePivotTime() {
+        if (!gameRunning) return false;
         if (isPivot()) return;
         if (pivotCharge < 100) {
             playAudio('error');
@@ -1094,6 +1115,7 @@
             showToast('🌿 다육이가 자라서 마음의 평화 획득! (수익 +5%)');
         }
         s.caffeine = Math.max(0, Math.min(100, s.caffeine - (s.ootd === '츄리닝' ? 4 : 2)));
+        if (s.emoPendingUntil && Date.now() >= s.emoPendingUntil) resolveEmoticon();
 
         calculateMultipliers();
         s.money += Math.max(currentAutoProfit, 50);
@@ -1145,6 +1167,7 @@
 
         currentClickProfit = cv * hM * cafMult * gradeM * menuMult * feverMult * pivotMult * diffMult;
         currentAutoProfit = av * hM * councilMult * gradeM * menuMult * pivotMult * diffMult;
+        baseAutoProfit = Math.max(av * hM * gradeM * diffMult, 50);
         currentExpPerClick = ec * hM * (s.difficulty === 'easy' ? 1.5 : 1) * ootdExp;
         currentExpPerSec = ea * hM * ootdExp;
     }
@@ -1284,7 +1307,7 @@
         setText('tensionText', s.caffeine >= 80 ? '🔥 클릭 3배!' : '80%↑ 3배');
 
         const stage = Math.round(s.succulentBuff / 0.05);
-        const plants = ['🌱', '🌿', '☘️', '🪴', '🌵', '🌷', '🌸', '🌻'];
+        const plants = ['🌱', '🌿', '☘️', '🍀', '🌵', '🌷', '🌸', '🌻'];
         setText('succulentEmoji', plants[Math.min(stage, plants.length - 1)]);
         setText('succulentPct', Math.floor(s.succulentGrowth / 300 * 100) + '%');
 
@@ -1406,6 +1429,7 @@
 
     // ---------- 구매 ----------
     function buySpecialItem(id, type, quiet) {
+        if (!gameRunning) return false;
         const sh = SHOPS.find(x => x.type === type);
         if (!sh) return false;
         const item = sh.list.find(i => i.id === id);
@@ -1427,6 +1451,7 @@
     }
 
     function buyTravel() {
+        if (!gameRunning) return false;
         const cost = 50000000;
         if (s.money >= cost) {
             s.money -= cost;
@@ -1442,6 +1467,7 @@
     }
 
     function tradeStockItem(id, act) {
+        if (!gameRunning) return false;
         const st = s.stocks[id];
         if (!st) return;
         if (act === 'buy') {
@@ -1475,6 +1501,7 @@
     }
 
     function buyReal(k) {
+        if (!gameRunning) return false;
         const r = s.reals[k];
         if (s.money >= r.price) {
             s.money -= r.price;
@@ -1492,6 +1519,7 @@
     }
 
     function sellReal(k) {
+        if (!gameRunning) return false;
         const r = s.reals[k];
         if (r.own > 0) {
             s.money += r.price;
@@ -1509,6 +1537,7 @@
 
     // ---------- 스킬 ----------
     function useSkill(k) {
+        if (!gameRunning) return false;
         const now = Date.now();
         if (s.skills[k] > now) {
             playAudio('error');
@@ -1516,7 +1545,7 @@
             return;
         }
         if (k === 'vacation') {
-            const earn = currentAutoProfit * 3600;
+            const earn = baseAutoProfit * 3600;
             s.money += earn;
             playAudio('buy');
             showToast(`🎫 연가 1시간분 수익! +${formatMoney(earn)}원`);
@@ -1585,7 +1614,7 @@
         if (r < 0.3) {
             dropItem();
         } else if (r < 0.55) {
-            const earn = Math.max(600000, currentAutoProfit * 90);
+            const earn = Math.max(600000, baseAutoProfit * 90);
             s.money += earn;
             infoDialog('📲', '스마트 태블릿 당첨!', `중고로 되팔아 +${formatMoney(earn)}원`);
         } else if (r < 0.75) {
@@ -1602,7 +1631,7 @@
     }
 
     function runItinerantTrip() {
-        const earn = Math.max(currentAutoProfit, 50) * 60;
+        const earn = baseAutoProfit * 60;
         s.money += earn;
         playAudio('buy');
         showToast(`🚗 출장비 정산 완료! +${formatMoney(earn)}원`);
@@ -1621,7 +1650,7 @@
     }
 
     function doFieldTripInspection() {
-        const earn = Math.max(currentAutoProfit, 50) * 120;
+        const earn = baseAutoProfit * 120;
         s.money += earn;
         s.honor += 1;
         playAudio('buy');
@@ -1636,7 +1665,7 @@
     }
 
     function harvestGarden() {
-        const earn = Math.max(currentAutoProfit, 50) * 30;
+        const earn = baseAutoProfit * 30;
         s.caffeine = 100;
         s.money += earn;
         playAudio('buy');
@@ -1645,7 +1674,7 @@
 
     function postBlind() {
         if (Math.random() < 0.2) {
-            const earn = Math.max(currentAutoProfit, 50) * 300;
+            const earn = baseAutoProfit * 300;
             s.money += earn;
             showToast(`🔥 블라인드 베스트글 등극! +${formatMoney(earn)}원`);
             playAudio('buy');
@@ -1656,21 +1685,22 @@
     }
 
     function makeEmoticon() {
+        s.emoPendingUntil = Date.now() + 60000;
         playAudio('buy');
         showToast('🎨 이모티콘 심사 제출! (1분 후 결과 발표)');
-        setTimeout(() => {
-            if (!gameRunning) return;
-            if (Math.random() < 0.3) {
-                s.emoticonIncome += 5000;
-                playAudio('buy');
-                showToast('🎉 이모티콘 승인! 영구 수익 초당 +5천');
-            } else {
-                playAudio('error');
-                showToast('❌ 이모티콘 미승인 (대중성 부족)');
-            }
-            calculateMultipliers();
-            updateUI();
-        }, 60000);
+    }
+
+    function resolveEmoticon() {
+        s.emoPendingUntil = 0;
+        if (Math.random() < 0.3) {
+            s.emoticonIncome += 5000;
+            playAudio('buy');
+            showToast('🎉 이모티콘 승인! 영구 수익 초당 +5천');
+        } else {
+            playAudio('error');
+            showToast('❌ 이모티콘 미승인 (대중성 부족)');
+        }
+        calculateMultipliers();
     }
 
     function applyPrincipalOpen() {
@@ -1705,11 +1735,12 @@
 
     // ---------- 간식함 ----------
     function openSnackBox() {
+        if (!gameRunning) return false;
         if (modalOpen) return;
-        const base = Math.max(currentAutoProfit, 50);
+        const base = baseAutoProfit;
         const snacks = [
             { icon: '🍫', name: '초코바', effect: '텐션 +50', cost: Math.max(1000, Math.floor(base * 5)), apply: () => { s.caffeine = Math.min(100, s.caffeine + 50); } },
-            { icon: '🧋', name: '아이스 아메리카노', effect: '텐션 MAX + 피벗 게이지 +30%', cost: Math.max(5000, Math.floor(base * 15)), apply: () => { s.caffeine = 100; if (!isPivot()) pivotCharge = Math.min(100, pivotCharge + 30); } },
+            { icon: '🥤', name: '아이스 아메리카노', effect: '텐션 MAX + 피벗 게이지 +30%', cost: Math.max(5000, Math.floor(base * 15)), apply: () => { s.caffeine = 100; if (!isPivot()) pivotCharge = Math.min(100, pivotCharge + 30); } },
             { icon: '🍩', name: '교무실 도넛 파티', effect: '20초 동안 클릭 수익 3배', cost: Math.max(20000, Math.floor(base * 40)), apply: () => { buffs.feverUntil = Math.max(buffs.feverUntil, Date.now()) + 20000; } }
         ];
         openModal({
@@ -1749,6 +1780,7 @@
     }
 
     async function sellCarrot() {
+        if (!gameRunning) return false;
         if (s.spareItems <= 0) { playAudio('error'); showToast('🥕 보유 중인 잉여템이 없어요!'); return; }
         if (modalOpen) return;
         if (s.ootd !== '정장' && Math.random() < 0.5) {
@@ -1773,6 +1805,7 @@
     }
 
     function buyLottery() {
+        if (!gameRunning) return false;
         if (settings.classMode) { showToast('🏫 수업 모드에서는 복권을 살 수 없어요'); return; }
         if (s.money < LOTTO_PRICE) { playAudio('error'); showToast('💸 소지금이 부족해요! (10만 원 필요)'); return; }
         s.money -= LOTTO_PRICE;
@@ -1805,6 +1838,7 @@
     // ---------- 전근 / 엔딩 ----------
     async function rebirth(force = false) {
         if (!force) {
+            if (!gameRunning) return;
             const ok = await confirmDialog('💼', '전근 서류 제출', `자산을 포기하고 전근할까요?\n${s.hobong + 1}호봉으로 승급하고 수익 배율이 올라가요.\n(명예·트로피·도감·여행/경력 보너스는 유지)`, '전근하기', '취소');
             if (!ok) return;
         }
@@ -1907,7 +1941,7 @@
                 s.honor += honorGain;
             } else {
                 playAudio('error');
-                const loss = Math.min(s.money, currentAutoProfit * 10);
+                const loss = Math.min(s.money, baseAutoProfit * 10);
                 s.money -= loss;
                 if (loss > 0) msg += ` (-${formatMoney(loss)}원)`;
             }
@@ -1920,7 +1954,7 @@
 
         if (type === 'counsel') {
             openModal({ icon: '📞', title: '학부모 상담 주간', desc: "학부모님의 질문:\n'우리 아이 학교생활 어때요?'", buttons: [
-                { label: '폭풍 칭찬과 공감 🥰', color: 'mint', onClick: () => { s.money += currentAutoProfit * 20; finish(true, '학부모 대만족! 후원금 획득 · 명예 +5', 5); } },
+                { label: '폭풍 칭찬과 공감 🥰', color: 'mint', onClick: () => { s.money += baseAutoProfit * 20; finish(true, '학부모 대만족! 후원금 획득 · 명예 +5', 5); } },
                 { label: '객관적인 사실 전달 📝', color: 'sky', onClick: () => { s.exp += 800; checkLevelUp(); finish(true, '신뢰도 상승! EXP +800 · 명예 +3', 3); } }
             ] });
         } else if (type === 'festival') {
@@ -1930,7 +1964,7 @@
                     taps++;
                     el.textContent = `열정 수업 시연 광클!! (${taps}/15)`;
                     playAudio('coin');
-                    if (taps >= 15) { s.money += currentAutoProfit * 50; finish(true, '공개수업 대성공! 방문 교사 환호 · 명예 +10', 10); }
+                    if (taps >= 15) { s.money += baseAutoProfit * 50; finish(true, '공개수업 대성공! 방문 교사 환호 · 명예 +10', 10); }
                 } }
             ] });
             eventTimerObj = setInterval(() => {
@@ -1957,7 +1991,7 @@
                 timeLeft--;
                 setTimer(timeLeft);
                 if (timeLeft <= 0) {
-                    const rew = currentAutoProfit * 100;
+                    const rew = baseAutoProfit * 100;
                     s.money += rew;
                     finish(true, `감사 통과! 격려금 +${formatMoney(rew)}원 · 명예 +5`, 5);
                 }
@@ -1965,7 +1999,7 @@
         } else if (type === 'zoom') {
             openModal({ icon: '💻', title: '원격수업 줌 접속 오류!', desc: '아이들 마이크가 안 들려요.\n어떻게 해결할까요?', buttons: [
                 { label: '오디오 설정 재부팅 안내 🔧', color: 'sky', onClick: () => { s.exp += 600; checkLevelUp(); finish(true, '줌 수업 정상화! EXP +600 · 명예 +3', 3); } },
-                { label: '링크 다시 보내기 🔗', color: 'mint', onClick: () => { s.money += currentAutoProfit * 15; finish(true, '신속한 조치 완료! · 명예 +2', 2); } }
+                { label: '링크 다시 보내기 🔗', color: 'mint', onClick: () => { s.money += baseAutoProfit * 15; finish(true, '신속한 조치 완료! · 명예 +2', 2); } }
             ] });
         }
     }
@@ -1979,7 +2013,7 @@
         el.addEventListener('pointerdown', e => {
             e.stopPropagation();
             e.preventDefault();
-            const rew = Math.max(s.money * 0.1, Math.max(currentAutoProfit, 50) * 30);
+            const rew = Math.max(s.money * 0.1, baseAutoProfit * 30);
             s.money += rew;
             playAudio('buy');
             showFloat(e.clientX, e.clientY, `+${formatMoney(rew)}`);
@@ -1998,6 +2032,7 @@
         if (!session || session.ended) return;
         session.ended = true;
         session.endedAt = Date.now();
+        setText('timeChip', '⏱️ 00:00');
         closeModal();
         saveGame();
         gameRunning = false;
@@ -2097,7 +2132,7 @@
         const a = document.createElement('a');
         const d = new Date();
         a.href = URL.createObjectURL(blob);
-        a.download = `투자기록_${teamName()}_${d.getMonth() + 1}월${d.getDate()}일.csv`;
+        a.download = `투자기록_${teamName().replace(/[\\/:*?"<>|]/g, '_')}_${d.getMonth() + 1}월${d.getDate()}일.csv`;
         document.body.appendChild(a); a.click(); a.remove();
         setTimeout(() => URL.revokeObjectURL(a.href), 1000);
         showToast('💾 CSV 파일을 저장했어요');
