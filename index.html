@@ -85,6 +85,9 @@
             align-items: center; justify-content: space-between; padding: 24px 20px calc(16px + env(safe-area-inset-bottom));
             overflow-y: auto;
         }
+        /* 📲 앱 설치 · 📱 QR (시작 화면 오른쪽 위) */
+        .start-top { align-self: flex-end; display: flex; gap: 8px; }
+        .start-top .btn { font-size: 13px; padding: 6px 12px; }
         .start-box { width: 100%; max-width: 340px; display: flex; flex-direction: column; align-items: center; margin: auto 0; }
         .logo-scene { position: relative; font-size: 64px; height: 92px; display: flex; align-items: flex-end; gap: 4px; margin-bottom: 6px; }
         .logo-scene .t { animation: bob 1.6s ease-in-out infinite; display: inline-block; }
@@ -382,7 +385,7 @@
 
     <!-- 시작 화면 -->
     <div id="startScreen">
-        <div></div>
+        <div class="start-top"><button type="button" class="btn btn-sm btn-mint" data-ys-install>📲 앱 설치</button><button type="button" class="btn btn-sm btn-sky" data-qr aria-label="QR 코드로 접속">📱 QR</button></div>
         <div class="start-box">
             <div class="logo-scene">
                 <span class="t">👨‍🏫</span><span class="b">🏢</span>
@@ -428,7 +431,7 @@
             </details>
             <button class="btn btn-lav btn-block board-btn" onclick="openBoard()">📊 모둠 대항 순위판 (선생님용)</button>
             <a class="btn btn-sky btn-block board-btn dl-btn" href="수업자료/건물주선생님_금융교육_지도안_활동지.docx" download="건물주선생님_금융교육_지도안_활동지.docx">📘 수업 지도안·활동지 받기 <small>(Word · 초등 5~6학년 2차시)</small></a>
-            <button type="button" class="btn btn-mint btn-block board-btn" data-ys-install>📲 앱으로 설치하기 <small>(홈 화면에서 바로 열기)</small></button>
+
         </div>
         <div class="start-foot">
             <button class="link-btn" onclick="clearData()">🧹 데이터 초기화 (버그 발생 시)</button>
